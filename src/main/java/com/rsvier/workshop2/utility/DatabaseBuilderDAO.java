@@ -1,4 +1,4 @@
-package com.rsvier.workshop2.model.dao;
+package com.rsvier.workshop2.utility;
 
 public interface DatabaseBuilderDAO {
 	

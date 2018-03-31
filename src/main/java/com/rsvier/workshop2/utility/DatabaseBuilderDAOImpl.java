@@ -1,4 +1,4 @@
-package com.rsvier.workshop2.model.dao;
+package com.rsvier.workshop2.utility;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import com.ibatis.common.jdbc.ScriptRunner;
-import com.rsvier.workshop2.database.DataSource;
+import com.rsvier.workshop2.customer.CustomerDAOImpl;
 
 public class DatabaseBuilderDAOImpl implements DatabaseBuilderDAO {
 	
