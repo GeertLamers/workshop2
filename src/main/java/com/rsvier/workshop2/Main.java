@@ -2,7 +2,8 @@ package com.rsvier.workshop2;
 
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.LoginController;
-import com.rsvier.workshop2.model.dao.DatabaseBuilderDAOImpl;
+import com.rsvier.workshop2.useraccounts.UserMainMenuView;
+import com.rsvier.workshop2.utility.DatabaseBuilderDAOImpl;
 import com.rsvier.workshop2.view.*;
 
 public class Main {

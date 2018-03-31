@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseinfo>
+	<driver>com.mysql.jdbc.Driver</driver>
+	<url>jdbc:mysql://localhost/rsvier</url>
+	<username>GeertL</username>
+	<password>k44sBl0kJe$</password>
+</databaseinfo>

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import java.sql.*;
 import com.rsvier.workshop1.database.DataSource;
 import com.rsvier.workshop1.model.Product;
-import com.rsvier.workshop2.model.dao.ProductDAOImpl;
+import com.rsvier.workshop2.product.ProductDAOImpl;
 
 import java.math.BigDecimal;
 import java.util.List;

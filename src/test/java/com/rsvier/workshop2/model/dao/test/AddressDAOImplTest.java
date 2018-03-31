@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import com.rsvier.workshop1.database.DataSource;
 import com.rsvier.workshop1.model.Address;
 import com.rsvier.workshop1.model.Customer;
-import com.rsvier.workshop2.model.dao.AddressDAOImpl;
+import com.rsvier.workshop2.customer.AddressDAOImpl;
 
 class AddressDAOImplTest {
 	

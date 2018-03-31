@@ -1,7 +1,5 @@
 package com.rsvier.workshop2.controller;
 
-import com.rsvier.workshop2.model.PasswordHasher;
-import com.rsvier.workshop2.model.dao.AccountDAOImpl;
 import com.rsvier.workshop2.useraccounts.*;
 import com.rsvier.workshop2.view.*;
 

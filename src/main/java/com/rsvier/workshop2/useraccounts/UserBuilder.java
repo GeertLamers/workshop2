@@ -1,6 +1,5 @@
 package com.rsvier.workshop2.useraccounts;
 
-import com.rsvier.workshop2.model.dao.AccountDAOImpl;
 import com.rsvier.workshop2.model.dao.test.*;
 
 public class UserBuilder {
