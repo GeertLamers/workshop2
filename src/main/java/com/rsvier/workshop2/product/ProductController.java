@@ -4,17 +4,21 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.persistence.EntityManager;
+
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
+import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class ProductController extends Controller {
 	
 	private ProductView currentMenu;
-	private ProductDAO productModel;
+	private ProductDAOImpl productModel;
+	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
 	
 	public ProductController(ProductView theView) {
@@ -52,9 +56,9 @@ public class ProductController extends Controller {
 	}
 	
 	public void findAllProducts() {
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 		
-		ArrayList<Product> allProducts = (ArrayList<Product>) productModel.findAllProducts();
+		ArrayList<Product> allProducts = (ArrayList<Product>) productModel.findAll();
 		
 		currentMenu.displayProductPropertiesHeader();
 		currentMenu.displayLongDivider();
@@ -66,22 +70,17 @@ public class ProductController extends Controller {
 	
 	public void findProduct() {
 		Product foundProduct = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 		
-		currentMenu.displayCanFindByIdAndName(); // Indicates allowed search parameters to user
+		// TODO currently no findByName method due to GenericDAO implementation > fix when not lazy
+		currentMenu.displayCanFindByIdAndName();
 		String findThisProduct = currentMenu.askUserForInput();
 		if (Validator.isAnInt(findThisProduct)) {
 			// TODO Don't like using a Try-Catch here, improve later
 			try { // if user input was an integer
-				foundProduct = productModel.findProductById(Long.valueOf(findThisProduct));
+				foundProduct = productModel.findById(Product.class, Long.valueOf(findThisProduct));
 			} catch (Exception ex) {
 				System.out.println("Could not find a product with that ID.");
-			}
-		} else { 
-			try { // if user input was not an int, a product name is assumed
-				foundProduct = productModel.findProductByName(findThisProduct);
-			} catch (Exception ex) {
-				System.out.println("Could not find a product by that name.");
 			}
 		}
 		currentMenu.displayProductPropertiesHeader();
@@ -94,7 +93,7 @@ public class ProductController extends Controller {
 	
 	public void addNewProduct() {
 		Product productToAdd = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 		
 		System.out.println("Please enter product details below:");
 
@@ -119,7 +118,7 @@ public class ProductController extends Controller {
 		double alcoholPercentage = inputAlcoholPercentage();
 		productToAdd.setAlcoholPercentage(alcoholPercentage);
 		
-		productModel.createProduct(productToAdd);
+		productModel.create(productToAdd);
 		currentMenu.displayCreateSuccess();
 		
 		currentMenu.pressEnterToReturn();
@@ -128,33 +127,21 @@ public class ProductController extends Controller {
 	
 	public void deleteProduct() {
 		Product productToDelete = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 		
 		Long id = inputValidProductId();
-		System.out.println(id);
 		productToDelete.setProductId(id);
-		if(idIsInDatabase(id)) {
-			System.out.println(productToDelete.getProductId());
-			currentMenu.displayDeletionConfirmationPrompt(); // Require confirmation
-			boolean yesOrNo = currentMenu.asksUserYesOrNo();
-			if (yesOrNo) { // user answered yes
-				boolean deleteSuccess = productModel.deleteProduct(productToDelete);
-				if (deleteSuccess) {
-					currentMenu.displayDeleteSuccess();
-					currentMenu.pressEnterToReturn();
-					this.runView();
-				} else {
-					currentMenu.displayOperationFailed();
-					currentMenu.pressEnterToReturn();
-					this.runView();
-				}
-			} else {
-				currentMenu.displayOperationCancelled();
-				currentMenu.pressEnterToReturn();
-				this.runView();
-			}
+		System.out.println("You entered the following ID:" + productToDelete.getProductId());
+		
+		currentMenu.displayDeletionConfirmationPrompt(); // Require user confirmation
+		boolean yesOrNo = currentMenu.asksUserYesOrNo();
+		if (yesOrNo) { // user answered yes
+			productModel.delete(productToDelete);
+			currentMenu.displayDeleteSuccess();
+			currentMenu.pressEnterToReturn();
+			this.runView();
 		} else {
-			currentMenu.displayItemNotFound();
+			currentMenu.displayOperationCancelled();
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
@@ -196,124 +183,96 @@ public class ProductController extends Controller {
 	
 	public void editProductName() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 		// requires an id from user to identify which product to update
 		Long id = inputValidProductId();
-		// checks whether product is in database with provided id
-		if(idIsInDatabase(id)) { // proceeds with update if found
-			// Populates product with current data
-			productToUpdate = productModel.findProductById(id);
+
+		// Populates product with current data
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			String name = inputName();
-			productToUpdate.setProductName(name);
-			runUpdateOnProduct(productToUpdate);
-		} else { // alerts user if id is not found in database
-			alertUserAndReturn();
-		} 	
+		String name = inputName();
+		productToUpdate.setProductName(name);
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductPrice() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
-		
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+	
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			String price = inputPrice();
-			productToUpdate.setPrice(new BigDecimal(price));
-			runUpdateOnProduct(productToUpdate);
-		} else {
-			alertUserAndReturn();
-		}
+		String price = inputPrice();
+		productToUpdate.setPrice(new BigDecimal(price));
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductStockQuantity() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
-		
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			int stockQuantity = inputStockQuantity();
-			productToUpdate.setStockQuantity(stockQuantity);
-			runUpdateOnProduct(productToUpdate);
-		} else { 
-			alertUserAndReturn();
-		}
+		int stockQuantity = inputStockQuantity();
+		productToUpdate.setStockQuantity(stockQuantity);
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductYear() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
-		
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			int productYear = inputYear();
-			productToUpdate.setProducedYear(productYear);
-			runUpdateOnProduct(productToUpdate);
-		} else { 
-			alertUserAndReturn();
-		}
+		int productYear = inputYear();
+		productToUpdate.setProducedYear(productYear);
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductCountryOfOrigin() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
 
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			String country = inputCountry();
-			productToUpdate.setCountry(country);
-			runUpdateOnProduct(productToUpdate);
-		} else {
-			alertUserAndReturn();
-		}
+		String country = inputCountry();
+		productToUpdate.setCountry(country);
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductGrapeVariety() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
 
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			String grapeVariety = inputGrapeVariety();
-			productToUpdate.setGrapeVariety(grapeVariety);
-			runUpdateOnProduct(productToUpdate);
-		} else {
-			alertUserAndReturn();
-		}
+		String grapeVariety = inputGrapeVariety();
+		productToUpdate.setGrapeVariety(grapeVariety);
+		productModel.update(productToUpdate);
 	}
 	
 	public void editProductAlcoholContent() {
 		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
 
 		Long id = inputValidProductId();
 		
-		if(idIsInDatabase(id)) {
-			productToUpdate = productModel.findProductById(id);
+		productToUpdate = productModel.findById(Product.class, id);
 			
-			System.out.print("Enter an alcohol percentage (e.g. 14.2):");
-			String userInputAlcoholPercentage = input.nextLine();
-			productToUpdate.setAlcoholPercentage(Double.parseDouble(userInputAlcoholPercentage));
+		System.out.print("Enter an alcohol percentage (e.g. 14.2):");
+		String userInputAlcoholPercentage = input.nextLine();
+		productToUpdate.setAlcoholPercentage(Double.parseDouble(userInputAlcoholPercentage));
 			
-			runUpdateOnProduct(productToUpdate);
-		} else {
-			alertUserAndReturn();
-		}
+		productModel.update(productToUpdate);
 	}
 	
 	/* INPUT & HELPER METHODS */
@@ -401,28 +360,5 @@ public class ProductController extends Controller {
 		}
 		Long id = Long.valueOf(attemptAtId);
 		return id;
-	}
-	
-	public void alertUserAndReturn() {
-		currentMenu.displayItemNotFound();
-		currentMenu.pressEnterToReturn();
-		this.runView();
-	}
-	
-	public boolean idIsInDatabase(Long id) {
-		return productModel.isProductStoredWithId(id);
-	}
-	
-	public void runUpdateOnProduct(Product productToUpdate) {
-		boolean isSuccessful = productModel.updateProduct(productToUpdate);
-		if (isSuccessful) {
-			currentMenu.displayUpdateSuccess();
-			currentMenu.pressEnterToReturn();
-			this.runView();
-		} else {
-			currentMenu.displayOperationFailed();
-			currentMenu.pressEnterToReturn();
-			this.runView();
-		}
 	}
 }
