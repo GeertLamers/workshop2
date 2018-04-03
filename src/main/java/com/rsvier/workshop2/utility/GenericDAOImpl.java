@@ -19,7 +19,6 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 		em.getTransaction().begin();
 		em.persist(entity);
 		em.getTransaction().commit();
-		em.close();
 		return entity;
 	}
 	
@@ -33,7 +32,6 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 		em.getTransaction().begin();
 		T entity = em.find(type, id);
 		em.getTransaction().commit();
-		em.close();
 		return entity;
 	}
 	
@@ -41,13 +39,11 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 		em.getTransaction().begin();
 		em.merge(entity);
 		em.getTransaction().commit();
-		em.close();
 	}
 	
 	public void delete (T entity) {
 		em.getTransaction().begin();
 		em.remove(entity);
 		em.getTransaction().commit();
-		em.close();
 	}
 }
