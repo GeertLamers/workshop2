@@ -12,7 +12,7 @@ import com.rsvier.workshop2.customer.AddressDAO;
 import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAO;
 import com.rsvier.workshop2.product.Product;
-import com.rsvier.workshop2.product.ProductDAO;
+import com.rsvier.workshop2.product.ProductDAOImpl;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
@@ -24,7 +24,7 @@ public class OrderController extends Controller {
 	private OrderLineItemDAO orderLineModel;
 	private CustomerDAO customerModel;
 	private AddressDAO addressModel;
-	private ProductDAO productModel;
+	private ProductDAOImpl productModel;
 	private Scanner input = new Scanner(System.in);
 	
 	public OrderController(OrderView theView) {
