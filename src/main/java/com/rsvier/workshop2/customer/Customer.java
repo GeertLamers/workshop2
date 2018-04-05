@@ -1,8 +1,24 @@
 package com.rsvier.workshop2.customer;
 
-public class Customer {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-	private Long customerId;
+@Entity
+@Table(name="Customer",
+		uniqueConstraints={@UniqueConstraint(columnNames={"ID"})})
+
+public class Customer {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID", nullable=false, unique=true, length=11)
+	private long customerId;
+	
 	private String firstName;
 	private String lastName;
 	private String lastNamePreposition;
