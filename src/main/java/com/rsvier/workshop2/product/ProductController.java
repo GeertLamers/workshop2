@@ -193,6 +193,8 @@ public class ProductController extends Controller {
 		String name = inputName();
 		productToUpdate.setName(name);
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductPrice() {
@@ -206,6 +208,8 @@ public class ProductController extends Controller {
 		String price = inputPrice();
 		productToUpdate.setPrice(new BigDecimal(price));
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductStockQuantity() {
@@ -219,6 +223,8 @@ public class ProductController extends Controller {
 		int stockQuantity = inputStockQuantity();
 		productToUpdate.setStockQuantity(stockQuantity);
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductYear() {
@@ -232,6 +238,8 @@ public class ProductController extends Controller {
 		int productYear = inputYear();
 		productToUpdate.setProducedYear(productYear);
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductCountryOfOrigin() {
@@ -245,6 +253,8 @@ public class ProductController extends Controller {
 		String country = inputCountry();
 		productToUpdate.setCountry(country);
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductGrapeVariety() {
@@ -258,6 +268,8 @@ public class ProductController extends Controller {
 		String grapeVariety = inputGrapeVariety();
 		productToUpdate.setGrapeVariety(grapeVariety);
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	public void editProductAlcoholContent() {
@@ -273,6 +285,8 @@ public class ProductController extends Controller {
 		productToUpdate.setAlcoholPercentage(Double.parseDouble(userInputAlcoholPercentage));
 			
 		productModel.update(productToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
 	}
 	
 	/* INPUT & HELPER METHODS */
