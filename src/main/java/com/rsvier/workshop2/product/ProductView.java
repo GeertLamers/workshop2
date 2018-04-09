@@ -47,7 +47,7 @@ public class ProductView extends View {
 	public void displayProductProperties(Product product) {
 		System.out.printf("%-3d %-30s %-8s %-8d %-5d %-15s %-15s %-3s \n",
 						   product.getProductId(),
-						   product.getProductName(),
+						   product.getName(),
 						   (product.getPrice()).toString(),
 						   product.getStockQuantity(),
 						   product.getProducedYear(),

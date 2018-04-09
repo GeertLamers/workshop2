@@ -81,7 +81,7 @@ public class OrderView extends View {
 	public void displayOrderItemListDetails(ArrayList<OrderLineItem> listOfItems) {
 		for (OrderLineItem item : listOfItems) {
 			System.out.printf("%-30s %-8d %-10s \n",
-					   item.getProduct().getProductName(),
+					   item.getProduct().getName(),
 					   item.getProductQuantity(),
 					   (item.getProduct().getPrice()).toString());
 		}

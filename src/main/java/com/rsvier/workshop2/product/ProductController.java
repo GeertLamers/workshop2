@@ -98,7 +98,7 @@ public class ProductController extends Controller {
 		System.out.println("Please enter product details below:");
 
 		String name = inputName();
-		productToAdd.setProductName(name);
+		productToAdd.setName(name);
 		
 		String price = inputPrice();
 		productToAdd.setPrice(new BigDecimal(price));
@@ -191,7 +191,7 @@ public class ProductController extends Controller {
 		productToUpdate = productModel.findById(Product.class, id);
 			
 		String name = inputName();
-		productToUpdate.setProductName(name);
+		productToUpdate.setName(name);
 		productModel.update(productToUpdate);
 	}
 	

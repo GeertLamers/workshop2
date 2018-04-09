@@ -12,16 +12,19 @@ import javax.persistence.Id;
 public class Product {
 
 	@Id
-	@Column(name = "product_id")
+	@Column(name = "id", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long productId;
-	
-	private String productName;
+	private String name;
 	private BigDecimal price;
+	@Column(name = "stock_quantity")
 	private int stockQuantity;
+	@Column(name = "produced_year")
 	private int producedYear;
 	private String country;
+	@Column(name = "grape_variety")
 	private String grapeVariety;
+	@Column(name = "alcohol_percentage")
 	private double alcoholPercentage;
 
 	public Product() {
@@ -32,7 +35,7 @@ public class Product {
 				   BigDecimal price,
 				   int stockQuantity) {
 
-		this.productName = productName;
+		this.name = productName;
 		this.price = price;
 		this.stockQuantity = stockQuantity;
 	}
@@ -46,7 +49,7 @@ public class Product {
 				   String grapeVariety,
 				   double alcoholPercentage) {
 
-		this.productName = productName;
+		this.name = productName;
 		this.price = price;
 		this.stockQuantity = stockQuantity;
 		this.producedYear = producedYear;
@@ -63,12 +66,12 @@ public class Product {
 		this.productId = productId;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getName() {
+		return name;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setName(String productName) {
+		this.name = productName;
 	}
 
 	public BigDecimal getPrice() {
@@ -121,7 +124,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productName=" + productName + ", price=" + price
+		return "Product [productId=" + productId + ", productName=" + name + ", price=" + price
 				+ ", stockQuantity=" + stockQuantity + ", producedYear=" + producedYear + ", country=" + country
 				+ ", grapeVariety=" + grapeVariety + ", alcoholPercentage=" + alcoholPercentage + "]";
 	}
@@ -133,7 +136,7 @@ public class Product {
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((grapeVariety == null) ? 0 : grapeVariety.hashCode());
 		result = prime * result + producedYear;
-		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 	
@@ -159,10 +162,10 @@ public class Product {
 			return false;
 		if (producedYear != other.producedYear)
 			return false;
-		if (productName == null) {
-			if (other.productName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!productName.equals(other.productName))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

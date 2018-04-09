@@ -62,7 +62,7 @@ public class ProductDAOImplTest {
 	@Test
 	void canCreateProduct() {
 		Product product = new Product();
-		product.setProductName("Chateau de Degoutant");
+		product.setName("Chateau de Degoutant");
 		product.setPrice(new BigDecimal("8"));
 		product.setStockQuantity(5);
 
@@ -78,8 +78,8 @@ public class ProductDAOImplTest {
 
 		assertAll(
 		() -> assertEquals(2, products.size()),
-		() -> assertNotNull(products.get(0).getProductName()),
-		() -> assertNotNull(products.get(1).getProductName())
+		() -> assertNotNull(products.get(0).getName()),
+		() -> assertNotNull(products.get(1).getName())
 		);
 	}
 	
@@ -94,7 +94,7 @@ public class ProductDAOImplTest {
 	void canFindProductByName() {
 		Product product = productDao.findProductByName("El Rioja Diablo");
 		
-		assertEquals("El Rioja Diablo", product.getProductName());
+		assertEquals("El Rioja Diablo", product.getName());
 	}
 	
 	@Test

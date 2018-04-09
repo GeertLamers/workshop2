@@ -29,9 +29,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 	}
 	
 	public T findById(Class<T> type, Long id) {
-		em.getTransaction().begin();
 		T entity = em.find(type, id);
-		em.getTransaction().commit();
 		return entity;
 	}
 	

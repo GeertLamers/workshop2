@@ -14,8 +14,8 @@ public class HibernateService {
 	
 	public static EntityManager getEntityManager() {
 		if (em == null) {
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HibernatusCommunicatus");
-			EntityManager em = emf.createEntityManager();
+			emf = Persistence.createEntityManagerFactory("HibernatusCommunicatus");
+			em = emf.createEntityManager();
 		}
 		return em;
 	}
