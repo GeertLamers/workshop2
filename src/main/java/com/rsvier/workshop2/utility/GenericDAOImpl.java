@@ -41,7 +41,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 	
 	public void delete (T entity) {
 		em.getTransaction().begin();
-		em.remove(entity);
+		em.remove(em.contains(entity) ? entity : em.merge(entity));
 		em.getTransaction().commit();
 	}
 }
