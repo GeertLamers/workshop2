@@ -1,40 +1,67 @@
 package com.rsvier.workshop2.useraccounts;
 
+import javax.persistence.*;
+
+@Entity
 public class Account {
 	
-	private Long accountId;
-	private boolean active;
-	private String ownerType;
+	@Id
+	@OneToOne(fetch = FetchType.LAZY,
+	optional = false
+	)
+	@PrimaryKeyJoinColumn
+	protected long customerId;
 	
-	public Account() {
-	}
+	@NotNull
+	protected String username;
 	
-	public Account(Long accoundId,
-				   boolean active,
-				   String accountOwner) {
-	}
-	
-	public Long getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public String getOwnerType() {
-		return ownerType;
+	protected String encryptedPassword;
+	protected String userType;
+	private String salt;
+		
+	protected Account() {
 	}
 	
-	public void setOwnerType(String ownerType) {
-		this.ownerType = ownerType;
+	public Account (Long customerId, String username, String encryptedPassword, String userType, String salt) {
+		this.customerId = customerId;
+		this.username = username;
+		this.encryptedPassword = encryptedPassword;
+		this.userType = userType;
+		this.salt = salt;
 	}
+	
+	// Are getters and setters really needed?
+		
+	public String getEncryptedPassword () {
+		return this.encryptedPassword;
+	}
+	
+	public void setEncryptedPassword (String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
+	}
+	
+	public String getUsername () {
+		return this.username;
+	}
+	
+	public void setUsername (String username) {
+		this.username = username;
+	}
+	
+	public String getUserType () {
+		return this.userType;
+	}
+	
+	public void setUserType (String userType) {
+		this.userType = userType;
+	}
+	
+	public void setSalt (String salt) {
+		this.salt = salt;
+	}
+	
+	public String getSalt () {
+		return this.salt;
+	}
+	
 }

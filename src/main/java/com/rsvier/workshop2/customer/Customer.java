@@ -25,11 +25,7 @@ public class Customer {
 	private String email;
 	private String phoneNumber;
 	private boolean customerActive;
-	private String username;
-	private String encryptedPassword;
-	private String userType;
 	private int active;
-	private String salt;
 
 	public Customer() {
 	}
@@ -105,31 +101,7 @@ public class Customer {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
-	public String getEncryptedPassword () {
-		return this.encryptedPassword;
-	}
-	
-	public void setEncryptedPassword (String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
-	
-	public String getUsername () {
-		return this.username;
-	}
-	
-	public void setUsername (String username) {
-		this.username = username;
-	}
-	
-	public String getUserType () {
-		return this.userType;
-	}
-	
-	public void setUserType (String userType) {
-		this.userType = userType;
-	}
-	
+
 	public boolean isCustomerActive() {
 		return customerActive;
 	}
@@ -144,14 +116,6 @@ public class Customer {
 	
 	public int getActive () {
 		return this.active;
-	}
-	
-	public void setSalt (String salt) {
-		this.salt = salt;
-	}
-	
-	public String getSalt () {
-		return this.salt;
 	}
 
 	@Override
