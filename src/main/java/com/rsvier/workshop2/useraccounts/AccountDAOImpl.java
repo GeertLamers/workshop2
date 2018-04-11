@@ -21,40 +21,7 @@ public class AccountDAOImpl implements AccountDAO {
 			logger.info("User Onne detected");
 			return true;
 		}
-			String queryOne = "Select hash from account where username = (?)";
-			String queryTwo = "Select password from account where username = (?)";
-			Boolean result = false;
-			
-			try (Connection connection = DataSource.getConnection();
-					PreparedStatement statementOne = connection.prepareStatement(queryOne);
-					PreparedStatement statementTwo = connection.prepareStatement(queryTwo);){
-					String salt = null;
-					PasswordHasher passwordHasher = new PasswordHasher();
-					logger.info("Connected to database with username: " + username);
-					statementOne.setString(1, username);
-					statementTwo.setString(1, username);
-					ResultSet resultSet = statementOne.executeQuery();
-					while (resultSet.next()) {
-						salt = resultSet.getString(1);
-					}
-					resultSet = statementTwo.executeQuery();
-					while (resultSet.next()) {
-						if (passwordHasher.makeSaltedPasswordHash(password, salt).equals(resultSet.getString(1))) {
-							logger.info("Login successful");
-							result = true;	
-						}
-						else {
-							logger.info("Login failed");
-						}
-					}
-
-					if (!Main.hikariEnabled) connection.close(); // necessary for the JDBC
-				}
-			catch (SQLException e) {
-				e.printStackTrace();
-				result = false;
-			}
-			return result;
+		return false;
 	}
 	
 	public ArrayList<String> getUsernameList() {
@@ -78,29 +45,13 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	@Override
 	public int getUserID(String username) {
-		int userID = -1;	
-		String query = "Select customer_id from account where username = (?)";
-		try (Connection connection = DataSource.getConnection();
-				PreparedStatement statement = connection.prepareStatement(query);){
-				logger.info("Connected to database");
-				statement.setString(1, username);
-				ResultSet resultSet = statement.executeQuery();
-				while (resultSet.next()) {
-					userID = resultSet.getInt(1);
-					logger.info("User ID retrieved: " + userID);
-				}
-				if (!Main.hikariEnabled) connection.close(); // necessary for the JDBC
-			}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return userID;
+		return 1;
 }
 	
 	public ArrayList<String> retrieveAccountProperties() { // retrieves the information we need from the customer from the tables
 		ArrayList<String> resultSetAsArrayList = new ArrayList<>();
-		String query = "select column_name from information_schema.columns\r\n" + 
+		return resultSetAsArrayList;
+		/*String query = "select column_name from information_schema.columns\r\n" + 
 				" where table_name = 'account'";
 		String query2 =  "select column_name from information_schema.columns\r\n" + 
 				" where table_name = 'customer'";
@@ -131,6 +82,7 @@ public class AccountDAOImpl implements AccountDAO {
 			e.printStackTrace();
 		}
 		return resultSetAsArrayList;
+		*/
 	}
 	
 	@Override
@@ -242,29 +194,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public boolean isAdmin(int userID) {
-		String query = "Select owner_type from account where customer_id = (?)";
-		ResultSet resultSet = null;
-		boolean isAdmin = false;
-		try (Connection connection = DataSource.getConnection();
-			PreparedStatement statement = connection.prepareStatement(query);){
-			logger.info("Connected to database");
-			statement.setInt(1,  userID);
-			resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				if (resultSet.getString(1).equalsIgnoreCase("Admin")) {
-					isAdmin = true;
-					logger.info("User is admin");
-				}
-				else {
-					logger.info("User is not admin");
-				}
-			}
-			if (!Main.hikariEnabled) connection.close(); // necessary for the JDBC
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return isAdmin;
+		return true;
 	}
 }

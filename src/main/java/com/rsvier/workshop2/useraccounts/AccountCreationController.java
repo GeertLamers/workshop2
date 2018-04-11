@@ -23,12 +23,12 @@ public class AccountCreationController extends Controller {
 	}
 	
 	private void accountCreator() {
-		ArrayList<String> necessaryCustomerInformation = new AccountDAOImpl().retrieveAccountProperties();
 		boolean accountCreated = false;
 		Customer newCustomer = new Customer();
 		
 		while (!accountCreated) {
 
+			ArrayList<String> necessaryCustomerInformation = new ArrayList<String>();
 			for (String customerProperty : necessaryCustomerInformation) {
 				boolean validInput = false;
 				String userInput = "";
@@ -38,14 +38,14 @@ public class AccountCreationController extends Controller {
 					validInput = new Validator(userInput).validateNewUser(customerProperty);
 				}
 				switch (customerProperty) {
-				case "username":
-					newCustomer.setUsername(userInput);
-					break;
+				//case "username":
+					//newCustomer.setUsername(userInput);
+					//break;
 				case "password":
 					PasswordHasher passwordHasher = new PasswordHasher();
 					String salt = passwordHasher.generateSalt();
-					newCustomer.setEncryptedPassword(passwordHasher.makeSaltedPasswordHash(userInput, salt));
-					newCustomer.setSalt(salt);
+					//newCustomer.setEncryptedPassword(passwordHasher.makeSaltedPasswordHash(userInput, salt));
+					//newCustomer.setSalt(salt);
 					break;
 				case "first_name":
 					newCustomer.setFirstName(userInput);

@@ -6,13 +6,9 @@ import javax.persistence.*;
 public class Account {
 	
 	@Id
-	@OneToOne(fetch = FetchType.LAZY,
-	optional = false
-	)
 	@PrimaryKeyJoinColumn
 	protected long customerId;
 	
-	@NotNull
 	protected String username;
 	
 	protected String encryptedPassword;
