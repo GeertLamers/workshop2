@@ -2,22 +2,27 @@ package com.rsvier.workshop2.customer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.rsvier.workshop2.useraccounts.Account;
 
 @Entity
 @Table(name="Customer",
 		uniqueConstraints={@UniqueConstraint(columnNames={"ID"})})
-
 public class Customer {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", nullable=false, unique=true, length=11)
+	@Id	@Column(name="ID", nullable=false, unique=true, length=11)
 	private long customerId;
+	
+	@PrimaryKeyJoinColumn @OneToOne(
+			fetch = FetchType.LAZY,
+			optional = false)
+	private Account account;
 	
 	private String firstName;
 	private String lastName;

@@ -2,15 +2,14 @@ package com.rsvier.workshop2.useraccounts;
 
 import javax.persistence.*;
 
+
 @Entity
 public class Account {
 	
-	@Id
-	@PrimaryKeyJoinColumn
+	@Id	@PrimaryKeyJoinColumn @GeneratedValue
 	protected long customerId;
 	
 	protected String username;
-	
 	protected String encryptedPassword;
 	protected String userType;
 	private String salt;
