@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 
-	protected CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {
+	public CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {
 		super(em, entityClass);
 	}
 
@@ -22,62 +22,19 @@ public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 		return false;
 	}
 
-	public List<Customer> findAllCustomers() {
+	public List<Customer> findAllCustomers() { //TODO: Fill in using hibernate
 		List<Customer> list = new ArrayList<Customer>();
-		query = "SELECT * FROM customer;";
-		try (Connection conn = DataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(query);
-				ResultSet rs = stmt.executeQuery();) {
-			logger.info("Connected to database.");	      
-			while(rs.next()) {
-				Customer customer = new Customer();
-				customer.setCustomerId(Long.valueOf(rs.getInt(1)));
-				customer.setFirstName(rs.getString(2));
-				customer.setLastName(rs.getString(3));
-				customer.setLastNamePreposition(rs.getString(4));
-				customer.setEmail(rs.getString(5));
-				customer.setPhoneNumber(rs.getString(6));
-				list.add(customer);
-			}
-			logger.info("Total customers:" + rs.getRow());
-		} catch (SQLException e) {
-			logger.info("Could not retrieve customers");
-			e.printStackTrace();
-		}
 		return list;
 	}
 
-	@Override
-	public Customer findCustomerById(Long customerId) {
+	public Customer findCustomerById(Long customerId) { //TODO: Fill in using hibernate
 		Customer foundCustomer = new Customer();
-		query = "SELECT * FROM customer WHERE id=?";
-		try (Connection conn = DataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(query);) {
-			logger.info("Connected to database.");
-			stmt.setLong(1, customerId);
-			try (ResultSet rs = stmt.executeQuery();) {
-				if(rs.next()) {
-					foundCustomer.setCustomerId(Long.valueOf(rs.getInt(1)));
-					foundCustomer.setFirstName(rs.getString(2));
-					foundCustomer.setLastName(rs.getString(3));
-					foundCustomer.setLastNamePreposition(rs.getString(4));
-					foundCustomer.setEmail(rs.getString(5));
-					foundCustomer.setPhoneNumber(rs.getString(6));
-				} 
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			logger.info("No customer found");
-			e.printStackTrace();
-		} 
 		return foundCustomer;
 	}
 
-	@Override
-	public Customer findCustomerByLastName(String lastName) {
+	public Customer findCustomerByLastName(String lastName) { //TODO: Fill in using hibernate
 		Customer foundCustomer = new Customer();
-		query = "SELECT * FROM customer WHERE last_name=?";
+		String query = "SELECT * FROM customer WHERE last_name=?";
 		try (Connection conn = DataSource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(query);) {
 			logger.info("Connected to database.");

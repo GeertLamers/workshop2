@@ -1,6 +1,5 @@
 package com.rsvier.workshop2.controller;
 
-import com.rsvier.workshop2.customer.CustomerCreationController;
 import com.rsvier.workshop2.useraccounts.*;
 import com.rsvier.workshop2.view.*;
 
@@ -17,7 +16,7 @@ public class LoginController extends Controller {
 		while (true) {
 			String[] userInput = ((LoginMenuView) currentMenu).asksUserForLogin();
 			if (userInput.length == 0) { //empty array only occurs when user enters a 1
-				nextController = new CustomerCreationController(new UserCreationView());
+				nextController = new UserCreationController(new UserCreationView());
 				return;
 			}
 			username = userInput[0];

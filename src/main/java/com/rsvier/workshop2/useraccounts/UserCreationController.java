@@ -1,4 +1,4 @@
-package com.rsvier.workshop2.customer;
+package com.rsvier.workshop2.useraccounts;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,18 +13,18 @@ import org.hibernate.cfg.Configuration;
 
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.LoginController;
-import com.rsvier.workshop2.useraccounts.PasswordHasher;
-import com.rsvier.workshop2.useraccounts.UserCreationView;
+import com.rsvier.workshop2.customer.Customer;
+import com.rsvier.workshop2.customer.CustomerDAOImpl;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.LoginMenuView;
 
-public class CustomerCreationController extends Controller {
+public class UserCreationController extends Controller {
 	
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private CustomerDAOImpl customerModel;
 	
-	public CustomerCreationController (UserCreationView theView) {
+	public UserCreationController (UserCreationView theView) {
 		this.currentMenu = theView;
 	}
 
@@ -36,8 +36,6 @@ public class CustomerCreationController extends Controller {
 	}
 	
 	private void accountCreator() {
-		boolean accountCreated = false;
-		while (!accountCreated) {
 			String username = "";
 			String password = "";
 			String salt = "";
@@ -95,8 +93,6 @@ public class CustomerCreationController extends Controller {
 			Customer newCustomer = new Customer(username, password, salt, firstName, lastName, lastNamePreposition, email, phoneNumber, creationDate);
 			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 			customerModel.create(newCustomer);
-			accountCreated = currentMenu.displayCreateSuccess();
+			currentMenu.displayCreateSuccess();
 		}
-		System.out.println("Account created. Returning to login screen..");
-	}
 }

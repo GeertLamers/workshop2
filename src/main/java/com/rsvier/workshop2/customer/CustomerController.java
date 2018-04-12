@@ -18,7 +18,6 @@ public class CustomerController extends Controller {
 	
 	public CustomerController(CustomerView theView) {
 		this.currentMenu = theView;
-		customerDao = new CustomerDAOImpl();
 	}
 	
 	@Override

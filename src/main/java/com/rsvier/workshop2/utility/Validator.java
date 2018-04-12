@@ -51,18 +51,18 @@ public class Validator { // Validates possible user inputs.
 			return validateUsername();
 		case "password":
 			return validatePassword();
-		case "first_name":
+		case "firstName":
 			return validateFirstName();
-		case "last_name":
+		case "lastName":
 			return validateLastName();
-		case "last_name_preposition":
+		case "lastNamePreposition":
 			return validateLastNamePreposition();
 		case "email":
 			return validateEmail();
-		case "phone_number":
+		case "phoneNumber":
 			return validatePhoneNumber();
 		default:
-			System.out.println("YOUR DATABASE HAS CHANGED");
+			System.out.println("YOUR DATABASE HAS CHANGED (validator)");
 			System.exit(0);
 		}
 		return false;

@@ -29,23 +29,23 @@ public class UserCreationView extends View {
 		case "password":
 			System.out.println("Please enter a password");
 			break;
-		case "first_name":
+		case "firstName":
 			System.out.println("Please enter your first name.");
 			break;
-		case "last_name":
+		case "lastName":
 			System.out.println("Please enter your last name.");
 			break;
-		case "last_name_preposition":
+		case "lastNamePreposition":
 			System.out.println("Please enter your last name preposition. Leave blank if not relevant.");
 			break;
 		case "email":
 			System.out.println("Please enter your e-mail address.");
 			break;
-		case "phone_number":
+		case "phoneNumber":
 			System.out.println("Please enter your (10 digit) phone number.");
 			break;
 		default:
-			System.out.println("YOUR DATABASE HAS CHANGED");
+			System.out.println("YOUR DATABASE HAS CHANGED (view)");
 			System.exit(0);
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
