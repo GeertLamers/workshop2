@@ -20,7 +20,6 @@ public class Account {
 	public Account (String username, String encryptedPassword, String salt) {
 		this.username = username;
 		this.encryptedPassword = encryptedPassword;
-		this.userType = userType;
 		this.salt = salt;
 	}
 	

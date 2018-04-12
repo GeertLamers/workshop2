@@ -2,6 +2,7 @@ package com.rsvier.workshop2.customer;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
 
 import com.rsvier.workshop2.useraccounts.Account;
 
@@ -23,6 +25,7 @@ public class Customer {
 	
 	@PrimaryKeyJoinColumn @OneToOne(
 			fetch = FetchType.LAZY,
+			cascade = {CascadeType.ALL},
 			optional = false)
 	private Account account;
 	
@@ -32,8 +35,9 @@ public class Customer {
 	private String email;
 	private String phoneNumber;
 	private boolean customerActive;
-	private int active;
-	private Date creationDate;
+	
+	@Column(name="createdOnDate")
+	private Date createdOnDate;
 
 	protected Customer() {
 	}
@@ -47,14 +51,22 @@ public class Customer {
 					String lastNamePreposition,
 					String email,
 					String phoneNumber,
-					Date creationDate) {
+					Date createdOnDate) {
 		this.account = new Account(username, password, salt);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.lastNamePreposition = lastNamePreposition;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.creationDate = creationDate;
+		this.createdOnDate = createdOnDate;
+	}
+	
+	public Date getCreatedOnDate() {
+		return createdOnDate;
+	}
+	
+	public void setCreatedOnDate(Date createdOnDate) {
+		this.createdOnDate = createdOnDate;
 	}
 
 	public Long getCustomerId() {
@@ -113,14 +125,6 @@ public class Customer {
 		this.customerActive = customerActive;
 	}
 	
-	public void setActive (int active) {
-		this.active = active;
-	}
-	
-	public int getActive () {
-		return this.active;
-	}
-
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
