@@ -1,49 +1,27 @@
 package com.rsvier.workshop2.customer;
 
+import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.utility.DataSource;
+import com.rsvier.workshop2.utility.GenericDAOImpl;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManager;
 
-public class CustomerDAOImpl implements CustomerDAO {
 
-	private String query;
-	private Logger logger = Logger.getLogger(CustomerDAOImpl.class.getName());
+public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 
-	@Override
-	public Long createCustomer(Customer customer) {
-		Long newCustomerId = null;
-		query = "INSERT INTO customer (first_name, last_name, last_name_preposition, email, phone_number)" +
-				"VALUES (?,?,?,?,?);";
-		try (Connection conn = DataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
-			logger.info("Connected to database.");
-			stmt.setString(1, customer.getFirstName());
-			stmt.setString(2, customer.getLastName());
-			stmt.setString(3, customer.getLastNamePreposition());
-			stmt.setString(4, customer.getEmail());
-			stmt.setString(5, customer.getPhoneNumber());
-			stmt.executeUpdate();
-			try (ResultSet rs = stmt.getGeneratedKeys();) {
-				if (rs.next()) {
-					newCustomerId = Long.valueOf(rs.getInt(1));
-					customer.setCustomerId(newCustomerId);
-				}           
-			} catch (SQLException e) {
-				logger.info("Creating new user failed.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		logger.info("Succesfully added new customer.");
-		logger.info("Added customer info to the customer table");
-		return newCustomerId;
+	protected CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {
+		super(em, entityClass);
 	}
 
-	@Override
+	public boolean createCustomer(Customer customer) {
+		return false;
+	}
+
 	public List<Customer> findAllCustomers() {
 		List<Customer> list = new ArrayList<Customer>();
 		query = "SELECT * FROM customer;";
@@ -153,5 +131,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 			logger.info("Could not delete customer");
 			e.printStackTrace();
 		} 
+	}
+
+	@Override
+	public List<Product> findALl() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

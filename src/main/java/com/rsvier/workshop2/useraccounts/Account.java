@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Account {
 	
-	@Id	@PrimaryKeyJoinColumn @GeneratedValue
+	@Id	@PrimaryKeyJoinColumn
 	protected long customerId;
 	
 	protected String username;
@@ -17,8 +17,7 @@ public class Account {
 	protected Account() {
 	}
 	
-	public Account (Long customerId, String username, String encryptedPassword, String userType, String salt) {
-		this.customerId = customerId;
+	public Account (String username, String encryptedPassword, String salt) {
 		this.username = username;
 		this.encryptedPassword = encryptedPassword;
 		this.userType = userType;

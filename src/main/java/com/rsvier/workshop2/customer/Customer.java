@@ -1,5 +1,7 @@
 package com.rsvier.workshop2.customer;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,32 +33,28 @@ public class Customer {
 	private String phoneNumber;
 	private boolean customerActive;
 	private int active;
+	private Date creationDate;
 
-	public Customer() {
-	}
-
-	// Constructor with basic params
-	public Customer(String firstName,
-					String lastName,
-					String lastNamePreposition) {
-
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.lastNamePreposition = lastNamePreposition;
+	protected Customer() {
 	}
 
 	// Complete constructor with all params
-	public Customer(String firstName,
+	public Customer(String username,
+					String password,
+					String salt,
+					String firstName,
 					String lastName,
 					String lastNamePreposition,
 					String email,
-					String phoneNumber) {
-
+					String phoneNumber,
+					Date creationDate) {
+		this.account = new Account(username, password, salt);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.lastNamePreposition = lastNamePreposition;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.creationDate = creationDate;
 	}
 
 	public Long getCustomerId() {
