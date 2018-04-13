@@ -1,32 +1,78 @@
 package com.rsvier.workshop2.order;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 
 import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 
+@Entity
+@NamedQueries ({
+	@NamedQuery(name = "Order.findAllByCustomer",
+				query = "SELECT o FROM Order o WHERE o.customer.getCustomerId() = :name)"),
+	@NamedQuery(name = "Order.findCompletedOnly",
+				query = "SELECT o FROM Order o WHERE o.shipped = true)"),
+	@NamedQuery(name = "Order.findPendingOnly",
+				query = "SELECT o FROM Order o WHERE o.shipped = false)")
+})
+@Table (name = "\"order\"")
 public class Order {
 	
+	@Id
+	@Column(name = "id",
+			nullable = false,
+			unique = true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "customerID")
 	private Customer customer;
-	private ArrayList<OrderLineItem> itemsInOrder;
+    
+	@ElementCollection
+	@OrderColumn(name = "OrderLineItem")
+	@OneToMany(fetch = FetchType.EAGER,
+			   cascade = CascadeType.ALL)
+	private Set<OrderLineItem> itemsInOrder;
+	
 	private BigDecimal orderPriceTotal;
 	private int orderItemsTotal;
 	private boolean shipped;
+	
+	@OneToOne(optional = false)
+	@JoinColumn(name = "id")
 	private Address shippedTo;
+	
 	private boolean completed;
 	
+	// ======================================================== //
+	
 	public Order() {
+		itemsInOrder = new HashSet<OrderLineItem>();
 	}
 	
 	public Order(Customer customer,
-				 BigDecimal orderPriceTotal,
-				 int orderItemsTotal) {
-
+				 Set<OrderLineItem> itemsInOrder) {
 		this.customer = customer;
-		this.orderPriceTotal = orderPriceTotal;
-		this.orderItemsTotal = orderItemsTotal;
+		this.itemsInOrder = itemsInOrder;
 	}
 
 	public Long getOrderId() {
@@ -45,7 +91,7 @@ public class Order {
 		this.customer = customer;
 	}
 	
-	public ArrayList<OrderLineItem> getItemsInOrder() {
+	public Set<OrderLineItem> getItemsInOrder() {
 		return itemsInOrder;
 	}
 
