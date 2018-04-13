@@ -1,16 +1,20 @@
 package com.rsvier.workshop2.order;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.rsvier.workshop2.product.Product;
 
-@Embeddable
+@Entity
 @Table(name = "order_line")
 public class OrderLineItem {
 
+	@Id
+	private Long orderLineId;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "orderID",
 				referencedColumnName = "id",
@@ -36,6 +40,14 @@ public class OrderLineItem {
 		this.productQuantity = productQuantity;
 	}
 	
+	public Long getOrderLineId() {
+		return orderLineId;
+	}
+
+	public void setOrderLineId(Long orderLineId) {
+		this.orderLineId = orderLineId;
+	}
+
 	public Order getParentOrder() {
 		return parentOrder;
 	}
@@ -66,6 +78,7 @@ public class OrderLineItem {
 				+ productQuantity + "]";
 	}
 
+	// TODO fix hashcode to use order + product hashcodes in combination
 	@Override
 	public int hashCode() {
 		final int prime = 31;
