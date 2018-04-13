@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.rsvier.workshop2.useraccounts.Account;
 
 @Entity
@@ -31,7 +34,7 @@ public class Customer {
 	private String phoneNumber;
 	private boolean customerActive;
 	
-	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOnDate;
 
 	protected Customer() {

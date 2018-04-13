@@ -176,13 +176,11 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 		return true;
 	}
 
-	@Override
 	public boolean changeUsername() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean deleteAccount(String deleteThisUser) {
 		boolean success = false;
 		String query = "Delete from account where username = (?)";
@@ -192,7 +190,6 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 			statement.setString(1,  deleteThisUser);
 			statement.executeUpdate();
 			success = true;
-			if (!Main.hikariEnabled) connection.close(); // necessary for the JDBC
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -201,8 +198,6 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 		return success;
 	}
 
-
-	@Override
 	public boolean isAdmin(int userID) {
 		return true;
 	}
