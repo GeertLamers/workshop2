@@ -94,7 +94,8 @@ public class UserCreationController extends Controller {
 			}
 			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber, creationDate);
 			Account newAccount = new Account(username, password, salt);
-			accountModel = new AccountDAOImpl(entityManager, Account.class)
+			accountModel = new AccountDAOImpl(entityManager, Account.class);
+			accountModel.create(newAccount);
 			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 			customerModel.create(newCustomer);
 			currentMenu.displayCreateSuccess();

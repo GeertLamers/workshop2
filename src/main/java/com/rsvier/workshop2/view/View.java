@@ -2,23 +2,16 @@ package com.rsvier.workshop2.view;
 import java.io.*;
 import java.util.*;
 
-import com.rsvier.workshop2.controller.Controller;
-import com.rsvier.workshop2.useraccounts.*;
-
 public abstract class View<K> { //parent version
 	protected int possibleUserChoice;
 	protected int menuChoice;
 	protected ArrayList<Integer> possibleMenuOptions;
 	protected HashMap<Integer, View> menuOptions;
 	protected boolean validUserChoice;
-	protected User user;
 	protected View userMenuChoice;
 	
 	public abstract void displayMessage(); //This runs when the menu is loaded. Welcome text etc.
 	public abstract void displayMenu(); // Displays the relevant menu
-	public User getUser() { //Use this to get info on the current logged in user.
-		return user;
-	};
 	public View() {} //add HashMap info here and load the possibleMenuOptions
 	public View getUserMenuChoice() {
 		return userMenuChoice;

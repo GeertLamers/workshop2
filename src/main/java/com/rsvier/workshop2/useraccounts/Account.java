@@ -24,8 +24,6 @@ public class Account {
 		this.salt = salt;
 	}
 	
-	// Are getters and setters really needed?
-		
 	public String getEncryptedPassword () {
 		return this.encryptedPassword;
 	}

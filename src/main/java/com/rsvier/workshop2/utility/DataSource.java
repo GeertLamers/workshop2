@@ -11,14 +11,11 @@ public class DataSource {
     private static HikariDataSource ds;
  
     static {
-    	if (Main.hikariEnabled) { //depends on whether user has enabled Hikari or not
     		config = new HikariConfig("hikari.properties");
     		ds = new HikariDataSource( config );
-    	}
     }
  
     public static Connection getConnection() throws SQLException {
-    	if (Main.hikariEnabled)	return ds.getConnection(); //depends on whether user has enabled Hikari or not
     	try {
     	  	Class.forName("com.mysql.jdbc.Driver");
     	  	// Load the driver

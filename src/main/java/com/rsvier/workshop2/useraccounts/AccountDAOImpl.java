@@ -54,10 +54,9 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 		return allOfTheUsers;
 	}
 	
-	@Override
 	public int getUserID(String username) {
 		return 1;
-}
+	}
 	
 	public ArrayList<String> retrieveAccountProperties() { // retrieves the information we need from the customer from the tables
 		ArrayList<String> resultSetAsArrayList = new ArrayList<>();
