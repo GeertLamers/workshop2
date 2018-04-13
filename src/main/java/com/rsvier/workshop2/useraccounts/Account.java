@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Entity
 public class Account {
 	
-	@Id	@PrimaryKeyJoinColumn
+	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	protected long customerId;
 	
 	protected String username;

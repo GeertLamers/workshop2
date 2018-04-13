@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
 
 
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
@@ -22,9 +23,10 @@ public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 		return false;
 	}
 
-	public List<Customer> findAllCustomers() { //TODO: Fill in using hibernate
-		List<Customer> list = new ArrayList<Customer>();
-		return list;
+	public List<Customer> findAllCustomers() { 
+        CriteriaQuery<Customer> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
+        criteriaQuery.select(criteriaQuery.from(entityClass));
+        return em.createQuery(criteriaQuery).getResultList();
 	}
 
 	public Customer findCustomerById(Long customerId) { //TODO: Fill in using hibernate
@@ -91,7 +93,7 @@ public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 	}
 
 	@Override
-	public List<Product> findALl() {
+	public List<Customer> findALl() {
 		// TODO Auto-generated method stub
 		return null;
 	}

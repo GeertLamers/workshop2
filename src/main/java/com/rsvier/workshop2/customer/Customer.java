@@ -9,18 +9,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-
 import com.rsvier.workshop2.useraccounts.Account;
 
 @Entity
-@Table(name="Customer",
-		uniqueConstraints={@UniqueConstraint(columnNames={"ID"})})
 public class Customer {
 	
-	@Id	@Column(name="ID", nullable=false, unique=true, length=11)
+	@Id 
+	@Column(name="ID", nullable=false, unique=true, length=11)
 	private long customerId;
 	
 	@PrimaryKeyJoinColumn @OneToOne(
@@ -36,23 +31,19 @@ public class Customer {
 	private String phoneNumber;
 	private boolean customerActive;
 	
-	@Column(name="createdOnDate")
+	
 	private Date createdOnDate;
 
 	protected Customer() {
 	}
 
 	// Complete constructor with all params
-	public Customer(String username,
-					String password,
-					String salt,
-					String firstName,
+	public Customer(String firstName,
 					String lastName,
 					String lastNamePreposition,
 					String email,
 					String phoneNumber,
 					Date createdOnDate) {
-		this.account = new Account(username, password, salt);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.lastNamePreposition = lastNamePreposition;

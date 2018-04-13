@@ -12,9 +12,9 @@ import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class CustomerController extends Controller {
 	
-	private CustomerView currentMenu;
-	private CustomerDAO customerDao;
+	private CustomerDAOImpl customerModel;
 	private Scanner input = new Scanner(System.in);
+	private CustomerView currentMenu;
 	
 	public CustomerController(CustomerView theView) {
 		this.currentMenu = theView;

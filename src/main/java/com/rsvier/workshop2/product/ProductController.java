@@ -16,10 +16,9 @@ import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class ProductController extends Controller {
 	
-	private ProductView currentMenu;
 	private ProductDAOImpl productModel;
-	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
+	private ProductView currentMenu;
 	
 	public ProductController(ProductView theView) {
 		this.currentMenu = theView;

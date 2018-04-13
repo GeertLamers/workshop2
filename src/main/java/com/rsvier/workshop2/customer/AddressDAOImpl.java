@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 public class AddressDAOImpl implements AddressDAO {
 
-	private String query;	
 	private Logger logger = Logger.getLogger(AddressDAOImpl.class.getName());
 
 	@Override

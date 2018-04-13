@@ -8,35 +8,16 @@ import com.rsvier.workshop2.view.*;
 
 public class Main {
 
-	public static boolean hikariEnabled;
-	public static boolean mongoEnabled;
-
 	public static void main (String args[])  {
-		
-		System.out.println("Welcome. Enable Hikari Connection Pool?");
-		hikariEnabled = new UserMainMenuView().asksUserYesOrNo();
-		System.out.println("Use Mongo Database?");
-		mongoEnabled = new UserMainMenuView().asksUserYesOrNo();
+
 		System.out.println("Initialize database?");
 		if (new UserMainMenuView().asksUserYesOrNo()) {
-			if (!mongoEnabled) {
-				if (new DatabaseBuilderDAOImpl().initializeMYSQLDatabase()) {
-					System.out.println("Database initalized");
-				}
-				else {
-					System.out.println("Failed to initalize database");
-				}
+			if (new DatabaseBuilderDAOImpl().initializeMYSQLDatabase()) {
+				System.out.println("Database initalized");
 			}
-			
-			// TODO: Add Mongo Database and enable the following code:
-			/*else {
-				if (new DatabaseBuilderDAOImpl().initializeMONGODatabase()) {
-					System.out.println("Database initalized");
-				}
-				else {
-					System.out.println("Failed to initalize database");
-				}
-			}*/
+			else {
+				System.out.println("Failed to initalize database");
+			}
 		}
 		
 		Controller currentController = new LoginController(new LoginMenuView());

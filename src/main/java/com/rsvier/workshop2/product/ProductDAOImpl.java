@@ -13,7 +13,7 @@ public class ProductDAOImpl extends GenericDAOImpl<Product> {
 	}
 	
 	@Override
-	public List<Product> findALl() {
+	public List<Product> findAll() {
         CriteriaQuery<Product> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
         criteriaQuery.select(criteriaQuery.from(entityClass));
         return em.createQuery(criteriaQuery).getResultList();

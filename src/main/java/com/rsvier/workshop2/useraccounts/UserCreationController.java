@@ -23,6 +23,7 @@ public class UserCreationController extends Controller {
 	
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private CustomerDAOImpl customerModel;
+	private AccountDAOImpl accountModel;
 	
 	public UserCreationController (UserCreationView theView) {
 		this.currentMenu = theView;
@@ -64,6 +65,7 @@ public class UserCreationController extends Controller {
 				switch (customerProperty) {
 				case "username":
 					username = userInput;
+					
 					break;
 				case "password":
 					PasswordHasher passwordHasher = new PasswordHasher();
@@ -90,7 +92,9 @@ public class UserCreationController extends Controller {
 					System.exit(0);
 				}
 			}
-			Customer newCustomer = new Customer(username, password, salt, firstName, lastName, lastNamePreposition, email, phoneNumber, creationDate);
+			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber, creationDate);
+			Account newAccount = new Account(username, password, salt);
+			accountModel = new AccountDAOImpl(entityManager, Account.class)
 			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 			customerModel.create(newCustomer);
 			currentMenu.displayCreateSuccess();
