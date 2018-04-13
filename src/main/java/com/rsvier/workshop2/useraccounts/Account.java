@@ -24,6 +24,14 @@ public class Account {
 		this.salt = salt;
 	}
 	
+	public long getCustomerId () {
+		return customerId;
+	}
+	
+	public void setCustomerId (long customerId) {
+		this.customerId = customerId;
+	}
+	
 	public String getEncryptedPassword () {
 		return this.encryptedPassword;
 	}

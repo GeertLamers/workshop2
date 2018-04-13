@@ -1,12 +1,17 @@
 package com.rsvier.workshop2.utility;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.persistence.EntityManager;
+
+import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
 
 public class Validator { // Validates possible user inputs.
 	private String userInput;
+	private EntityManager entityManager = HibernateService.getEntityManager();
 	
 	public Validator(String userInput) {
 		this.userInput = userInput;
@@ -74,9 +79,9 @@ public class Validator { // Validates possible user inputs.
 					+ " and contain only letters or numbers.");
 			return false;
 		}
-		ArrayList<String> allExistingUsernames = new AccountDAOImpl().getUsernameList();
-		for (String usernames : allExistingUsernames) {
-			if (usernames.equals(userInput)) {
+		ArrayList<Account> allExistingUsernames = (ArrayList<Account>) new AccountDAOImpl(entityManager, Account.class).findAll();
+		for (Account possibleAccount : allExistingUsernames) {
+			if (possibleAccount.getUsername().equals(userInput)) {
 				System.out.println("This username is already taken. Please select another.");
 				return false;
 			}

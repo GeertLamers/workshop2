@@ -2,6 +2,7 @@ package com.rsvier.workshop2.customer;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +23,6 @@ public class Customer {
 	
 	@Id
 	@Column(name="ID", nullable=false, unique=true, length=11)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long customerId;
 	
 	@PrimaryKeyJoinColumn 
@@ -38,6 +38,7 @@ public class Customer {
 	private String phoneNumber;
 	private boolean customerActive;
 	
+	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOnDate;
 
@@ -57,6 +58,14 @@ public class Customer {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.createdOnDate = createdOnDate;
+	}
+	
+	public Account getAccount() {
+		return account;
+	}
+	
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	
 	public Date getCreatedOnDate() {

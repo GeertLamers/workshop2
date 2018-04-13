@@ -22,7 +22,7 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 	public AccountDAOImpl(EntityManager em, Class<Account> entityClass) {
 		super(em, entityClass);
 	}
-
+	
 	public boolean login(String username, String password) {
 		if (username.equals("Onne") && password.equals("Hello")) { // to avoid the hashing
 			logger.info("User Onne detected");
