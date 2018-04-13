@@ -2,10 +2,11 @@ package com.rsvier.workshop2.customer;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -15,15 +16,17 @@ import javax.persistence.TemporalType;
 import com.rsvier.workshop2.useraccounts.Account;
 
 @Entity
+@Table(name="Customer")
 public class Customer {
 	
-	@Id 
+	@Id
 	@Column(name="ID", nullable=false, unique=true, length=11)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long customerId;
 	
-	@PrimaryKeyJoinColumn @OneToOne(
+	@PrimaryKeyJoinColumn 
+	@OneToOne(
 			fetch = FetchType.LAZY,
-			cascade = {CascadeType.ALL},
 			optional = false)
 	private Account account;
 	

@@ -1,10 +1,26 @@
 package com.rsvier.workshop2.customer;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Address {
 
+	@Id
+	@Column(name = "id",
+			nullable = false,
+			unique = true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
-	
-	private Customer customer;
+	@ManyToMany
+	private Set<Customer> customer = new HashSet<Customer>();
 	private String street;
 	private int houseNumber;
 	private String houseNumberAddition;
@@ -42,11 +58,11 @@ public class Address {
 		this.addressId = addressId;
 	}
 	
-	public Customer getCustomerAtAddress() {
+	public Set<Customer> getCustomerAtAddress() {
 		return customer;
 	}
 	
-	public void setCustomerAtAddress(Customer customer) {
+	public void setCustomerAtAddress(Set<Customer> customer) {
 		this.customer = customer;
 	}
 
