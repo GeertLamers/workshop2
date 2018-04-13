@@ -64,7 +64,6 @@ public class UserCreationController extends Controller {
 				switch (customerProperty) {
 				case "username":
 					username = userInput;
-					
 					break;
 				case "password":
 					PasswordHasher passwordHasher = new PasswordHasher();

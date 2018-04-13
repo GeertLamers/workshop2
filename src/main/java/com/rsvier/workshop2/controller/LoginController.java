@@ -22,6 +22,7 @@ public class LoginController extends Controller {
 				nextController = new UserCreationController(new UserCreationView());
 				return;
 			}
+			nextController = new AdminMainMenuController(new AdminMainMenuView());
 			username = userInput[0];
 			String password = userInput[1];
 			if (username.equals("Piet")) break;
