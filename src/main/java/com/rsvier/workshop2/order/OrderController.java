@@ -20,10 +20,6 @@ import com.rsvier.workshop2.view.AdminMainMenuView;
 public class OrderController extends Controller {
 	
 	private OrderView currentMenu;
-	private OrderDAO orderModel;
-	private OrderLineItemDAO orderLineModel;
-	private CustomerDAO customerModel;
-	private AddressDAO addressModel;
 	private ProductDAOImpl productModel;
 	private Scanner input = new Scanner(System.in);
 	

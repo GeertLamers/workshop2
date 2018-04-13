@@ -25,14 +25,14 @@ import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 
 @Entity
-@NamedQueries ({
+/*@NamedQueries ({
 	@NamedQuery(name = "Order.findAllByCustomer",
 				query = "SELECT o FROM Order o WHERE o.customer.getCustomerId() = :name)"),
 	@NamedQuery(name = "Order.findCompletedOnly",
 				query = "SELECT o FROM Order o WHERE o.shipped = true)"),
 	@NamedQuery(name = "Order.findPendingOnly",
 				query = "SELECT o FROM Order o WHERE o.shipped = false)")
-})
+})*/
 @Table (name = "\"order\"")
 public class Order {
 	
