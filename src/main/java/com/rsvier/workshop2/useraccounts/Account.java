@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Account {
 	
-	public enum UserType {
+	public enum OwnerType {
 		ADMIN,
 		EMPLOYEE,
 		CUSTOMER
@@ -20,7 +20,7 @@ public class Account {
 	protected String encryptedPassword;
 	@Enumerated(EnumType.STRING)
 	@Column(length = 8)
-	protected UserType userType;
+	protected OwnerType ownerType;
 	private String salt;
 		
 	protected Account() {
@@ -56,12 +56,12 @@ public class Account {
 		this.username = username;
 	}
 	
-	public UserType getUserType () {
-		return this.userType;
+	public OwnerType getOwnerType () {
+		return this.ownerType;
 	}
 	
-	public void setUserType (UserType userType) {
-		this.userType = userType;
+	public void setUserType (OwnerType ownerType) {
+		this.ownerType = ownerType;
 	}
 	
 	public void setSalt (String salt) {
