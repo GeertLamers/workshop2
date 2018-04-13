@@ -15,7 +15,7 @@ public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 	}
 
 	@Override
-	public List<Customer> findALl() {
+	public List<Customer> findAll() {
         CriteriaQuery<Customer> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
         criteriaQuery.select(criteriaQuery.from(entityClass));
         return em.createQuery(criteriaQuery).getResultList();

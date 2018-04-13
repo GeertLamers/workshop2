@@ -12,7 +12,7 @@ public class AddressDAOImpl extends GenericDAOImpl<Address> {
 	}
 
 	@Override
-	public List<Address> findALl() {
+	public List<Address> findAll() {
         CriteriaQuery<Address> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
         criteriaQuery.select(criteriaQuery.from(entityClass));
         return em.createQuery(criteriaQuery).getResultList();

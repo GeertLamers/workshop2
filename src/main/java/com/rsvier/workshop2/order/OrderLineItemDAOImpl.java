@@ -15,7 +15,7 @@ public class OrderLineItemDAOImpl extends GenericDAOImpl<OrderLineItem> {
 	}
 
 	@Override
-	public List<OrderLineItem> findALl() {
+	public List<OrderLineItem> findAll() {
         CriteriaQuery<OrderLineItem> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
         criteriaQuery.select(criteriaQuery.from(entityClass));
         return em.createQuery(criteriaQuery).getResultList();
