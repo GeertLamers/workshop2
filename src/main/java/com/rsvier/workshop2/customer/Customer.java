@@ -38,9 +38,9 @@ public class Customer {
 	private String phoneNumber;
 	private boolean customerActive;
 	
-	@Basic
+	/*@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdOnDate;
+	private Date createdOnDate;*/
 
 	protected Customer() {
 	}
@@ -50,14 +50,15 @@ public class Customer {
 					String lastName,
 					String lastNamePreposition,
 					String email,
-					String phoneNumber,
-					Date createdOnDate) {
+					String phoneNumber/*,
+					Date createdOnDate*/) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.lastNamePreposition = lastNamePreposition;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.createdOnDate = createdOnDate;
+		//this.createdOnDate = createdOnDate;
+		this.customerActive = false;
 	}
 	
 	public Account getAccount() {
@@ -68,13 +69,13 @@ public class Customer {
 		this.account = account;
 	}
 	
-	public Date getCreatedOnDate() {
+	/*public Date getCreatedOnDate() {
 		return createdOnDate;
 	}
 	
 	public void setCreatedOnDate(Date createdOnDate) {
 		this.createdOnDate = createdOnDate;
-	}
+	}*/
 
 	public Long getCustomerId() {
 		return customerId;

@@ -90,7 +90,7 @@ public class UserCreationController extends Controller {
 					System.exit(0);
 				}
 			}
-			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber, creationDate);
+			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber/*, creationDate*/);
 			Account newAccount = new Account(username, password, salt);
 			accountModel = new AccountDAOImpl(entityManager, Account.class);
 			accountModel.create(newAccount);
