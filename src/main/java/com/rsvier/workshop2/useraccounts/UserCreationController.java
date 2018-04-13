@@ -21,7 +21,6 @@ import com.rsvier.workshop2.view.LoginMenuView;
 
 public class UserCreationController extends Controller {
 	
-	private EntityManager entityManager = HibernateService.getEntityManager();
 	private CustomerDAOImpl customerModel;
 	private AccountDAOImpl accountModel;
 	

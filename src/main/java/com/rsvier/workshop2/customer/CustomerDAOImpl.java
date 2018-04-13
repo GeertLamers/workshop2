@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 
-	protected CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {
+	public CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {
 		super(em, entityClass);
 	}
 
