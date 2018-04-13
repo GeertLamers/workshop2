@@ -1,6 +1,5 @@
 package com.rsvier.workshop2.controller;
 
-import java.util.HashMap;
 
 import com.rsvier.workshop2.customer.CustomerController;
 import com.rsvier.workshop2.customer.CustomerView;
@@ -8,22 +7,29 @@ import com.rsvier.workshop2.order.OrderController;
 import com.rsvier.workshop2.order.OrderView;
 import com.rsvier.workshop2.product.ProductController;
 import com.rsvier.workshop2.product.ProductView;
+import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.view.*;
 
 public class UserMainMenuController extends Controller {
 	
-	public UserMainMenuController(View currentMenu) {
+	public UserMainMenuController(View<UserMainMenuView> currentMenu) {
 		this.currentMenu = currentMenu;
 	}
 
 	@Override
 	public void runView() {
-		menuOptions = new HashMap<Integer, Controller>();
-		menuOptions.put(1, new CustomerController(new CustomerView()));
-		menuOptions.put(2, new ProductController(new ProductView()));
-		menuOptions.put(3, new OrderController(new OrderView()));
-		
 		currentMenu.displayMenu();
-		nextController = menuOptions.get(currentMenu.asksUserForMenuChoice(menuOptions));
+		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
+		switch (userMenuChoice) {
+			// User chose to manage customers
+			case 1: nextController = new CustomerController(new CustomerView());
+					break;
+			// User chose to manage products
+			case 2: nextController = new ProductController(new ProductView()) ;
+					break;
+			// User chose to manage orders
+			case 3: nextController = new OrderController(new OrderView());
+					break;
+		}
 	}
 }

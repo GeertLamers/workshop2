@@ -1,7 +1,5 @@
 package com.rsvier.workshop2.controller;
 
-import java.util.*;
-
 import com.rsvier.workshop2.customer.CustomerController;
 import com.rsvier.workshop2.customer.CustomerView;
 import com.rsvier.workshop2.order.OrderController;
@@ -14,19 +12,27 @@ import com.rsvier.workshop2.view.*;
 
 public class AdminMainMenuController extends Controller {
 	
-	public AdminMainMenuController(View currentMenu) {
+	public AdminMainMenuController(View<AdminMainMenuView> currentMenu) {
 		this.currentMenu = currentMenu;
 	}
 
 	@Override
 	public void runView() {
-		menuOptions = new HashMap<Integer, Controller>();
-		menuOptions.put(1, new AdminUserOverviewController(new AdminUserOverview()));
-		menuOptions.put(2, new CustomerController(new CustomerView()));
-		menuOptions.put(3, new ProductController(new ProductView()));
-		menuOptions.put(4, new OrderController(new OrderView()));
-		
 		currentMenu.displayMenu();
-		nextController = menuOptions.get(currentMenu.asksUserForMenuChoice(menuOptions));
+		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
+		switch (userMenuChoice) {
+			// User chose to manage accounts
+			case 1: nextController = new AdminUserOverviewController(new AdminUserOverview());
+					break;
+			// User chose to manage customers
+			case 2: nextController = new CustomerController(new CustomerView());
+					break;
+			// User chose to manage products
+			case 3: nextController = new ProductController(new ProductView()) ;
+					break;
+			// User chose to manage orders
+			case 4: nextController = new OrderController(new OrderView());
+					break;
+		}
 	}
 }
