@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,13 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Address {
 
+	// Addresses can be either of the billing or delivery type
+	
+	private enum AddressType {
+		BILLING,
+		DELIVERY
+	}
+	
 	@Id
 	@Column(name = "id",
 			nullable = false,
@@ -26,7 +35,9 @@ public class Address {
 	private String houseNumberAddition;
 	private String postalCode;
 	private String city;
-	private String addressType;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 8)
+	private AddressType addressType;
 	private boolean active;
 	
 	public Address() {
@@ -106,11 +117,11 @@ public class Address {
 		this.city = city;
 	}
 
-	public String getAddressType() {
+	public AddressType getAddressType() {
 		return addressType;
 	}
 
-	public void setAddressType(String addressType) {
+	public void setAddressType(AddressType addressType) {
 		this.addressType = addressType;
 	}
 
