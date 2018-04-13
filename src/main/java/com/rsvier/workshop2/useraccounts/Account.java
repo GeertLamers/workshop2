@@ -6,13 +6,21 @@ import javax.persistence.*;
 @Entity
 public class Account {
 	
+	public enum UserType {
+		ADMIN,
+		EMPLOYEE,
+		CUSTOMER
+	}
+	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	protected long customerId;
 	
 	protected String username;
 	protected String encryptedPassword;
-	protected String userType;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 8)
+	protected UserType userType;
 	private String salt;
 		
 	protected Account() {
@@ -48,11 +56,11 @@ public class Account {
 		this.username = username;
 	}
 	
-	public String getUserType () {
+	public UserType getUserType () {
 		return this.userType;
 	}
 	
-	public void setUserType (String userType) {
+	public void setUserType (UserType userType) {
 		this.userType = userType;
 	}
 	
