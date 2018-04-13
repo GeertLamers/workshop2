@@ -6,8 +6,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -36,7 +34,6 @@ public class Customer {
 	private String lastNamePreposition;
 	private String email;
 	private String phoneNumber;
-	private boolean customerActive;
 	
 	/*@Basic
 	@Temporal(TemporalType.TIMESTAMP)
@@ -58,7 +55,6 @@ public class Customer {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		//this.createdOnDate = createdOnDate;
-		this.customerActive = false;
 	}
 	
 	public Account getAccount() {
@@ -124,20 +120,11 @@ public class Customer {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public boolean isCustomerActive() {
-		return customerActive;
-	}
-
-	public void setCustomerActive(boolean customerActive) {
-		this.customerActive = customerActive;
-	}
 	
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", lastNamePreposition=" + lastNamePreposition + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", customerActive=" + customerActive + "]";
+				+ ", lastNamePreposition=" + lastNamePreposition + ", email=" + email + ", phoneNumber=" + phoneNumber + "]";
 	}
 
 	@Override
