@@ -3,6 +3,7 @@ package com.rsvier.workshop2.customer;
 public class Address {
 
 	private Long addressId;
+	
 	private Customer customer;
 	private String street;
 	private int houseNumber;

@@ -1,11 +1,28 @@
 package com.rsvier.workshop2.order;
 
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.rsvier.workshop2.product.Product;
 
+@Embeddable
+@Table(name = "order_line")
 public class OrderLineItem {
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "orderID",
+				referencedColumnName = "id",
+				nullable = false)
 	private Order parentOrder;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "productID",
+				referencedColumnName = "id",
+				nullable = false)
 	private Product product;
+	
 	private int productQuantity;
 	
 	public OrderLineItem() {
