@@ -19,17 +19,26 @@ public class UserMainMenuController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
-		switch (userMenuChoice) {
-			// User chose to manage customers
-			case 1: nextController = new CustomerController(new CustomerView());
-					break;
-			// User chose to manage products
-			case 2: nextController = new ProductController(new ProductView()) ;
-					break;
-			// User chose to manage orders
-			case 3: nextController = new OrderController(new OrderView());
-					break;
+		boolean validChoice = false;
+		while (!validChoice) {
+			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
+			// If input was 0 the View.askUserForInput method handles elegant program exit
+			switch(userMenuChoice) {
+				// User chose to manage customers
+				case 1: nextController = new CustomerController(new CustomerView());
+						validChoice = true;
+						break;
+				// User chose to manage products
+				case 2: nextController = new ProductController(new ProductView()) ;
+						validChoice = true;
+						break;
+				// User chose to manage orders
+				case 3: nextController = new OrderController(new OrderView());
+						validChoice = true;
+						break;
+				default: System.out.println("Not a valid option.");
+						break;
+			}
 		}
 	}
 }
