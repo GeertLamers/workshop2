@@ -15,6 +15,12 @@
   	</dependency>
   	
   	<dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-hikaricp</artifactId>
+      <version>5.2.15.Final</version>
+    </dependency>
+  	
+  	<dependency>
   		<groupId>mysql</groupId>
   		<artifactId>mysql-connector-java</artifactId>
   		<version>6.0.6</version>
