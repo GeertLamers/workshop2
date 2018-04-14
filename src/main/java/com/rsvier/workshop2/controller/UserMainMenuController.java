@@ -19,7 +19,7 @@ public class UserMainMenuController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
+		int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 		switch (userMenuChoice) {
 			// User chose to manage customers
 			case 1: nextController = new CustomerController(new CustomerView());

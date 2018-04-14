@@ -21,6 +21,7 @@ public class AdminMainMenuView extends View {
 		System.out.print("1. Manage user accounts \n" +
 						 "2. Manage customers \n" +
 						 "3. Manage products \n"+
-						 "4. Manage orders \n\n");
+						 "4. Manage orders \n" +
+						 "0. Exit program \n\n");
 	}
 }
