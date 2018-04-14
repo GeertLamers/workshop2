@@ -5,8 +5,6 @@ import java.util.*;
 public abstract class View<K> { //parent version
 	protected int possibleUserChoice;
 	protected int menuChoice;
-	protected ArrayList<Integer> possibleMenuOptions;
-	protected HashMap<Integer, View> menuOptions;
 	protected boolean validUserChoice;
 	protected View userMenuChoice;
 	
@@ -15,35 +13,6 @@ public abstract class View<K> { //parent version
 	public View() {} //add HashMap info here and load the possibleMenuOptions
 	public View getUserMenuChoice() {
 		return userMenuChoice;
-	}
-	
-	public int asksUserForMenuChoice(HashMap<Integer, K> allowedUserChoices) {
-		int userInput = -1;
-		boolean validInput = false; // Don't allow the user to exit unless he enters something valid
-		while (!validInput) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Please select an option: ");
-			try{
-				userInput = Integer.parseInt(br.readLine());
-				if (userInput == 0) {
-					System.out.println("You are about to exit the program. Are you certain?");
-					if (asksUserYesOrNo()) {
-					System.out.println("Program is closing..");
-					System.exit(0); // 0 is always exit
-					}
-				}
-				if (allowedUserChoices.containsKey(userInput)) { // If it's null then it's not a valid choice
-				validInput = true;
-				}
-				else {
-					System.out.println("You entered an invalid input");
-				}
-			}
-			catch(Exception inputIsNotAnIntError){
-					System.out.println("You entered an invalid input"); 
-			}
-		}
-		return userInput;
 	}
 	
 	public String asksUserForUserChoice(ArrayList<String> listOfUsers) {
@@ -78,14 +47,14 @@ public abstract class View<K> { //parent version
 	
 	public boolean asksUserYesOrNo() {
 		String userInput = "";
-		boolean validInput = false; // Don't allow the user to exit unless he enters something valid
+		boolean validInput = false; // Don't allow the user to exit unless he/she enters something valid
 		while (!validInput) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			try {
 				while (true) {
 					System.out.println("Please enter \"Y\" or \"N\"");
 					userInput = br.readLine();
-					userInput = userInput.toLowerCase();
+					userInput = userInput.trim().toLowerCase();
 					switch (userInput) {
 					case "y":
 						return true;
@@ -101,15 +70,16 @@ public abstract class View<K> { //parent version
 		return false; // This point should not be reachable
 	}
 	
-	public String askUserForInput() {
-		System.out.print("\n Please enter a choice:");
+	public String askUserForMenuChoice() {
+		System.out.print("Please enter a choice:");
 		String userInput = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			userInput = br.readLine();
+			userInput = userInput.trim();
 			if (userInput.equals("0")) {
 				System.out.println("You are about to exit the program. Are you certain?");
-				if (asksUserYesOrNo()) {
+				if (asksUserYesOrNo()) { // user entered yes
 					System.out.println("Program is closing..");
 					System.exit(0); // 0 is always exit
 				}
