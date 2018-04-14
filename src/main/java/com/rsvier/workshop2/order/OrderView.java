@@ -1,8 +1,8 @@
 package com.rsvier.workshop2.order;
 
 import java.util.ArrayList;
+import java.util.Set;
 
-import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.view.View;
 
 public class OrderView extends View {
@@ -60,7 +60,7 @@ public class OrderView extends View {
 		}
 	}
 	
-	public void displayOrderWithItemDetails(Order order, ArrayList<OrderLineItem> orderItemList) {
+	public void displayOrderWithItemDetails(Order order) {
 		// Displays the overview-details of the order
 		displayOrderPropertiesHeader();
 		displayDivider();
@@ -68,7 +68,7 @@ public class OrderView extends View {
 		// Displays what items the order contains
 		displayOrderItemListHeader();
 		displayDivider();
-		displayOrderItemListDetails(orderItemList);
+		displayOrderItemListDetails(order.getItemsInOrder());
 	}
 	
 	public void displayOrderItemListHeader() {
@@ -78,7 +78,7 @@ public class OrderView extends View {
 				   "price per product");
 	}
 	
-	public void displayOrderItemListDetails(ArrayList<OrderLineItem> listOfItems) {
+	public void displayOrderItemListDetails(Set<OrderLineItem> listOfItems) {
 		for (OrderLineItem item : listOfItems) {
 			System.out.printf("%-30s %-8d %-10s \n",
 					   item.getProduct().getName(),

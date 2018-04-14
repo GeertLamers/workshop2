@@ -6,20 +6,17 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
 
 import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
@@ -44,13 +41,12 @@ public class Order {
 	private Long orderId;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "customerID")
 	private Customer customer;
     
-	@ElementCollection
-	@OrderColumn(name = "OrderLineItem")
-	@OneToMany(fetch = FetchType.EAGER,
+	@OneToMany(mappedBy = "parentOrder",
+			   fetch = FetchType.EAGER,
 			   cascade = CascadeType.ALL)
+	@Column(nullable = false)
 	private Set<OrderLineItem> itemsInOrder;
 	
 	private BigDecimal orderPriceTotal;
@@ -58,7 +54,6 @@ public class Order {
 	private boolean shipped;
 	
 	@OneToOne(optional = false)
-	@JoinColumn(name = "id")
 	private Address shippedTo;
 	
 	private boolean completed;
