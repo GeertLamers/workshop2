@@ -46,7 +46,6 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 				allOfTheUsers.add(resultSet.getObject(1) + "");
 			}
 			logger.info("List of usernames retrieved");
-			if (!Main.hikariEnabled) connection.close(); // necessary for the JDBC
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

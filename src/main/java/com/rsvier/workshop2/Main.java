@@ -12,7 +12,7 @@ public class Main {
 
 		System.out.println("Initialize database?");
 		if (new UserMainMenuView().asksUserYesOrNo()) {
-			if (new DatabaseBuilderDAOImpl().initializeMYSQLDatabase()) {
+			if (new DatabaseBuilderDAOImpl().createMYSQLDatabase()) {
 				System.out.println("Database initalized");
 			}
 			else {

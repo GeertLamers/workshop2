@@ -1,79 +1,63 @@
 package com.rsvier.workshop2.useraccounts;
 
-import java.util.*;
+import java.util.ArrayList;
 
+import javax.persistence.EntityManager;
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
-import com.rsvier.workshop2.model.*;
+import com.rsvier.workshop2.customer.Customer;
+import com.rsvier.workshop2.customer.CustomerDAOImpl;
+import com.rsvier.workshop2.product.Product;
+import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.view.*;
 
 public class AdminUserOverviewController extends Controller{
 	private AdminUserOverview currentMenu;
+	private EntityManager entityManager = HibernateService.getEntityManager();
+	private AccountDAOImpl accountModel;
 	
 	public AdminUserOverviewController (AdminUserOverview theView) {
 		this.currentMenu = theView;
-		menuOptions = new HashMap<>();
-		menuOptions.put(9, new AdminMainMenuController(new AdminMainMenuView()));
-		menuOptions.put(1, null);
-		menuOptions.put(2, null);
-		menuOptions.put(3, null);
 	}
 
 	@Override
 	public void runView() {
-		boolean userWantsToStay = true;
-		ArrayList<String> allOfTheUsernames = new AccountDAOImpl().getUsernameList(); // load the users from the database
-		while (userWantsToStay) {
-			currentMenu.displayMenu();
-			int userMenuChoice = currentMenu.asksUserForMenuChoice(menuOptions);
+		currentMenu.displayMenu();
+		currentMenu.displayMenuOptions();
+		boolean validChoice = false;
+		while (!validChoice) {
+			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch (userMenuChoice) {
-			case 1: // Admin wants to view all users
-				currentMenu.printAllUsers(allOfTheUsernames); // show all of the users
-				break;
-			case 2: // Admin wants to delete a user
-				String deleteThisUser = currentMenu.asksUserForUserChoice(allOfTheUsernames); // asks Admin to select a username to delete
-				if (deleteThisUser.equals("9")) break; // 9 = cancel
-				System.out.println("Delete this user: " + deleteThisUser + "?");
-				boolean yesOrNo = currentMenu.asksUserYesOrNo();
-				if (yesOrNo) {
-					boolean success = new AccountDAOImpl().deleteAccount(deleteThisUser); // Deletes the user
-					if (success) {
-						System.out.println("User successfully deleted");
-						allOfTheUsernames = new AccountDAOImpl().getUsernameList(); // Re-load the users from the database
-					}
-					else {
-						System.out.println("Failed to delete user");
-					}
+				case 1: showAllUsers();
+						validChoice = true;
+						break;
+				case 2: deleteUser();
+						validChoice = true;
+						break;
+				case 3: changeUser();
+						validChoice = true;
+						break;
+				case 9: // Returns to main menu
+						validChoice = true;
+						nextController = new AdminMainMenuController(new AdminMainMenuView());
+						break;
+				default: System.out.println("Not a valid option.");
+						break;
 				}
-				break;
-			case 3: // Admin wants to change the account privileges of a user
-				String changeThisUser = currentMenu.asksUserForUserChoice(allOfTheUsernames);
-				if (changeThisUser.equals("9")) break; // 9 = cancel
-				int userID = new AccountDAOImpl().getUserID(changeThisUser);
-				boolean isAdmin = new AccountDAOImpl().isAdmin(userID);
-				if (isAdmin) {
-					System.out.println("This user is already an admin");
-					break;
-				}
-				System.out.println("Upgrade this user to an admin: " + changeThisUser + "?");
-				yesOrNo = currentMenu.asksUserYesOrNo();
-				if (yesOrNo) {
-					boolean success = new AccountDAOImpl().upgradeAccount(changeThisUser); // Upgrades the user
-					if (success) {
-						System.out.println("User permission successfully changed");
-						allOfTheUsernames = new AccountDAOImpl().getUsernameList(); // Re-load the users from the database
-					}
-					else {
-						System.out.println("Failed to change the user.");
-					}
-				}
-				break;
-			case 9: // Return to main menu
-				nextController = menuOptions.get(9);
-				nextController.setUser(user);
-				userWantsToStay = false;
-				break;
-			}
 		}
+	}
+	
+	private void changeUser() {
+	}
+
+	private void deleteUser() {
+	}
+
+	private void showAllUsers() {
+		accountModel = new AccountDAOImpl(entityManager, Account.class);
+		ArrayList<Account> allUsers = (ArrayList<Account>) accountModel.findAll();
+		currentMenu.displayLongDivider();
+		currentMenu.printAllUsers(allUsers);
+		currentMenu.pressEnterToReturn();
 	}
 }

@@ -34,9 +34,9 @@ public class AdminUserOverview extends View {
 				 "\n");
 	}
 
-	public void printAllUsers(ArrayList<String> allOfTheUsers) {
-		for (String username : allOfTheUsers) {
-			System.out.println(username);
+	public void printAllUsers(ArrayList<Account> allOfTheUsers) {
+		for (Account user : allOfTheUsers) {
+			System.out.println(user.getUsername());
 		}
 	}
 }

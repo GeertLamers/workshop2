@@ -9,20 +9,49 @@ import java.io.IOException;
 import java.io.Reader;
 
 import com.ibatis.common.jdbc.ScriptRunner;
+import com.rsvier.workshop2.controller.Controller;
+import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAOImpl;
+import com.rsvier.workshop2.useraccounts.Account;
+import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
 
-public class DatabaseBuilderDAOImpl implements DatabaseBuilderDAO {
+public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilderDAO {
 	
 	private Logger logger = Logger.getLogger(CustomerDAOImpl.class.getName());
+	private CustomerDAOImpl customerModel;
+	private AccountDAOImpl accountModel;
 
-	@Override
 	public boolean isDatabaseInitialized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public boolean initializeMYSQLDatabase() {
+	public boolean createMYSQLDatabase () {
+		String username = "A";
+		String password = "A";
+		String salt = "A";
+		String firstName = "A";
+		String lastName = "A";
+		String lastNamePreposition = "";
+		String email = "A";
+		String phoneNumber = "0";
+		for (Character append = 'A'; append <= 'Z' ; append++) {
+			username = append.toString();
+			password =  append.toString();
+			firstName = append.toString();
+			lastName = append.toString();
+			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber/*, creationDate*/);
+			Account newAccount = new Account(username, password, salt);
+			accountModel = new AccountDAOImpl(entityManager, Account.class);
+			accountModel.create(newAccount);
+			newCustomer.setCustomerId(newAccount.getCustomerId());
+			newCustomer.setAccount(newAccount);
+			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+			customerModel.create(newCustomer);
+		}
+		return true;
+	}
+	
+	public boolean initializeMYSQLDatabase() { // old method
 			String aSQLScriptFilePath = "create.sql";
 			Connection conn = null;
 			Reader reader = null;
@@ -66,5 +95,10 @@ public class DatabaseBuilderDAOImpl implements DatabaseBuilderDAO {
 				}
 			}
 			return success;
+	}
+	@Override
+	public void runView() {
+		// TODO Auto-generated method stub
+		
 	}
 }
