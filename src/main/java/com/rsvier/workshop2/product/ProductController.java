@@ -8,17 +8,16 @@ import javax.persistence.EntityManager;
 
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
-import com.rsvier.workshop2.controller.UserMainMenuController;
-import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class ProductController extends Controller {
 	
-	private ProductDAOImpl productModel;
-	private Scanner input = new Scanner(System.in);
 	private ProductView currentMenu;
+	private ProductDAOImpl productModel;
+	private EntityManager entityManager = HibernateService.getEntityManager();
+	private Scanner input = new Scanner(System.in);
 	
 	public ProductController(ProductView theView) {
 		this.currentMenu = theView;
@@ -27,30 +26,32 @@ public class ProductController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
-		switch (userMenuChoice) {
-		case 1: findAllProducts();
-				break;
-		case 2: findProduct();
-				break;
-		case 3: addNewProduct();
-				break;
-		case 4: updateProduct();
-				break;
-		case 5: deleteProduct();
-				break;
-		case 9: // Returns to main menu
-				if (user.isAdmin()) {
-					nextController = new AdminMainMenuController(new AdminMainMenuView());
-					nextController.setUser(user);
+		boolean validChoice = false;
+		while (!validChoice) {
+			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
+			switch (userMenuChoice) {
+				case 1: findAllProducts();
+						validChoice = true;
+						break;
+				case 2: findProduct();
+						validChoice = true;
+						break;
+				case 3: addNewProduct();
+						validChoice = true;
+						break;
+				case 4: updateProduct();
+						validChoice = true;
+						break;
+				case 5: deleteProduct();
+						validChoice = true;
+						break;
+				case 9: // Returns to main menu
+						validChoice = true;
+						nextController = new AdminMainMenuController(new AdminMainMenuView());
+						break;
+				default: System.out.println("Not a valid option.");
+						break;
 				}
-				else {
-					nextController = new UserMainMenuController(new UserMainMenuView());
-					nextController.setUser(user);
-				}
-				break;
-		default: System.out.println("Not a valid option.");
-				currentMenu.displayMenu();
 		}
 	}
 	
@@ -73,15 +74,10 @@ public class ProductController extends Controller {
 		
 		// TODO currently no findByName method due to GenericDAO implementation > fix when not lazy
 		currentMenu.displayCanFindByIdAndName();
-		String findThisProduct = currentMenu.askUserForInput();
-		if (Validator.isAnInt(findThisProduct)) {
-			// TODO Don't like using a Try-Catch here, improve later
-			try { // if user input was an integer
-				foundProduct = productModel.findById(Product.class, Long.valueOf(findThisProduct));
-			} catch (Exception ex) {
-				System.out.println("Could not find a product with that ID.");
-			}
-		}
+		Long findThisProduct = inputValidProductId();
+		
+		foundProduct = productModel.findById(Product.class, findThisProduct);
+
 		currentMenu.displayProductPropertiesHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayProductProperties(foundProduct);
