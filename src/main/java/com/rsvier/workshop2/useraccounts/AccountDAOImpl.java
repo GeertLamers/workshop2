@@ -2,6 +2,10 @@ package com.rsvier.workshop2.useraccounts;
 
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import com.rsvier.workshop2.utility.GenericDAOImpl;
 
 public class AccountDAOImpl extends GenericDAOImpl<Account> {
@@ -13,11 +17,15 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 	}
 	
 	public boolean login(String username, String password) {
-		if (username.equals("Onne") && password.equals("Hello")) { // to avoid the hashing
-			logger.info("User Onne detected");
-			return true;
-		}
-		Account userAccount = em.find(Account.class, username);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Account> criteria = builder.createQuery( Account.class );
+		Root<Account> personRoot = criteria.from( Account.class );
+		criteria.select( personRoot );
+		criteria.where( builder.equal( personRoot.get( Account_.username ),username ) );
+		Account userAccount = em.createQuery(criteria).getSingleResult();
+
+
 		if (userAccount.getEncryptedPassword().equals(password)) {
 			return true;
 		}
