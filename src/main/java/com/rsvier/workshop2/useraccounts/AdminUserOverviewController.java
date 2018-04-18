@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
-import com.rsvier.workshop2.customer.Customer;
-import com.rsvier.workshop2.customer.CustomerDAOImpl;
-import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.view.*;
 
