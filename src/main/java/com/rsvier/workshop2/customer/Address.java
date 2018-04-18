@@ -26,7 +26,6 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
 	@ManyToOne
-	@Column(nullable = false)
 	private Customer customer;
 	private String street;
 	private int houseNumber;
