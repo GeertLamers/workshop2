@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-
+	
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+		<file>debug.log</file>
+		
+		<encoder>
 			<Pattern>
 				%d{yyyy-MM-dd HH:mm:ss} %-5level %class %logger{30} - %msg%n
 			</Pattern>
 		</encoder>
-		</file>
+
 	</appender>
 	
-	<logger name="Testing" level="WARN" additivity="false">
-		<appender-ref ref="FILE" />
+	<logger name="com.zaxxer.hikari.pool.HikariPool">
+	    <level value="off"/>
 	</logger>
 	
-	<root level="ERROR">
+	<root level="DEBUG">
 		<appender-ref ref="FILE" />
 	</root>
 
