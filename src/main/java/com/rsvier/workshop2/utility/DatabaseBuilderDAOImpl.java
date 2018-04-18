@@ -14,6 +14,7 @@ import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAOImpl;
 import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
+import com.rsvier.workshop2.useraccounts.PasswordHasher;
 
 public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilderDAO {
 	
@@ -27,8 +28,13 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 	}
 	public boolean createMYSQLDatabase () {
 		// Our account
+		PasswordHasher passwordHasher = new PasswordHasher();
+		String bestPassword = "Hello";
+		String bestSalt = passwordHasher.generateSalt();
+		String bestEncryptedPassword = passwordHasher.makeSaltedPasswordHash(bestPassword, bestSalt);
+		
 		Customer bestCustomer = new Customer("Onne", "Geheim", "", "rsvier@rsvier.rsvier", "0123456789"/*, creationDate*/);
-		Account bestAccount = new Account("Onne", "Hello", "AOIFJEf123A");
+		Account bestAccount = new Account("Onne", bestEncryptedPassword, bestSalt);
 		accountModel = new AccountDAOImpl(entityManager, Account.class);
 		accountModel.create(bestAccount);
 		bestCustomer.setCustomerId(bestAccount.getCustomerId());
@@ -39,7 +45,8 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 		// Filler accounts
 		String username = "A";
 		String password = "A";
-		String salt = "A";
+		String salt = passwordHasher.generateSalt();
+		String encryptedPassword = passwordHasher.makeSaltedPasswordHash(password, salt);
 		String firstName = "A";
 		String lastName = "A";
 		String lastNamePreposition = "";
@@ -51,7 +58,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 			firstName = append.toString();
 			lastName = append.toString();
 			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber/*, creationDate*/);
-			Account newAccount = new Account(username, password, salt);
+			Account newAccount = new Account(username, encryptedPassword, salt);
 			accountModel = new AccountDAOImpl(entityManager, Account.class);
 			accountModel.create(newAccount);
 			newCustomer.setCustomerId(newAccount.getCustomerId());

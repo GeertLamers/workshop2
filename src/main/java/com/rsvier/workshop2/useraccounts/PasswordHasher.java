@@ -7,9 +7,9 @@ import java.security.SecureRandom;
 public class PasswordHasher {
 
 		    private SecureRandom random;
-		    /*private String password; // This does nothing?
+		    private String password;
 		    private String encryptedPass;
-		    private String encryptedTotal;*/
+		    private String encryptedTotal;
 
 		    public String generateSalt() {
 		        this.random = new SecureRandom();
@@ -18,11 +18,9 @@ public class PasswordHasher {
 		        return new String (bytes);
 		    }
 
-		    /*public String makeSaltedPasswordHash(String password) { // this does nothing?
-		        byte[] salt = generateSalt();
-		        String saltString = new String(salt);
+		    public String makeSaltedPasswordHash(String password) {
+		        String saltString = generateSalt();
 		        this.password = password + saltString;
-		        
 		        try {
 		            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 		            messageDigest.update(this.password.getBytes());
@@ -32,23 +30,23 @@ public class PasswordHasher {
 		            System.out.println(e);
 		        }
 		        return this.encryptedTotal;
-		    }*/
+		    }
 		    
 		    
 		    public String makeSaltedPasswordHash(String password, String salt) {
-		    	String encryptedTotal = "";
-		        /*try {
+		    	String encryptedTotal = password + salt;
+		    	String encryptedPassword = "";
+		        try {
 		            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-		            messageDigest.update(password.getBytes());
-		            String encryptedPassword = new String(messageDigest.digest());*/
-		            encryptedTotal = password + salt;
-		        /*} catch (NoSuchAlgorithmException e) {
+		            messageDigest.update(encryptedTotal.getBytes());
+		            encryptedPassword = new String(messageDigest.digest());
+		        } catch (NoSuchAlgorithmException e) {
 		            System.out.println(e);
-		        }*/
-		        return encryptedTotal;
+		        }
+		        return encryptedPassword;
 		    }
 
-		    /*public String hasher(String password) { // This does nothing?
+		    public String hasher(String password) {
 		        this.password = password;
 		        try {
 		            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
@@ -58,6 +56,6 @@ public class PasswordHasher {
 		            System.out.println(e);
 		        }
 		        return this.encryptedPass;
-		    }*/
+		    }
 			
 }
