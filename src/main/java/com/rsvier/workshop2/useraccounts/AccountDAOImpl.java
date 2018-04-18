@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.NoResultException;
 
 import com.rsvier.workshop2.utility.GenericDAOImpl;
 
@@ -18,14 +19,17 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 	
 	public boolean login(String username, String password) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		
-		CriteriaQuery<Account> criteria = builder.createQuery( Account.class );
-		Root<Account> personRoot = criteria.from( Account.class );
-		criteria.select( personRoot );
-		criteria.where( builder.equal( personRoot.get( Account_.username ),username ) );
-		Account userAccount = em.createQuery(criteria).getSingleResult();
-
-
+		Account userAccount = null;
+		try {
+			CriteriaQuery<Account> criteria = builder.createQuery( Account.class );
+			Root<Account> personRoot = criteria.from( Account.class );
+			criteria.select( personRoot );
+			criteria.where( builder.equal( personRoot.get( Account_.username ),username ) );
+			userAccount = em.createQuery(criteria).getSingleResult();
+		}
+		catch (NoResultException noAccountFound) {
+			return false;
+		}
 		if (userAccount.getEncryptedPassword().equals(password)) {
 			return true;
 		}
