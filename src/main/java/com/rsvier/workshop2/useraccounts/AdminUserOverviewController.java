@@ -26,13 +26,13 @@ public class AdminUserOverviewController extends Controller{
 			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch (userMenuChoice) {
 				case 1: showAllUsers();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 2: deleteUser();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 3: changeUser();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 9: // Returns to main menu
 						validChoice = true;
@@ -55,6 +55,5 @@ public class AdminUserOverviewController extends Controller{
 		ArrayList<Account> allUsers = (ArrayList<Account>) accountModel.findAll();
 		currentMenu.displayLongDivider();
 		currentMenu.printAllUsers(allUsers);
-		currentMenu.pressEnterToReturn();
 	}
 }
