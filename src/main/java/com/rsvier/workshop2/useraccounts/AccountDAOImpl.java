@@ -30,7 +30,7 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 		catch (NoResultException noAccountFound) {
 			return false;
 		}
-		if (userAccount.getEncryptedPassword().equals(password)) {
+		if (userAccount.getEncryptedPassword().equals(new PasswordHasher().makeSaltedPasswordHash(password, userAccount.getSalt()))) {
 			return true;
 		}
 		return false;
