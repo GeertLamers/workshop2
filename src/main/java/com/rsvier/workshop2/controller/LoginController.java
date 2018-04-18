@@ -25,7 +25,6 @@ public class LoginController extends Controller {
 			nextController = new AdminMainMenuController(new AdminMainMenuView());
 			username = userInput[0];
 			String password = userInput[1];
-			if (username.equals("Piet")) break;
 			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) break;
 			System.out.println("Incorrect username or password. Please try again or press 0 to exit.");
 

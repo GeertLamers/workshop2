@@ -26,6 +26,17 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 		return false;
 	}
 	public boolean createMYSQLDatabase () {
+		// Our account
+		//Customer bestCustomer = new Customer("Onne", "Geheim", "", "rsvier@rsvier.rsvier", "0123456789"/*, creationDate*/);
+		/*Account bestAccount = new Account("Onne", "Hello", "AOIFJEf123A");
+		accountModel = new AccountDAOImpl(entityManager, Account.class);
+		accountModel.create(bestAccount);
+		newCustomer.setCustomerId(bestAccount.getCustomerId());
+		newCustomer.setAccount(bestAccount);
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+		customerModel.create(bestCustomer); */
+		
+		// Filler accounts
 		String username = "A";
 		String password = "A";
 		String salt = "A";
