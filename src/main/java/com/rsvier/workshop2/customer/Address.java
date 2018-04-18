@@ -1,8 +1,5 @@
 package com.rsvier.workshop2.customer;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,14 +7,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Address {
 
 	// Addresses can be either of the billing or delivery type
 	
-	private enum AddressType {
+	enum AddressType {
 		BILLING,
 		DELIVERY
 	}
@@ -28,10 +25,12 @@ public class Address {
 			unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
-	@ManyToMany
-	private Set<Customer> customer = new HashSet<Customer>();
+	@ManyToOne
+	@Column(nullable = false)
+	private Customer customer;
 	private String street;
 	private int houseNumber;
+	@Column(nullable = true)
 	private String houseNumberAddition;
 	private String postalCode;
 	private String city;
@@ -69,11 +68,11 @@ public class Address {
 		this.addressId = addressId;
 	}
 	
-	public Set<Customer> getCustomerAtAddress() {
+	public Customer getCustomerAtAddress() {
 		return customer;
 	}
 	
-	public void setCustomerAtAddress(Set<Customer> customer) {
+	public void setCustomerAtAddress(Customer customer) {
 		this.customer = customer;
 	}
 
