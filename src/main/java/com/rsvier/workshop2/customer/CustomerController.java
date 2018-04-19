@@ -39,7 +39,7 @@ public class CustomerController extends Controller {
 		case 6: deleteCustomer();
 				break;
 		case 9: // Returns to main menu
-				if (loggedInUser.getOwnerType().equals("ADMIN") {
+				if (loggedInUser.getOwnerType().equals("ADMIN")) {
 					nextController = new AdminMainMenuController(new AdminMainMenuView());
 				}
 				else {
