@@ -12,6 +12,9 @@ public class CustomerView extends View {
 	
 	@Override
 	public void displayMenu() {
+		displayMenuHeader();
+		displayDivider();
+		displayMenuOptions();
 	}
 	
 	public void displayMenuHeader() {
@@ -20,17 +23,18 @@ public class CustomerView extends View {
 	
 	public void displayMenuOptions() {
 		System.out.print("1. View customer list \n" +
-						 "2. Find a customer" +
+						 "2. Find a customer \n" +
 						 "3. Add new customer \n" +
 						 "4. Update customer details \n" +
-						 "5. Delete customer \n" +
+						 "5. Update customer address(es) \n" +
+						 "6. Delete customer \n" +
 						 "9. Return to main menu \n" +
 						 "0. Exit program \n" +
 						 "\n");
 	}
 	
 	public void displayCustomerDetailsHeader() {
-		System.out.printf("%-3d %-10s %-5s %-10s %-15s %-10s \n",
+		System.out.printf("%-3s %-20s %-15s %-20s %-25s %-20s \n",
 						   "id",
 						   "last name",
 						   "preposition",
@@ -40,7 +44,7 @@ public class CustomerView extends View {
 	}
 	
 	public void displayCustomerDetails(Customer customer) {
-		System.out.printf("%-3d %-10s %-5s %-10s %-15s %-10s \\n",
+		System.out.printf("%-3d %-20s %-15s %-20s %-25s %-20s \n",
 						  customer.getCustomerId(),
 						  customer.getLastName(),
 						  customer.getLastNamePreposition(),
@@ -55,13 +59,13 @@ public class CustomerView extends View {
 		}
 	}
 	
-	public void displayCustomerUpdateMenu() {
+	public void displayUpdateMenu() {
 		System.out.print("What would you like to update? \n" +
 						 "\n" +
 						 "1. Name \n" +
 						 "2. Email \n" +
-						 "3. Phone number" +
-						 "4. Address(es)" +
+						 "3. Phone number \n" +
+						 "9. Return to customer menu" +
 						 "\n");
 	}
 	

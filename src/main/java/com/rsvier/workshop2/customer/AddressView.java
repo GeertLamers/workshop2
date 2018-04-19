@@ -12,6 +12,9 @@ public class AddressView extends View {
 	
 	@Override
 	public void displayMenu() {
+		displayMenuHeader();
+		displayDivider();
+		displayMenuOptions();
 	}
 	
 	public void displayMenuHeader() {
@@ -30,7 +33,7 @@ public class AddressView extends View {
 	}
 	
 	public void displayAddressDetailsHeader() {
-		System.out.printf("%-3d %-7s %-4d %-3s %-15s %-10s %-4s \\n",
+		System.out.printf("%-3s %-7s %-4d %-3s %-15s %-10s %-4s \\n",
 						   "id",
 						   "psotal code",
 						   "house #",
