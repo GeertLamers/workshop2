@@ -20,7 +20,6 @@ public class AdminUserOverviewController extends Controller{
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		currentMenu.displayMenuOptions();
 		boolean validChoice = false;
 		while (!validChoice) {
 			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
