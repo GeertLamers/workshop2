@@ -7,6 +7,7 @@ import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
 import com.rsvier.workshop2.useraccounts.Account;
+import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
@@ -39,7 +40,7 @@ public class CustomerController extends Controller {
 		case 6: deleteCustomer();
 				break;
 		case 9: // Returns to main menu
-				if (loggedInUser.getOwnerType().equals("ADMIN")) {
+				if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
 					nextController = new AdminMainMenuController(new AdminMainMenuView());
 				}
 				else {
