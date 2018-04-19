@@ -7,9 +7,14 @@ import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.view.*;
 
 public class LoginController extends Controller {
+	public Account account;
 	
 	public LoginController (LoginMenuView theView) {
 		this.currentMenu = theView;
+	}
+	
+	public Account getAccount () {
+		return this.account;
 	}
 	
 	@Override
@@ -25,7 +30,10 @@ public class LoginController extends Controller {
 			nextController = new AdminMainMenuController(new AdminMainMenuView());
 			username = userInput[0];
 			String password = userInput[1];
-			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) break;
+			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) {
+				account = (new AccountDAOImpl(entityManager, Account.class).findByUsername(username));
+				break;
+			}
 			System.out.println("Incorrect username or password. Please try again or press 0 to exit.");
 
 		}

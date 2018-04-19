@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
+import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
@@ -23,7 +24,7 @@ public class CustomerController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
+		int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 		switch (userMenuChoice) {
 		case 1: findAllCustomers();
 				break;
@@ -38,13 +39,11 @@ public class CustomerController extends Controller {
 		case 6: deleteCustomer();
 				break;
 		case 9: // Returns to main menu
-				if (user.isAdmin()) {
+				if (loggedInUser.getOwnerType().equals("ADMIN") {
 					nextController = new AdminMainMenuController(new AdminMainMenuView());
-					nextController.setUser(user);
 				}
 				else {
 					nextController = new UserMainMenuController(new UserMainMenuView());
-					nextController.setUser(user);
 				}
 				break;
 		default: System.out.println("Not a valid option.");
@@ -62,7 +61,7 @@ public class CustomerController extends Controller {
 	public void findCustomer() {
 		Customer foundCustomer = new Customer();
 		currentMenu.displayCanFindByIdAndName();
-		String findThisCustomer = currentMenu.askUserForInput();
+		String findThisCustomer = currentMenu.askUserForMenuChoice();
 		if (Validator.isAnInt(findThisCustomer)) {
 			foundCustomer = customerDao.findCustomerById(Long.valueOf(findThisCustomer));
 		} else {

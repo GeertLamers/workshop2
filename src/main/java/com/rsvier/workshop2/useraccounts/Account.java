@@ -70,6 +70,5 @@ public class Account {
 	
 	public String getSalt () {
 		return this.salt;
-	}
-	
+	}	
 }

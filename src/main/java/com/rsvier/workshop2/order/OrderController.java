@@ -13,6 +13,7 @@ import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAO;
 import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.product.ProductDAOImpl;
+import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
@@ -22,6 +23,7 @@ public class OrderController extends Controller {
 	private OrderView currentMenu;
 	private ProductDAOImpl productModel;
 	private Scanner input = new Scanner(System.in);
+	private Account account;
 	
 	public OrderController(OrderView theView) {
 		this.currentMenu = theView;
@@ -30,7 +32,7 @@ public class OrderController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForInput());
+		int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 		switch (userMenuChoice) {
 		case 1: findAllOrders();
 				break;
@@ -49,13 +51,11 @@ public class OrderController extends Controller {
 		case 8: deleteOrder();
 				break;
 		case 9: // Returns to main menu
-				if (user.isAdmin()) {
+				if (account.getOwnerType().equals("ADMIN")) {
 					nextController = new AdminMainMenuController(new AdminMainMenuView());
-					nextController.setUser(user);
 				}
 				else {
 					nextController = new UserMainMenuController(new UserMainMenuView());
-					nextController.setUser(user);
 				}
 				break;
 		default: System.out.println("Not a valid option.");

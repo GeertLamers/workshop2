@@ -43,4 +43,15 @@ public class AccountDAOImpl extends GenericDAOImpl<Account> {
 	public boolean isAdmin(int userID) {
 		return true;
 	}
+
+	public Account findByUsername(String username) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		Account userAccount = null;
+		CriteriaQuery<Account> criteria = builder.createQuery( Account.class );
+		Root<Account> personRoot = criteria.from( Account.class );
+		criteria.select( personRoot );
+		criteria.where( builder.equal( personRoot.get( Account_.username ),username ) );
+		userAccount = em.createQuery(criteria).getSingleResult();
+		return userAccount;
+	}
 }

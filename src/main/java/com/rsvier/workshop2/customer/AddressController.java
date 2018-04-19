@@ -300,7 +300,7 @@ public class AddressController extends Controller {
 	public int inputHouseNumber() {
 		System.out.print("Enter a house number: ");
 		String houseNumberAsString = input.nextLine();
-		if(!Validator.IsAPositiveInt(houseNumberAsString)) {
+		if(!Validator.isAPositiveOrZeroInt(houseNumberAsString)) {
 			return inputHouseNumber();
 		}
 		return Integer.parseInt(houseNumberAsString);
