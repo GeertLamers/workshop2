@@ -28,13 +28,28 @@ public class Validator { // Validates possible user inputs.
         }
     }
     
+    public static boolean IsAPositiveInt(String userInput) {
+    	try {
+    		int id = Integer.parseInt(userInput);
+    		if (id >= 1) {
+    			return true;
+    		} else {
+    			System.out.println("You entered a 0 or lower.");
+    			return false;
+    		}
+    	} catch (Exception ex) {
+    		System.out.println("Not a number.");
+    		return false;
+    	}
+    }
+    
     public static boolean isAPositiveOrZeroInt(String userInput) {
     	try {
     		int id = Integer.parseInt(userInput);
     		if(id >= 0) {
     			return true;
     		} else {
-    			System.out.println("You did not enter a number, or it was lower than 0.");
+    			System.out.println("You entered a number lower than 0.");
     			return false;
     		}
     	} catch (Exception ex) {
