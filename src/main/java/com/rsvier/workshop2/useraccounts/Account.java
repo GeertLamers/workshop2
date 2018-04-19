@@ -60,7 +60,7 @@ public class Account {
 		return this.ownerType;
 	}
 	
-	public void setUserType (OwnerType ownerType) {
+	public void setOwnerType (OwnerType ownerType) {
 		this.ownerType = ownerType;
 	}
 	

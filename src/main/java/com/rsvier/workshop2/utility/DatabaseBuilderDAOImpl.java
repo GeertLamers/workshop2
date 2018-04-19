@@ -13,6 +13,7 @@ import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAOImpl;
 import com.rsvier.workshop2.useraccounts.Account;
+import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
 import com.rsvier.workshop2.useraccounts.PasswordHasher;
 
@@ -35,6 +36,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 		
 		Customer bestCustomer = new Customer("Onne", "Geheim", "", "rsvier@rsvier.rsvier", "0123456789"/*, creationDate*/);
 		Account bestAccount = new Account("Onne", bestEncryptedPassword, bestSalt);
+		bestAccount.setOwnerType(OwnerType.ADMIN);
 		accountModel = new AccountDAOImpl(entityManager, Account.class);
 		accountModel.create(bestAccount);
 		bestCustomer.setCustomerId(bestAccount.getCustomerId());
