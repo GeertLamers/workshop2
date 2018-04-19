@@ -61,6 +61,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 			lastName = append.toString();
 			Customer newCustomer = new Customer(firstName, lastName, lastNamePreposition, email, phoneNumber/*, creationDate*/);
 			Account newAccount = new Account(username, encryptedPassword, salt);
+			newAccount.setOwnerType(OwnerType.CUSTOMER);
 			accountModel = new AccountDAOImpl(entityManager, Account.class);
 			accountModel.create(newAccount);
 			newCustomer.setCustomerId(newAccount.getCustomerId());
