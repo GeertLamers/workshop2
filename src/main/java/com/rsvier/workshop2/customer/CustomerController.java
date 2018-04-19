@@ -56,6 +56,7 @@ public class CustomerController extends Controller {
 						} else {
 							nextController = new UserMainMenuController(new UserMainMenuView());
 						}
+						validChoice = true;
 						break;
 				default: System.out.println("Not a valid option.");
 						break;
