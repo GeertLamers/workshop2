@@ -6,7 +6,10 @@ import javax.persistence.EntityManager;
 
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
+import com.rsvier.workshop2.controller.UserMainMenuController;
 import com.rsvier.workshop2.customer.Address.AddressType;
+import com.rsvier.workshop2.useraccounts.UserMainMenuView;
+import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
@@ -27,7 +30,8 @@ public class AddressController extends Controller {
 	
 	// Special constructor that is called only when a new customer is created by the user from the customer controller
 	// That newly created customer is then passed here to ensure a link between address and customer always exists
-	public AddressController(Customer newCustomer) {
+	public AddressController(AddressView theView, Customer newCustomer) {
+		this.currentMenu = theView;
 		this.customerAtAddress = newCustomer;
 	}
 
@@ -56,12 +60,17 @@ public class AddressController extends Controller {
 				case 6: updateAddress();
 						validChoice = true;
 						break;
-				case 7: goToCustomerMenu();
+				case 7: goToCustomerMenu(); // Returns user back to the customer management menu
 						validChoice = true;
 						break;
 				case 9: // Returns to main menu
+					validChoice = true;
+					if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
 						nextController = new AdminMainMenuController(new AdminMainMenuView());
-						break;
+					} else {
+						nextController = new UserMainMenuController(new UserMainMenuView());
+					}
+					break;
 				default: System.out.println("Not a valid choice.");
 						break;
 			}
