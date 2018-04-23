@@ -292,6 +292,7 @@ public class AddressController extends Controller {
 	public Customer inputCustomerForAddress() {
 		System.out.print("Please enter the id of the customer to associate with the current order:");
 		Long customerId = input.nextLong();
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		Customer customer = customerModel.findById(Customer.class, customerId);
 		if(customer == null) {
 			currentMenu.displayOperationFailed();
