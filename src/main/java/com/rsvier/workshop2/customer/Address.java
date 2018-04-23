@@ -35,7 +35,7 @@ public class Address {
 	private String city;
 	@Enumerated(EnumType.STRING)
 	@Column(length = 8)
-	private AddressType addressType;
+	public AddressType addressType;
 	
 	public Address() {
 	}

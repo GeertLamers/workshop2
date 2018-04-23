@@ -40,7 +40,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 		 return true;
 	}
 	
-	public void createAddresses() {
+	private void createAddresses() {
 		// Create filler addresses and map them to our customers (run AFTER creating the customers!)
 		int testNumber = 10;
 		
@@ -49,6 +49,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 			Address address = new Address();
 			address.setStreet("Teststreet " + testNumber);
 			address.setHouseNumber(testNumber);
+			address.setHouseNumberAddition("");
 			address.setPostalCode("ABCD" + testNumber);
 			address.setCity("Amsterdam");
 			address.setAddressType(AddressType.DELIVERY);
@@ -59,8 +60,9 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 	}
 	
 	private void createOurAccount () {
-		// Our account
 		PasswordHasher passwordHasher = new PasswordHasher();
+		
+		// Our account
 		String bestPassword = "Hello";
 		String bestSalt = passwordHasher.generateSalt();
 		String bestEncryptedPassword = passwordHasher.makeSaltedPasswordHash(bestPassword, bestSalt);
