@@ -57,7 +57,7 @@ public class AddressController extends Controller {
 				case 5: updateAddress();
 						validChoice = true;
 						break;
-				case 6: updateAddress();
+				case 6: deleteAddress();
 						validChoice = true;
 						break;
 				case 7: goToCustomerMenu(); // Returns user back to the customer management menu
@@ -83,14 +83,21 @@ public class AddressController extends Controller {
 		
 		Long findThisId = inputValidAddressId();
 		addressToBeFound.setAddressId(findThisId);
-		addressModel.findById(Address.class, findThisId);
 		
-		currentMenu.displayAddressDetailsHeader();
-		currentMenu.displayLongDivider();
-		currentMenu.displayAddressDetails(addressToBeFound);
-		
-		currentMenu.pressEnterToReturn();
-		this.runView();
+		Address foundAddress = addressModel.findById(Address.class, findThisId);
+		if (foundAddress == null) {
+			System.out.println("An address could not be found with id: " + findThisId);
+			System.out.println("Please try again with a different id.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} else {
+			currentMenu.displayAddressDetailsHeader();
+			currentMenu.displayLongDivider();
+			currentMenu.displayAddressDetails(foundAddress);
+			
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void findAddressByPostalCodeAndHouseNumber() {
@@ -105,10 +112,9 @@ public class AddressController extends Controller {
 		Address addressToAdd = new Address();
 		addressModel = new AddressDAOImpl(entityManager, Address.class);
 		
-		// The null check here is necessary to see whether the address controller was accessed via
-		// the special constructor that passes a complete customer object to the address controller.
-		// If that was not the case, the user is prompted to retrieve a customer from the database by its id.
-		// This is to ensure that a new address is always tied to a customer.
+		// The null check here exists to check whether a customer object was passed via the special class constructor
+		// that only exists in the customer controller. If that was not the case, the user is prompted to retrieve a customer
+		// from the database by its id. The goal is to ensure an address is always tied to a customer.
 		if(customerAtAddress == null) {
 			customerAtAddress = inputCustomerForAddress();
 		}
@@ -138,33 +144,53 @@ public class AddressController extends Controller {
 		
 		inputAddressTypeForAddress(addressToAdd);
 		
-		addressModel.create(addressToAdd);
-		currentMenu.displayCreateSuccess();
-		
+		Address newlyCreatedAddress = addressModel.create(addressToAdd);
+		if (newlyCreatedAddress == null) {
+			currentMenu.displayOperationFailed();
+		} else {
+			currentMenu.displayCreateSuccess();
+		}
 		currentMenu.pressEnterToReturn();
 		this.runView();
 	}
 	
 	public void updateAddress() {
+		Address addressToUpdate = new Address();
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
+		
+		Long id = inputValidAddressId();
+		
+		addressToUpdate = addressModel.findById(Address.class, id);
+		if(addressToUpdate == null) {
+			System.out.println("No address was found with id " + id + ".");
+			System.out.println("Returning to the address menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
+		
+		currentMenu.displayAddressDetailsHeader();
+		currentMenu.displayLongDivider();
+		currentMenu.displayAddressDetails(addressToUpdate);
+		
 		currentMenu.displayAddressUpdateMenu();
 		
 		boolean validChoice = false;
 		while (!validChoice) {
 			int userChoiceNumber = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch(userChoiceNumber) {
-				case 1: editStreetName();
+				case 1: editPostalCode(addressToUpdate);
 						validChoice = true;
 						break;
-				case 2: editHouseNumber();
+				case 2: editHouseNumber(addressToUpdate);
 						validChoice = true;
 						break;
-				case 3: editPostalCode();
+				case 3: editStreetName(addressToUpdate);
 						validChoice = true;
 						break;
-				case 4: editCity();
+				case 4: editCity(addressToUpdate);
 						validChoice = true;
 						break;
-				case 5: editTypeOfAddress();
+				case 5: editTypeOfAddress(addressToUpdate);
 						validChoice = true;
 						break;
 				case 9:	validChoice = true;
@@ -198,14 +224,23 @@ public class AddressController extends Controller {
 		}	
 	}
 	
-	private void editStreetName() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		
+	private void editPostalCode(Address addressToUpdate) {
+		String postalCode = inputPostalCode();
+		addressToUpdate.setPostalCode(postalCode);
+		addressModel.update(addressToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
+	}
+	
+	private void editHouseNumber(Address addressToUpdate) {
+		int houseNumber = inputHouseNumber();
+		addressToUpdate.setHouseNumber(houseNumber);
+		addressModel.update(addressToUpdate);
+		currentMenu.pressEnterToReturn();
+		this.runView();
+	}
+	
+	private void editStreetName(Address addressToUpdate) {
 		String streetName = inputStreetName();
 		addressToUpdate.setStreet(streetName);
 		addressModel.update(addressToUpdate);
@@ -213,76 +248,29 @@ public class AddressController extends Controller {
 		this.runView();
 	}
 	
-	private void editHouseNumber() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		
-		int houseNumber = inputHouseNumber();
-		addressToUpdate.setHouseNumber(houseNumber);
-		addressModel.update(addressToUpdate);
-		currentMenu.pressEnterToReturn();
-		this.runView();
-		
-	}
-	
-	private void editPostalCode() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		
-		String postalCode = inputPostalCode();
-		addressToUpdate.setPostalCode(postalCode);
-		addressModel.update(addressToUpdate);
-		currentMenu.pressEnterToReturn();
-		this.runView();
-		
-	}
-	
-	private void editCity() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		
+	private void editCity(Address addressToUpdate) {
 		String city = inputCity();
 		addressToUpdate.setCity(city);
 		addressModel.update(addressToUpdate);
 		currentMenu.pressEnterToReturn();
 		this.runView();
-		
 	}
 	
-	private void editTypeOfAddress() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		
+	private void editTypeOfAddress(Address addressToUpdate) {
 		inputAddressTypeForAddress(addressToUpdate);
 		addressModel.update(addressToUpdate);
 		currentMenu.pressEnterToReturn();
-		this.runView();
-		
+		this.runView();	
 	}
 	
 	public void goToCustomerMenu() {
 		System.out.println("Are you certain you wish to go to the customer menu?");
-		if(currentMenu.asksUserYesOrNo()) {
+		boolean leaveMenu = currentMenu.asksUserYesOrNo();
+		if(leaveMenu) { // user answered yes
 			nextController = new CustomerController(new CustomerView());
-			// nextController.setUser(user);
 		} else {
 			currentMenu.pressEnterToReturn();
+			this.runView();
 		}
 	}
 	
@@ -292,6 +280,7 @@ public class AddressController extends Controller {
 		String userInput = input.nextLine();
 		
 		Long id = Long.parseLong(userInput);
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		return customerModel.findById(Customer.class, id);
 	}
 	

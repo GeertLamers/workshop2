@@ -36,7 +36,6 @@ public class Address {
 	@Enumerated(EnumType.STRING)
 	@Column(length = 8)
 	private AddressType addressType;
-	private boolean active;
 	
 	public Address() {
 	}
@@ -122,20 +121,12 @@ public class Address {
 	public void setAddressType(AddressType addressType) {
 		this.addressType = addressType;
 	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 	
 	@Override
 	public String toString() {
 		return "Address [addressId=" + addressId + ", customer=" + customer + ", street=" + street + ", houseNumber="
 				+ houseNumber + ", houseNumberAddition=" + houseNumberAddition + ", postalCode=" + postalCode
-				+ ", city=" + city + ", addressType=" + addressType + ", active=" + active + "]";
+				+ ", city=" + city + ", addressType=" + addressType + "]";
 	}
 
 	@Override

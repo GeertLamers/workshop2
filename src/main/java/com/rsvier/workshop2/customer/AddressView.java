@@ -22,20 +22,22 @@ public class AddressView extends View {
 	}
 	
 	public void displayMenuOptions() {
-		System.out.print("1. List customer's address(es) \n" +
-						 "2. Add new address \n" +
-						 "3. Update address details \n" +
-						 "4. Delete address \n" +
-						 "8. Return to customer menu \n" +
+		System.out.print("1. Find an address by its ID \n" +
+						 "2. Find an address by postal code & house number (currently N/A) \n" +
+						 "3. Find an address by customer ID (currently N/A) \n" +
+						 "4. Add new address \n" +
+						 "5. Update address details \n" +
+						 "6. Delete address \n" +
+						 "7. Return to customer menu \n" +
 						 "9. Return to main menu \n" +
 						 "0. Exit program \n" +
 						 "\n");
 	}
 	
 	public void displayAddressDetailsHeader() {
-		System.out.printf("%-3s %-7s %-4d %-3s %-15s %-10s %-4s \\n",
+		System.out.printf("%-5s %-12s %-7s %-7s %-30s %-20s %-10s \n",
 						   "id",
-						   "psotal code",
+						   "postal code",
 						   "house #",
 						   "add.",
 						   "street",
@@ -44,7 +46,7 @@ public class AddressView extends View {
 	}
 	
 	public void displayAddressDetails(Address address) {
-		System.out.printf("%-3d %-7s %-4d %-3s %-15s %-10s %-4s \\n",
+		System.out.printf("%-5s %-12s %-7s %-7s %-30s %-20s %-10s \n",
 						  address.getAddressId(),
 						  address.getPostalCode(),
 						  address.getHouseNumber(),
@@ -61,12 +63,14 @@ public class AddressView extends View {
 	}
 	
 	public void displayAddressUpdateMenu() {
-		System.out.print("What would you like to update? \n" +
+		System.out.print("\n What would you like to update? \n" +
 						 "\n" +
-						 "1. Name \n" +
-						 "2. Email \n" +
-						 "3. Phone number" +
-						 "4. Address(es)" +
+						 "1. Postal code \n" +
+						 "2. House number \n" +
+						 "3. Street \n" +
+						 "4. City \n" +
+						 "5. Address type \n" +
+						 "9. Return to the address menu \n" + 
 						 "\n");
 	}
 	
