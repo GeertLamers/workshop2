@@ -1,17 +1,23 @@
 package com.rsvier.workshop2.customer;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.rsvier.workshop2.useraccounts.Account;
 
@@ -34,6 +40,12 @@ public class Customer {
 	private String lastNamePreposition;
 	private String email;
 	private String phoneNumber;
+	@OneToMany(mappedBy = "customer",
+			   fetch = FetchType.EAGER,
+			   cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@Column(nullable = false)
+	private List<Address> addressesOfCustomer;
 	
 	/*@Basic
 	@Temporal(TemporalType.TIMESTAMP)
@@ -119,6 +131,14 @@ public class Customer {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public List<Address> getAddressesOfCustomer() {
+		return addressesOfCustomer;
+	}
+
+	public void setAddressesOfCustomer(List<Address> addressesOfCustomer) {
+		this.addressesOfCustomer = addressesOfCustomer;
 	}
 	
 	@Override

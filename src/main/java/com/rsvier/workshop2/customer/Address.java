@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -25,7 +26,9 @@ public class Address {
 			unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
-	@ManyToOne
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "customer_id",
+				nullable = false)
 	private Customer customer;
 	private String street;
 	private int houseNumber;
