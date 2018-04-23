@@ -154,7 +154,7 @@ public class Validator { // Validates possible user inputs.
 	}
 	
 	public static boolean validatePrice(String userInput) {
-		Pattern pattern = Pattern.compile("\\d[\\d,\\.]+");
+		Pattern pattern = Pattern.compile("\\d+(\\.\\d+)?");
 		if(pattern.matcher(userInput).matches()) return true;
 		System.out.println("Not a valid price");
 		return false;
