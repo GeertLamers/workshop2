@@ -11,6 +11,7 @@ import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.AddressDAO;
 import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAO;
+import com.rsvier.workshop2.customer.CustomerDAOImpl;
 import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.product.ProductDAOImpl;
 import com.rsvier.workshop2.useraccounts.Account;
@@ -20,6 +21,7 @@ import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class OrderController extends Controller {
 	
+	private OrderDAOImpl orderModel;
 	private OrderView currentMenu;
 	private ProductDAOImpl productModel;
 	private Scanner input = new Scanner(System.in);
@@ -77,7 +79,7 @@ public class OrderController extends Controller {
 	}
 	
 	public void findOrdersOfCustomer() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		Customer customer = inputCustomer();
 		
 		ArrayList<Order> allOrdersOfCustomer = (ArrayList<Order>) orderModel.findAllOrdersOfCustomer(customer);
@@ -91,7 +93,7 @@ public class OrderController extends Controller {
 	}
 	
 	public void findPendingOrdersOnly() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		
 		ArrayList<Order> pendingOrderList = (ArrayList<Order>) orderModel.findPendingOrders();
 		
@@ -104,7 +106,7 @@ public class OrderController extends Controller {
 	}
 	
 	public void findCompletedOrdersOnly() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		
 		ArrayList<Order> completedOrderList = (ArrayList<Order>) orderModel.findCompletedOrders();
 		
@@ -117,7 +119,7 @@ public class OrderController extends Controller {
 	}
 	
 	public void findOrder() {
-		orderModel = new OrderDAOImpl()
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 				;
 		Order foundOrder = new Order();
 		String findThisOrder = currentMenu.askUserForInput();
@@ -147,7 +149,7 @@ public class OrderController extends Controller {
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		} else {	 // create the new order
-			orderModel = new OrderDAOImpl();
+			orderModel = new OrderDAOImpl(entityManager, Order.class);
 			Order orderToAdd = new Order();
 
 			Customer customer = inputCustomer();
@@ -201,7 +203,7 @@ public class OrderController extends Controller {
 	}
 	
 	public void deleteOrder() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		Order orderToDelete = new Order();
 		
 		Long id = inputValidOrderId();
