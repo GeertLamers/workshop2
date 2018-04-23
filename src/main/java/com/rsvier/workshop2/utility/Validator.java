@@ -161,12 +161,10 @@ public class Validator { // Validates possible user inputs.
 	}
 	
 	public static boolean validateCountry(String userInput) {
-		if (userInput.length() < 4) { // smallest country is min 4 letters
-			System.out.println("You must enter at least 4 letters");
-			return false;
-		} else {
-			return true;
-		}
+		Pattern pattern = Pattern.compile("^[a-zA-Z](\\s?[a-zA-Z]){4,30}$\n");
+		if(pattern.matcher(userInput).matches()) return true;
+		System.out.println("Not a valid price");
+		return false;
 	}
 	
 	public static boolean validateAlcoholPercentage(String userInput) {
