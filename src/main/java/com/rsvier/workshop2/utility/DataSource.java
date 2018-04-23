@@ -1,14 +1,13 @@
 package com.rsvier.workshop2.utility;
 
 import java.sql.*;
-
-import com.rsvier.workshop2.Main;
 import com.zaxxer.hikari.*;
 
 public class DataSource {
 
     private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
+    @SuppressWarnings("unused")
+	private static HikariDataSource ds;
  
     static {
     		config = new HikariConfig("hikari.properties");

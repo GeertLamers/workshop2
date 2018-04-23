@@ -1,12 +1,9 @@
 package com.rsvier.workshop2.useraccounts;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.view.View;
 
-public class AdminUserOverview extends View {
+public class AdminUserOverview extends View<AdminUserOverview> {
 	
 	@Override
 	public void displayMessage() {

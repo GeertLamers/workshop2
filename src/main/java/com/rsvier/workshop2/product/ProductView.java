@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.rsvier.workshop2.view.View;
 
-public class ProductView extends View {
+public class ProductView extends View<ProductView> {
 	
 	@Override
 	public void displayMessage() {

@@ -1,6 +1,5 @@
 package com.rsvier.workshop2.useraccounts;
 
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -10,8 +9,6 @@ import javax.persistence.NoResultException;
 import com.rsvier.workshop2.utility.GenericDAOImpl;
 
 public class AccountDAOImpl extends GenericDAOImpl<Account> {
-	
-	private Logger logger = Logger.getLogger(AccountDAOImpl.class.getName());
 
 	public AccountDAOImpl(EntityManager em, Class<Account> entityClass) {
 		super(em, entityClass);

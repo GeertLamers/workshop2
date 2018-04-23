@@ -6,7 +6,6 @@ import com.rsvier.workshop2.order.OrderController;
 import com.rsvier.workshop2.order.OrderView;
 import com.rsvier.workshop2.product.ProductController;
 import com.rsvier.workshop2.product.ProductView;
-import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.AdminUserOverview;
 import com.rsvier.workshop2.useraccounts.AdminUserOverviewController;
 import com.rsvier.workshop2.view.*;

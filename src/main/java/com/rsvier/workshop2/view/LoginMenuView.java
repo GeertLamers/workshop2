@@ -1,10 +1,7 @@
 package com.rsvier.workshop2.view;
 import java.io.*;
 
-import com.rsvier.workshop2.controller.*;
-import com.rsvier.workshop2.useraccounts.*;
-
-public class LoginMenuView extends View {
+public class LoginMenuView extends View<LoginMenuView> {
 		
 	public void displayMessage() {
 		System.out.print("\nWelcome to the login screen. \n\n" +

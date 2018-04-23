@@ -35,6 +35,7 @@ public class UserCreationController extends Controller {
 		String lastNamePreposition = "";
 		String email = "";
 		String phoneNumber = "";
+		@SuppressWarnings("unused")
 		Date creationDate = new Date();
 		ArrayList<String> necessaryCustomerInformation = new ArrayList<String>(); //temporary fix
 		necessaryCustomerInformation.add("username");

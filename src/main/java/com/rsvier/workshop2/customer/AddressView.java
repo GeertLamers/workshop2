@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.rsvier.workshop2.view.View;
 
-public class AddressView extends View {
+public class AddressView extends View<AddressView> {
 	
 	@Override
 	public void displayMessage() {

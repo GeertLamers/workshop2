@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.rsvier.workshop2.view.View;
 
-public class OrderView extends View {
+public class OrderView extends View<OrderView> {
 	
 	@Override
 	public void displayMessage() {

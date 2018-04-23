@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
-import javax.persistence.EntityManager;
-
 public class CustomerDAOImpl extends GenericDAOImpl<Customer> {
 
 	public CustomerDAOImpl(EntityManager em, Class<Customer> entityClass) {

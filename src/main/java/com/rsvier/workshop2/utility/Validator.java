@@ -1,6 +1,5 @@
 package com.rsvier.workshop2.utility;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -94,7 +93,7 @@ public class Validator { // Validates possible user inputs.
 					+ " and contain only letters or numbers.");
 			return false;
 		}
-		ArrayList<Account> allExistingUsernames = (ArrayList<Account>) new AccountDAOImpl(entityManager, Account.class).findAll();
+		List<Account> allExistingUsernames = new AccountDAOImpl(entityManager, Account.class).findAll();
 		for (Account possibleAccount : allExistingUsernames) {
 			if (possibleAccount.getUsername().equals(userInput)) {
 				System.out.println("This username is already taken. Please select another.");

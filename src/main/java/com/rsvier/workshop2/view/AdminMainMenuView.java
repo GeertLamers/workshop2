@@ -1,6 +1,6 @@
 package com.rsvier.workshop2.view;
 
-public class AdminMainMenuView extends View {
+public class AdminMainMenuView extends View<AdminMainMenuView> {
 
 	@Override
 	public void displayMessage() {

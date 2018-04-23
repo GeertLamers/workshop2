@@ -3,15 +3,13 @@ import java.io.*;
 import java.util.*;
 
 public abstract class View<K> { //parent version
+	
 	protected int possibleUserChoice;
 	protected int menuChoice;
 	protected boolean validUserChoice;
-	protected View userMenuChoice;
 	
 	public abstract void displayMessage(); // Displays a menu specific message
 	public abstract void displayMenu(); // Displays the relevant menu
-	
-	public View() {} //add HashMap info here and load the possibleMenuOptions
 	
 	public boolean asksUserYesOrNo() {
 		String userInput = "";

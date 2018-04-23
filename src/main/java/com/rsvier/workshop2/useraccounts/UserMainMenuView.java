@@ -2,7 +2,7 @@ package com.rsvier.workshop2.useraccounts;
 
 import com.rsvier.workshop2.view.View;
 
-public class UserMainMenuView extends View {
+public class UserMainMenuView extends View<UserMainMenuView> {
 
 	@Override
 	public void displayMessage() {

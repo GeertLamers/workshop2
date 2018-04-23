@@ -3,12 +3,10 @@ package com.rsvier.workshop2.useraccounts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.View;
 
-public class UserCreationView extends View {
+public class UserCreationView extends View<UserCreationView> {
 	
 	@Override
 	public void displayMessage() {
