@@ -77,13 +77,19 @@ public class ProductController extends Controller {
 		Long findThisProduct = inputValidProductId();
 		
 		foundProduct = productModel.findById(Product.class, findThisProduct);
+		if (foundProduct == null) {
+			System.out.println("A customer could not be found with id: " + findThisProduct);
+			System.out.println("Please try again with a different id.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} else {
+			currentMenu.displayProductPropertiesHeader();
+			currentMenu.displayLongDivider();
+			currentMenu.displayProductProperties(foundProduct);
 
-		currentMenu.displayProductPropertiesHeader();
-		currentMenu.displayLongDivider();
-		currentMenu.displayProductProperties(foundProduct);
-		
-		currentMenu.pressEnterToReturn();
-		this.runView();
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void addNewProduct() {
