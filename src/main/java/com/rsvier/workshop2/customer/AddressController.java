@@ -290,12 +290,22 @@ public class AddressController extends Controller {
 	}
 	
 	public Customer inputCustomerForAddress() {
-		System.out.println("Please enter the customer's id: ");
-		String userInput = input.nextLine();
-		
-		Long id = Long.parseLong(userInput);
-		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
-		return customerModel.findById(Customer.class, id);
+		System.out.print("Please enter the id of the customer to associate with the current order:");
+		Long customerId = input.nextLong();
+		Customer customer = customerModel.findById(Customer.class, customerId);
+		if(customer == null) {
+			currentMenu.displayOperationFailed();
+			System.out.println("No customer was found with id " + customerId);
+			System.out.println("Would you like to try again or return to the order menu?");
+			boolean tryAddingACustomer = currentMenu.asksUserYesOrNo();
+			if(tryAddingACustomer) {
+				return inputCustomerForAddress();
+			} else {
+				currentMenu.pressEnterToReturn();
+				this.runView();
+			}
+		}
+		return customer;
 	}
 	
 	public String inputStreetName() {
