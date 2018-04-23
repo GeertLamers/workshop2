@@ -11,8 +11,6 @@ import com.rsvier.workshop2.controller.UserMainMenuController;
 import com.rsvier.workshop2.useraccounts.UserCreationController;
 import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.useraccounts.Account.OwnerType;
-import com.rsvier.workshop2.useraccounts.UserCreationController;
-import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
@@ -99,7 +97,8 @@ public class CustomerController extends Controller {
 	}
 	
  	public void addNewCustomer() {
-		new UserCreationController(new UserCreationView()).accountCreator();
+ 		// Creating a customer goes through the below controller and method
+		new UserCreationController(new UserCreationView()).jointAccountAndCustomerCreator();
  	}
 
 	public void updateCustomerPersonalia() {
