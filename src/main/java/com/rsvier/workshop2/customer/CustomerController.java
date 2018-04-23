@@ -22,6 +22,8 @@ public class CustomerController extends Controller {
 	private CustomerDAOImpl customerModel;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
+	@SuppressWarnings("unused") // validator is used in various data field input methods
+	private Validator validator; 
 	
 	public CustomerController(CustomerView theView) {
 		this.currentMenu = theView;
@@ -47,7 +49,7 @@ public class CustomerController extends Controller {
 						validChoice = false;
 						break;
 				case 5: updateCustomerAddresses();
-						validChoice = false;
+						validChoice = true;
 						break;
 				case 6: deleteCustomer();
 						validChoice = false;
@@ -179,23 +181,57 @@ public class CustomerController extends Controller {
 	/* EDIT CUSTOMER METHODS */
 	
 	public void editName(Customer customerToUpdate) {
+		// Validates user input and sets the first name if accepted
+		String firstName = inputFirstName();
+		boolean validFirstName = new Validator(firstName).validateFirstName();
+		while(!validFirstName) {
+			firstName = inputFirstName();
+			validFirstName = new Validator(firstName).validateFirstName();
+		}
 		customerToUpdate.setFirstName(inputFirstName());
+		
+		// Validates user input and sets the last name if accepted
+		String lastName = inputLastName();
+		boolean validLastName = new Validator(lastName).validateLastName();
+		while(!validLastName) {
+			lastName = inputLastName();
+			validLastName = new Validator(lastName).validateLastName();
+		}
 		customerToUpdate.setLastName(inputLastName());
+		
+		// Checks whether uses wants to enter a prepositino, validates input and sets it when accepted
 		System.out.println("Do you wish to enter a preposition for your last name? (e.g. \"van\" or \"den\")?");
 		if(currentMenu.asksUserYesOrNo()) { // user wants to add a preposition
-			customerToUpdate.setLastNamePreposition(inputLastNamePreposition());
+			String lastNamePreposition = inputLastNamePreposition();
+			boolean validLastNamePreposition = new Validator(lastNamePreposition).validateLastNamePreposition();
+			while(!validLastNamePreposition) {
+				lastNamePreposition = inputLastNamePreposition();
+				validLastNamePreposition = new Validator(lastNamePreposition).validateLastNamePreposition();
+			}
+			customerToUpdate.setLastNamePreposition(lastNamePreposition);
 		}
-		
 		customerModel.update(customerToUpdate);	
 	}
 	
 	public void editEmail(Customer customerToUpdate) {
-		customerToUpdate.setEmail(inputEmail());
+		String email = inputEmail();
+		boolean validEmail = new Validator(email).validateEmail();
+		while(!validEmail) {
+			email = inputEmail();
+			validEmail = new Validator(email).validateEmail();
+		}
+		customerToUpdate.setEmail(email);
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		customerModel.update(customerToUpdate);
 	}
 	
 	public void editPhoneNumber(Customer customerToUpdate) {
+		String phoneNumber = inputPhoneNumber();
+		boolean validEmail = new Validator(phoneNumber).validateEmail();
+		while(!validEmail) {
+			phoneNumber = inputEmail();
+			validEmail = new Validator(phoneNumber).validateEmail();
+		}
 		customerToUpdate.setPhoneNumber(inputPhoneNumber());
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		customerModel.update(customerToUpdate);
