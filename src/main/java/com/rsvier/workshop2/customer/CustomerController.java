@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
+import com.rsvier.workshop2.useraccounts.UserCreationController;
+import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.useraccounts.UserCreationController;
 import com.rsvier.workshop2.useraccounts.UserCreationView;
@@ -96,61 +98,40 @@ public class CustomerController extends Controller {
 		}
 	}
 	
-	public void addNewCustomer() {
+ 	public void addNewCustomer() {
 		new UserCreationController(new UserCreationView()).accountCreator();
-	}
-	//obsolete
-		
-		/*Customer customerToAdd = new Customer();
+ 	}
+
+	public void updateCustomerPersonalia() {
+		Customer customerToUpdate = new Customer();
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
-		System.out.println("Please enter the customer details below:");
 		
-		String firstName = inputFirstName();
-		customerToAdd.setFirstName(firstName);
+		Long id = inputValidCustomerId();
 		
-		String lastName = inputLastName();
-		customerToAdd.setLastName(lastName);
-		
-		System.out.println("Do you wish to enter a preposition for your last name? (e.g. \"van\" or \"den\"?");
-		if(currentMenu.asksUserYesOrNo()) { // user wants to add a preposition
-			String lastNamePreposition = inputLastNamePreposition();
-			customerToAdd.setLastNamePreposition(lastNamePreposition);
-		}
-		
-		String email = inputEmail();
-		customerToAdd.setEmail(email);
-		
-		String phoneNumber = inputPhoneNumber();
-		customerToAdd.setPhoneNumber(phoneNumber);
-		
-		// The model's create method passes back the persisted customer with a newly generated id.
-		// This is to ensure that a complete customer is passed to an optional address creation step.
-		// This -in turn- is to ensure that an address is always linked to a customer when the address is created.
-		Customer newCustomer = customerModel.create(customerToAdd);
-		currentMenu.displayCreateSuccess();
-		
-		System.out.println("Would you like to add an address for the customer?");
-		if(currentMenu.asksUserYesOrNo()) { // user wants to add an address
-			nextController = new AddressController(new AddressView(), newCustomer);
-		} else {
+		customerToUpdate = customerModel.findById(Customer.class, id);
+		if(customerToUpdate == null) {
+			System.out.println("No address was found with id " + id + ".");
+			System.out.println("Returning to the address menu.");
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
-	}*/
-	
-	public void updateCustomerPersonalia() {
+		
+		currentMenu.displayCustomerDetailsHeader();
+		currentMenu.displayLongDivider();
+		currentMenu.displayCustomerDetails(customerToUpdate);
+		
 		currentMenu.displayUpdateMenu();
 		boolean validChoice = false;
 		while (!validChoice) {
 			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch (userMenuChoice) {
-				case 1: editName();
+				case 1: editName(customerToUpdate);
 						validChoice = true;
 						break;
-				case 2: editEmail();
+				case 2: editEmail(customerToUpdate);
 						validChoice = true;
 						break;
-				case 3: editPhoneNumber();
+				case 3: editPhoneNumber(customerToUpdate);
 						validChoice = true;
 						break;
 				case 9:	// no action necessary as setting the validChoice to true will exit the user from the while loop and return to the customer menu
@@ -198,13 +179,7 @@ public class CustomerController extends Controller {
 	
 	/* EDIT CUSTOMER METHODS */
 	
-	public void editName() {
-		Customer customerToUpdate =  new Customer();
-		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
-		
-		Long id = inputValidCustomerId();
-		customerToUpdate = customerModel.findById(Customer.class, id);
-		
+	public void editName(Customer customerToUpdate) {
 		customerToUpdate.setFirstName(inputFirstName());
 		customerToUpdate.setLastName(inputLastName());
 		System.out.println("Do you wish to enter a preposition for your last name? (e.g. \"van\" or \"den\")?");
@@ -215,28 +190,14 @@ public class CustomerController extends Controller {
 		customerModel.update(customerToUpdate);	
 	}
 	
-	public void editEmail() {
-		Customer customerToUpdate =  new Customer();
-		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
-		
-		Long id = inputValidCustomerId();
-		customerToUpdate = customerModel.findById(Customer.class, id);
-		
+	public void editEmail(Customer customerToUpdate) {
 		customerToUpdate.setEmail(inputEmail());
-		
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		customerModel.update(customerToUpdate);
 	}
 	
-	public void editPhoneNumber() {
-		Customer customerToUpdate =  new Customer();
-		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
-		
-		Long id = inputValidCustomerId();
-		customerToUpdate = customerModel.findById(Customer.class, id);
-		
+	public void editPhoneNumber(Customer customerToUpdate) {
 		customerToUpdate.setPhoneNumber(inputPhoneNumber());
-		
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		customerModel.update(customerToUpdate);
 	}

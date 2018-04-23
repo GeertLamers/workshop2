@@ -290,7 +290,6 @@ public class AddressController extends Controller {
 	}
 	
 	public Customer inputCustomerForAddress() {
-
 		System.out.println("Please enter the customer's id: ");
 		String userInput = input.nextLine();
 		

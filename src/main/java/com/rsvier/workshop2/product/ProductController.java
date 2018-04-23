@@ -78,7 +78,7 @@ public class ProductController extends Controller {
 		
 		foundProduct = productModel.findById(Product.class, findThisProduct);
 		if (foundProduct == null) {
-			System.out.println("A customer could not be found with id: " + findThisProduct);
+			System.out.println("A product could not be found with id: " + findThisProduct);
 			System.out.println("Please try again with a different id.");
 			currentMenu.pressEnterToReturn();
 			this.runView();

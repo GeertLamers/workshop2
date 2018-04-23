@@ -56,6 +56,7 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 			address.setCity("Amsterdam");
 			address.setAddressType(AddressType.DELIVERY);
 			address.setCustomerAtAddress(customer);
+			addressModel = new AddressDAOImpl(entityManager, Address.class);
 			addressModel.create(address);
 			testNumber++;
 		}
