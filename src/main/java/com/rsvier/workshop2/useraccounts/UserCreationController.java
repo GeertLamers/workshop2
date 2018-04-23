@@ -50,7 +50,7 @@ public class UserCreationController extends Controller {
 			String userInput = "";
 			while (!validInput) {
 				userInput = ((UserCreationView) currentMenu).askUserForInput(customerProperty);
-				validInput = new Validator(userInput).validateNewUser(customerProperty);
+				validInput = new Validator(userInput).validateUser(customerProperty);
 			}
 			switch (customerProperty) {
 			case "username":
