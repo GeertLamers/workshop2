@@ -43,6 +43,8 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 	private void createAddresses() {
 		// Create filler addresses and map them to our customers (run AFTER creating the customers!)
 		int testNumber = 10;
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
 		
 		List<Customer> customerList = customerModel.findAll(); // Load all customers
 		for (Customer customer : customerList) {
