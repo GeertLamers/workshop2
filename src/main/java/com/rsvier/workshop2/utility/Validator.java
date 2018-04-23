@@ -178,7 +178,7 @@ public class Validator { // Validates possible user inputs.
 	}
 	
 	public static boolean validatePostalCode(String userInput) {
-		Pattern pattern = Pattern.compile("/^[1-9][0-9]{3}?[a-z]{2}$/i");
+		Pattern pattern = Pattern.compile("^[0-9]{4}\\s*[a-zA-Z]{2}$");
 		if(pattern.matcher(userInput).matches()) return true;
 		System.out.println("Not a valid Dutch postal code.");
 		return false;
