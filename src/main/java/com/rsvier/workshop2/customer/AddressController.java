@@ -79,11 +79,8 @@ public class AddressController extends Controller {
 	}
 	
 	public void findAddress() {
-		Address addressToBeFound = new Address();
-		addressModel  = new AddressDAOImpl(entityManager, Address.class);
-		
+		addressModel  = new AddressDAOImpl(entityManager, Address.class);	
 		Long findThisId = inputValidAddressId();
-		addressToBeFound.setAddressId(findThisId);
 		
 		Address foundAddress = addressModel.findById(Address.class, findThisId);
 		if (foundAddress == null) {
@@ -294,7 +291,7 @@ public class AddressController extends Controller {
 	
 	public Customer inputCustomerForAddress() {
 
-		System.out.println("Please enter the id of the customer you would like to add the new address for: ");
+		System.out.println("Please enter the customer's id: ");
 		String userInput = input.nextLine();
 		
 		Long id = Long.parseLong(userInput);
