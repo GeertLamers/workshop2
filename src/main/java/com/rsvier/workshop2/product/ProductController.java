@@ -149,48 +149,62 @@ public class ProductController extends Controller {
 	}
 	
 	public void updateProduct() {
-		currentMenu.displayProductUpdateMenu();
-		
-		String userChoice = input.nextLine(); 
-		if(!Validator.validateMenuChoice(userChoice)) { // Necessary to return the menu if input was deemed invalid
-			System.out.println("You did not enter a valid number. \n");
-			currentMenu.displayProductUpdateMenu();
+		Product productToUpdate = new Product();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
+
+		Long id = inputValidProductId();
+
+		productToUpdate = productModel.findById(Product.class, id);
+		if(productToUpdate == null) {
+			System.out.println("No product was found with id " + id + ".");
+			System.out.println("Returning to the address menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
 		}
 		
-		int userChoiceNumber = Integer.parseInt(userChoice);
-		switch(userChoiceNumber) {
-			case 1: editProductName();
-					break;
-			case 2: editProductPrice();
-					break;
-			case 3: editProductStockQuantity();
-					break;
-			case 4: editProductYear();
-					break;
-			case 5: editProductCountryOfOrigin();
-					break;
-			case 6: editProductGrapeVariety();
-					break;
-			case 7: editProductAlcoholContent();
-					break;
-			case 9:	this.runView();
-					break;
-			default: System.out.println("Invalid choice. \n");
-					currentMenu.displayProductUpdateMenu();
+		currentMenu.displayProductPropertiesHeader();
+		currentMenu.displayLongDivider();
+		currentMenu.displayProductProperties(productToUpdate);
+		
+		currentMenu.displayProductUpdateMenu();
+		
+		boolean validChoice = false;
+		while(!validChoice) {
+			int userChoiceNumber = Integer.parseInt(currentMenu.askUserForMenuChoice());
+			switch(userChoiceNumber) {
+				case 1: editProductName(productToUpdate);
+						validChoice = true;
+						break;
+				case 2: editProductPrice(productToUpdate);
+						validChoice = true;
+						break;
+				case 3: editProductStockQuantity(productToUpdate);
+						validChoice = true;
+						break;
+				case 4: editProductYear(productToUpdate);
+						validChoice = true;
+						break;
+				case 5: editProductCountryOfOrigin(productToUpdate);
+						validChoice = true;
+						break;
+				case 6: editProductGrapeVariety(productToUpdate);
+						validChoice = true;
+						break;
+				case 7: editProductAlcoholContent(productToUpdate);
+						validChoice = true;
+						break;
+				case 9:	validChoice = true;
+						this.runView();
+						break;
+				default: System.out.println("Invalid choice. \n");
+						currentMenu.displayProductUpdateMenu();
+			}
 		}
 	}
 	
 	/* EDIT PRODUCT METHODS */
 	
-	public void editProductName() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-		// requires an id from user to identify which product to update
-		Long id = inputValidProductId();
-
-		// Populates product with current data
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductName(Product productToUpdate) {
 		String name = inputName();
 		productToUpdate.setName(name);
 		productModel.update(productToUpdate);
@@ -198,14 +212,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductPrice() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-	
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductPrice(Product productToUpdate) {
 		String price = inputPrice();
 		productToUpdate.setPrice(new BigDecimal(price));
 		productModel.update(productToUpdate);
@@ -213,14 +220,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductStockQuantity() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductStockQuantity(Product productToUpdate) {	
 		int stockQuantity = inputStockQuantity();
 		productToUpdate.setStockQuantity(stockQuantity);
 		productModel.update(productToUpdate);
@@ -228,14 +228,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductYear() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductYear(Product productToUpdate) {
 		int productYear = inputYear();
 		productToUpdate.setProducedYear(productYear);
 		productModel.update(productToUpdate);
@@ -243,14 +236,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductCountryOfOrigin() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductCountryOfOrigin(Product productToUpdate) {
 		String country = inputCountry();
 		productToUpdate.setCountry(country);
 		productModel.update(productToUpdate);
@@ -258,14 +244,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductGrapeVariety() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-
-		productToUpdate = productModel.findById(Product.class, id);
-			
+	public void editProductGrapeVariety(Product productToUpdate) {
 		String grapeVariety = inputGrapeVariety();
 		productToUpdate.setGrapeVariety(grapeVariety);
 		productModel.update(productToUpdate);
@@ -273,15 +252,7 @@ public class ProductController extends Controller {
 		this.runView();
 	}
 	
-	public void editProductAlcoholContent() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-		
-		productToUpdate = productModel.findById(Product.class, id);
-			
-		System.out.print("Enter an alcohol percentage (e.g. 14.2):");
+	public void editProductAlcoholContent(Product productToUpdate) {	
 		String userInputAlcoholPercentage = input.nextLine();
 		productToUpdate.setAlcoholPercentage(Double.parseDouble(userInputAlcoholPercentage));
 			
