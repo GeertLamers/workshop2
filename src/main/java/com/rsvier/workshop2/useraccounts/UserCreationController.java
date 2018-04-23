@@ -3,19 +3,10 @@ package com.rsvier.workshop2.useraccounts;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.transaction.UserTransaction;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.LoginController;
 import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAOImpl;
-import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.LoginMenuView;
 
