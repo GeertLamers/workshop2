@@ -24,7 +24,7 @@ public class AddressView extends View {
 	public void displayMenuOptions() {
 		System.out.print("1. Find an address by its ID \n" +
 						 "2. Find an address by postal code & house number (currently N/A) \n" +
-						 "3. Find an address by customer ID (currently N/A) \n" +
+						 "3. Find an address by customer ID \n" +
 						 "4. Add new address \n" +
 						 "5. Update address details \n" +
 						 "6. Delete address \n" +

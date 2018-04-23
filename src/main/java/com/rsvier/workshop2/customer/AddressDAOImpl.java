@@ -3,11 +3,12 @@ package com.rsvier.workshop2.customer;
 import com.rsvier.workshop2.utility.GenericDAOImpl;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 public class AddressDAOImpl extends GenericDAOImpl<Address> {
 
-	protected AddressDAOImpl(EntityManager em, Class<Address> entityClass) {
+	public AddressDAOImpl(EntityManager em, Class<Address> entityClass) {
 		super(em, entityClass);
 	}
 
@@ -16,5 +17,13 @@ public class AddressDAOImpl extends GenericDAOImpl<Address> {
         CriteriaQuery<Address> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
         criteriaQuery.select(criteriaQuery.from(entityClass));
         return em.createQuery(criteriaQuery).getResultList();
+	}
+	
+	public List<Address> findAddressesByCustomer(Customer customer) {
+		Query query = em.createQuery("FROM address WHERE customer = :customer");
+		query.setParameter("customer", customer);
+		@SuppressWarnings("unchecked")
+		List<Address> addressesOfCustomer = query.getResultList();
+		return addressesOfCustomer;
 	}
 }

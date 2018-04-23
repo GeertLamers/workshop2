@@ -1,5 +1,6 @@
 package com.rsvier.workshop2.customer;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
@@ -48,7 +49,7 @@ public class AddressController extends Controller {
 				case 2: findAddressByPostalCodeAndHouseNumber();
 						validChoice = true;
 						break;
-				case 3: findAddressByCustomerId();
+				case 3: findAddressesByCustomerId();
 						validChoice = true;
 						break;
 				case 4: addNewAddress();
@@ -101,11 +102,28 @@ public class AddressController extends Controller {
 	}
 	
 	public void findAddressByPostalCodeAndHouseNumber() {
-		// TODO implement named query
+		// TODO implement query
 	}
 	
-	public void findAddressByCustomerId() {
-		// TODO implement named query
+	public void findAddressesByCustomerId() {
+		ArrayList<Address> listOfAddresses = new ArrayList<Address>();
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
+		Customer customer = inputCustomerForAddress();
+		
+		listOfAddresses = (ArrayList<Address>) addressModel.findAddressesByCustomer(customer);
+		
+		if(listOfAddresses == null) {
+			System.out.println("No addresses were found for customer with id: " + customer.getCustomerId());
+			System.out.println("Please enter an address for the customer first, or try a different id.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} else {
+			currentMenu.displayAddressDetailsHeader();
+			currentMenu.displayDivider();
+			currentMenu.displayAllAddresses(listOfAddresses);
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void addNewAddress() {
