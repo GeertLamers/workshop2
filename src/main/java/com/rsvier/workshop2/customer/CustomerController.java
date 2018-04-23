@@ -9,6 +9,8 @@ import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
 import com.rsvier.workshop2.useraccounts.Account.OwnerType;
+import com.rsvier.workshop2.useraccounts.UserCreationController;
+import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
@@ -27,28 +29,28 @@ public class CustomerController extends Controller {
 	
 	@Override
 	public void runView() {
-		currentMenu.displayMenu();
 		boolean validChoice = false;
 		while (!validChoice) {
+			currentMenu.displayMenu();
 			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch (userMenuChoice) {
 				case 1: findAllCustomers();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 2: findCustomer();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 3: addNewCustomer();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 4: updateCustomerPersonalia();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 5: updateCustomerAddresses();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 6: deleteCustomer();
-						validChoice = true;
+						validChoice = false;
 						break;
 				case 9: // Returns to main menu
 						if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
@@ -95,7 +97,11 @@ public class CustomerController extends Controller {
 	}
 	
 	public void addNewCustomer() {
-		Customer customerToAdd = new Customer();
+		new UserCreationController(new UserCreationView()).accountCreator();
+	}
+	//obsolete
+		
+		/*Customer customerToAdd = new Customer();
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		System.out.println("Please enter the customer details below:");
 		
@@ -130,7 +136,7 @@ public class CustomerController extends Controller {
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
-	}
+	}*/
 	
 	public void updateCustomerPersonalia() {
 		currentMenu.displayUpdateMenu();

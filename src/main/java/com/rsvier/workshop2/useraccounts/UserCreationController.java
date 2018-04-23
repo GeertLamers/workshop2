@@ -35,7 +35,7 @@ public class UserCreationController extends Controller {
 		accountCreator();
 	}
 	
-	private void accountCreator() {
+	public void accountCreator() {
 			String username = "";
 			String password = "";
 			String salt = "";
@@ -99,6 +99,5 @@ public class UserCreationController extends Controller {
 			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 			customerModel.create(newCustomer);
 			currentMenu.displayCreateSuccess();
-			nextController = new LoginController(new LoginMenuView());
 		}
 }
