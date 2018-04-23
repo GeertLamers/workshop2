@@ -1,8 +1,8 @@
 package com.rsvier.workshop2.order;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,9 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -22,14 +24,6 @@ import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 
 @Entity
-/*@NamedQueries ({
-	@NamedQuery(name = "Order.findAllByCustomer",
-				query = "SELECT o FROM Order o WHERE o.customer.getCustomerId() = :name)"),
-	@NamedQuery(name = "Order.findCompletedOnly",
-				query = "SELECT o FROM Order o WHERE o.shipped = true)"),
-	@NamedQuery(name = "Order.findPendingOnly",
-				query = "SELECT o FROM Order o WHERE o.shipped = false)")
-})*/
 @Table (name = "\"order\"")
 public class Order {
 	
@@ -46,26 +40,25 @@ public class Order {
 	@OneToMany(mappedBy = "parentOrder",
 			   fetch = FetchType.EAGER,
 			   cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@Column(nullable = false)
-	private Set<OrderLineItem> itemsInOrder;
-	
+	private List<OrderLineItem> itemsInOrder;
 	private BigDecimal orderPriceTotal;
 	private int orderItemsTotal;
 	private boolean shipped;
 	
 	@OneToOne(optional = false)
 	private Address shippedTo;
-	
 	private boolean completed;
 	
 	// ======================================================== //
 	
 	public Order() {
-		itemsInOrder = new HashSet<OrderLineItem>();
+		itemsInOrder = new ArrayList<OrderLineItem>();
 	}
 	
 	public Order(Customer customer,
-				 Set<OrderLineItem> itemsInOrder) {
+				 ArrayList<OrderLineItem> itemsInOrder) {
 		this.customer = customer;
 		this.itemsInOrder = itemsInOrder;
 	}
@@ -86,7 +79,11 @@ public class Order {
 		this.customer = customer;
 	}
 	
-	public Set<OrderLineItem> getItemsInOrder() {
+	public void setOrderItems(List<OrderLineItem> lineItems) {
+		this.itemsInOrder = lineItems;	
+	}	
+	
+	public List<OrderLineItem> getItemsInOrder() {
 		return itemsInOrder;
 	}
 
@@ -173,5 +170,5 @@ public class Order {
 		} else if (!shippedTo.equals(other.shippedTo))
 			return false;
 		return true;
-	}	
+	}
 }

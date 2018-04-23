@@ -104,19 +104,9 @@ public class CustomerController extends Controller {
  	}
 
 	public void updateCustomerPersonalia() {
-		Customer customerToUpdate = new Customer();
-		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+		Customer customerToUpdate = provideACustomerToUpdate();
 		
-		Long id = inputValidCustomerId();
-		
-		customerToUpdate = customerModel.findById(Customer.class, id);
-		if(customerToUpdate == null) {
-			System.out.println("No address was found with id " + id + ".");
-			System.out.println("Returning to the address menu.");
-			currentMenu.pressEnterToReturn();
-			this.runView();
-		}
-		
+		// Show the customer details to the user first so he/she understands best what to updat
 		currentMenu.displayCustomerDetailsHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayCustomerDetails(customerToUpdate);
@@ -239,6 +229,22 @@ public class CustomerController extends Controller {
 	
 	/* INPUT & HELPER METHODS */
 	
+	public Customer provideACustomerToUpdate() {
+		Customer customerToUpdate = new Customer();
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+		
+		Long id = inputValidCustomerId();
+		
+		customerToUpdate = customerModel.findById(Customer.class, id);
+		if(customerToUpdate == null) {
+			System.out.println("No customer was found with id " + id + ".");
+			System.out.println("Returning to the customer menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
+		return customerToUpdate;
+	}
+	
 	public String inputFirstName() {
 		System.out.print("Enter a first name: ");
 		String firstName = input.nextLine();
@@ -300,7 +306,6 @@ public class CustomerController extends Controller {
 			System.out.println("You did not enter a valid customer id. Please try again:");
 			attemptAtId = input.nextLine();
 		}
-		Long id = Long.valueOf(attemptAtId);
-		return id;
+		return Long.valueOf(attemptAtId);
 	}
 }

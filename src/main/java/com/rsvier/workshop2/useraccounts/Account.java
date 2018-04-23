@@ -18,6 +18,7 @@ public class Account {
 	
 	protected String username;
 	protected String encryptedPassword;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 8)
 	protected OwnerType ownerType;

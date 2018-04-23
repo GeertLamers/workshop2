@@ -5,8 +5,9 @@ import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.utility.GenericDAOImpl;
 
 import java.util.List;
+
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
 
@@ -24,17 +25,24 @@ public class OrderDAOImpl extends GenericDAOImpl<Order> {
 	}
 
 	public List<Order> findAllOrdersOfCustomer(Customer customer) {
-		TypedQuery<Order> query = em.createNamedQuery("Order.findAllByCustomer", Order.class);
-		return query.getResultList();
+		Query query = em.createQuery("FROM `order` o WHERE o.customer_id = :customerId");
+		query.setParameter("customerId", customer.getCustomerId());
+		@SuppressWarnings("unchecked")
+		List<Order> ordersOfCustomer = query.getResultList();
+		return ordersOfCustomer;
 	}
 
 	public List<Order> findCompletedOrdersOnly() {
-		TypedQuery<Order> query = em.createNamedQuery("Order.findCompletedOnly", Order.class);
-		return query.getResultList();
+		Query query = em.createQuery("FROM \"order\" o WHERE o.completed = 'true'");
+		@SuppressWarnings("unchecked")
+		List<Order> ordersOfCustomer = query.getResultList();
+		return ordersOfCustomer;
 	}
 
 	public List<Order> findPendingOrdersOnly() {
-		TypedQuery<Order> query = em.createNamedQuery("Order.findPendingOnly", Order.class);
-		return query.getResultList();
+		Query query = em.createQuery("FROM \"order\" o WHERE o.completed = 'false'");
+		@SuppressWarnings("unchecked")
+		List<Order> ordersOfCustomer = query.getResultList();
+		return ordersOfCustomer;
 	}
 }

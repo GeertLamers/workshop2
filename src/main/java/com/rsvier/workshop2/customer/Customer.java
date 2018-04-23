@@ -40,6 +40,7 @@ public class Customer {
 	private String lastNamePreposition;
 	private String email;
 	private String phoneNumber;
+	
 	@OneToMany(mappedBy = "customer",
 			   fetch = FetchType.EAGER,
 			   cascade = CascadeType.ALL)

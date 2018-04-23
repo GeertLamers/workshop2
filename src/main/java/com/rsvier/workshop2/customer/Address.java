@@ -28,16 +28,19 @@ public class Address {
 			unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "customer_id",
 				nullable = false)
 	private Customer customer;
 	private String street;
 	private int houseNumber;
+	
 	@Column(nullable = true)
 	private String houseNumberAddition;
 	private String postalCode;
 	private String city;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 8)
 	public AddressType addressType;

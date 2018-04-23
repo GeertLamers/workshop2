@@ -1,29 +1,33 @@
 package com.rsvier.workshop2.order;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
+
+import javax.persistence.EntityManager;
 
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
-import com.rsvier.workshop2.customer.Address;
-import com.rsvier.workshop2.customer.AddressDAO;
-import com.rsvier.workshop2.customer.Customer;
-import com.rsvier.workshop2.customer.CustomerDAO;
+import com.rsvier.workshop2.customer.*;
 import com.rsvier.workshop2.product.Product;
 import com.rsvier.workshop2.product.ProductDAOImpl;
-import com.rsvier.workshop2.useraccounts.Account;
+import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
+import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
 public class OrderController extends Controller {
 	
+	private OrderDAOImpl orderModel;
 	private OrderView currentMenu;
+	private OrderLineItemDAOImpl orderLineModel;
+	private CustomerDAOImpl customerModel;
 	private ProductDAOImpl productModel;
+	private AddressDAOImpl addressModel;
+	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
-	private Account account;
 	
 	public OrderController(OrderView theView) {
 		this.currentMenu = theView;
@@ -32,41 +36,52 @@ public class OrderController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
-		int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
-		switch (userMenuChoice) {
-		case 1: findAllOrders();
-				break;
-		case 2: findOrdersOfCustomer();
-				break;
-		case 3: findPendingOrdersOnly();
-				break;
-		case 4: findCompletedOrdersOnly();
-				break;
-		case 5: findOrder();
-				break;
-		case 6: addNewOrder();
-				break;
-		case 7: updateOrder();
-				break;
-		case 8: deleteOrder();
-				break;
-		case 9: // Returns to main menu
-				if (account.getOwnerType().equals("ADMIN")) {
-					nextController = new AdminMainMenuController(new AdminMainMenuView());
-				}
-				else {
-					nextController = new UserMainMenuController(new UserMainMenuView());
-				}
-				break;
-		default: System.out.println("Not a valid option.");
-				currentMenu.displayMenu();
+		boolean validChoice = false;
+		while (!validChoice) {
+			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
+			switch (userMenuChoice) {
+				case 1: findAllOrders();
+						validChoice = false;
+						break;
+				case 2: findOrdersOfCustomer();
+						validChoice = false;
+						break;
+				case 3: findPendingOrdersOnly();
+						validChoice = false;
+						break;
+				case 4: findCompletedOrdersOnly();
+						validChoice = false;
+						break;
+				case 5: findOrder();
+						validChoice = false;
+						break;
+				case 6: addNewOrder();
+						validChoice = true;
+						break;
+				case 7: updateOrder();
+						validChoice = false;
+						break;
+				case 8: deleteOrder();
+						validChoice = false;
+						break;
+				case 9: // Returns to main menu
+						validChoice = true;
+						if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
+							nextController = new AdminMainMenuController(new AdminMainMenuView());
+						} else {
+							nextController = new UserMainMenuController(new UserMainMenuView());
+						}
+						break;
+				default: System.out.println("Not a valid option.");
+						break;
+			}
 		}
 	}
 
 	public void findAllOrders() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		
-		ArrayList<Order> allOrders = (ArrayList<Order>) orderModel.findAllOrders();
+		List<Order> allOrders = orderModel.findAll();
 		
 		currentMenu.displayOrderPropertiesHeader();
 		currentMenu.displayDivider();
@@ -77,23 +92,29 @@ public class OrderController extends Controller {
 	}
 	
 	public void findOrdersOfCustomer() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
+		// The inputCustomer method handles nullchecking
 		Customer customer = inputCustomer();
-		
-		ArrayList<Order> allOrdersOfCustomer = (ArrayList<Order>) orderModel.findAllOrdersOfCustomer(customer);
-				
-		currentMenu.displayOrderPropertiesHeader();
-		currentMenu.displayDivider();
-		currentMenu.displayAllOrders(allOrdersOfCustomer);
-		
-		currentMenu.pressEnterToReturn();
-		this.runView();
+		List<Order> allOrdersOfCustomer = orderModel.findAllOrdersOfCustomer(customer);
+		if (allOrdersOfCustomer == null) {
+			System.out.println("No orders were found for customer with id: " + customer.getCustomerId());
+			System.out.println("You can't retrieve that which does not exist.. so add an order first!");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} else {		
+			currentMenu.displayOrderPropertiesHeader();
+			currentMenu.displayDivider();
+			currentMenu.displayAllOrders(allOrdersOfCustomer);
+
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void findPendingOrdersOnly() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		
-		ArrayList<Order> pendingOrderList = (ArrayList<Order>) orderModel.findPendingOrders();
+		List<Order> pendingOrderList = orderModel.findPendingOrdersOnly();
 		
 		currentMenu.displayOrderPropertiesHeader();
 		currentMenu.displayDivider();
@@ -104,9 +125,9 @@ public class OrderController extends Controller {
 	}
 	
 	public void findCompletedOrdersOnly() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		
-		ArrayList<Order> completedOrderList = (ArrayList<Order>) orderModel.findCompletedOrders();
+		List<Order> completedOrderList = orderModel.findCompletedOrdersOnly();
 		
 		currentMenu.displayOrderPropertiesHeader();
 		currentMenu.displayDivider();
@@ -116,30 +137,29 @@ public class OrderController extends Controller {
 		this.runView();
 	}
 	
+	// This singular order retrieval method always displays the order level data AND order line level data
+	
 	public void findOrder() {
-		orderModel = new OrderDAOImpl()
-				;
-		Order foundOrder = new Order();
-		String findThisOrder = currentMenu.askUserForInput();
-		if (Validator.isAnInt(findThisOrder)) {
-			// TODO Don't like using a Try-Catch here, improve later
-			try { // if user input was an int
-				foundOrder = orderModel.findOrderById(Long.valueOf(findThisOrder));
-			} catch (Exception ex) {
-				System.out.println("Could not find an order with that ID.");
-			}
-		} 
-		currentMenu.displayOrderPropertiesHeader();
-		currentMenu.displayDivider();
-		currentMenu.displayOrderProperties(foundOrder);
-		
-		currentMenu.pressEnterToReturn();
-		this.runView();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
+				
+		Long findThisOrder = inputValidOrderId();
+		Order foundOrder = orderModel.findById(Order.class, findThisOrder);
+		if (foundOrder == null) {
+			System.out.println("A order could not be found with id: " + foundOrder);
+			System.out.println("Please try again with a different id.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}  else {
+			currentMenu.displayOrderWithItemDetails(foundOrder);
+
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void addNewOrder() {
 		System.out.println("To enter a new order, you must associate an existing customer as a first step.");
-		System.out.println("Do you wish to continue at present (y) or return (n)?");
+		System.out.println("Do you wish to continue at present (y) or add a customer first (n)?");
 		
 		boolean continueAddingTheOrder = currentMenu.asksUserYesOrNo();
 		
@@ -147,7 +167,7 @@ public class OrderController extends Controller {
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		} else {	 // create the new order
-			orderModel = new OrderDAOImpl();
+			orderModel = new OrderDAOImpl(entityManager, Order.class);
 			Order orderToAdd = new Order();
 
 			Customer customer = inputCustomer();
@@ -159,72 +179,78 @@ public class OrderController extends Controller {
 			Address shippedToAddress = inputAddressOfCustomer(customer);
 			orderToAdd.setShippedTo(shippedToAddress);
 
-			addLineItemToOrder();
+			List<OrderLineItem> lineItems = inputLineItems();
+			orderToAdd.setOrderItems(lineItems);
 
-			// Creates an order on an order and customer object jointly
-			orderModel.createOrder(orderToAdd, customer);
+			orderModel.create(orderToAdd);
 			currentMenu.displayCreateSuccess();
 			
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
 	}
-	
-	public void updateOrder() {
-		currentMenu.displayOrderUpdateMenu();
 
-		String userChoice = input.nextLine(); 
-		if(!Validator.validateMenuChoice(userChoice)) { // Necessary to return the menu if input was deemed invalid
-			System.out.println("You did not enter a valid number. \n");
-			currentMenu.displayOrderUpdateMenu();
-		}
+	public void updateOrder() {
+		Order orderToUpdate = provideAnOrderToUpdate();
 		
-		int userChoiceNumber = Integer.parseInt(userChoice);
-		switch(userChoiceNumber) {
-			case 1: editLineItemOfOrder();
-					break;
-			case 2: addLineItemToOrder();
-					break;
-			case 3: removeLineItemFromOrder();
-					break;
-			case 4: editShippingStatusOfOrder();
-					break;
-			case 5: editCustomerOfOrder();
-					break;
-			case 6: editAddressOfOrder();
-					break;
-			case 9:	currentMenu.displayMenu();
-					break;
-			default: System.out.println("Invalid choice. \n");
-					currentMenu.displayOrderUpdateMenu();
+		// Show the order details to the user first so he/she understands best what to update
+		currentMenu.displayOrderPropertiesHeader();
+		currentMenu.displayLongDivider();
+		currentMenu.displayOrderWithItemDetails(orderToUpdate);
+		
+		currentMenu.displayOrderUpdateMenu();
+		
+		boolean validChoice = false;
+		while (!validChoice) {
+			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
+			switch (userMenuChoice) {
+				case 1: editLineItemOfOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 2: addLineItemToOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 3: removeLineItemFromOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 4: editShippingStatusOfOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 5: editCustomerOfOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 6: editAddressOfOrder(orderToUpdate);
+						validChoice = true;
+						break;
+				case 9:	currentMenu.displayMenu();
+						validChoice = true;
+						break;
+				default: System.out.println("Not a valid option. \n");
+						break;
+			}
 		}
 	}
-	
+
 	public void deleteOrder() {
-		orderModel = new OrderDAOImpl();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
 		Order orderToDelete = new Order();
 		
 		Long id = inputValidOrderId();
 		
 		orderToDelete.setOrderId(id);
-		if(idIsInDatabase(id)) {
-			currentMenu.displayDeletionConfirmationPrompt(); // Require confirmation
-			boolean yesOrNo = currentMenu.asksUserYesOrNo();
-			if (yesOrNo) { // user answered yes
-				// Method also deletes all associated orderLineItems via DB cascade
-				// Reliance on this is solution undesirable in a production environment
-				// but an acceptable solution for the moment
-				orderModel.deleteOrder(orderToDelete);
-				currentMenu.displayDeleteSuccess();
-				currentMenu.pressEnterToReturn();
-				this.runView();
-			} else {
-				currentMenu.displayOperationCancelled();
-				currentMenu.pressEnterToReturn();
-				this.runView();
-			}
+		System.out.println("You entered the following ID:" + orderToDelete.getOrderId());
+		
+		currentMenu.displayDeletionConfirmationPrompt(); // Require confirmation
+		boolean yesOrNo = currentMenu.asksUserYesOrNo();
+		if (yesOrNo) { // user answered yes
+			// Method also deletes all associated orderLineItems via DB cascade
+			// Reliance on this is solution undesirable in a production environment, but an acceptable solution for the moment
+			orderModel.delete(orderToDelete);
+			currentMenu.displayDeleteSuccess();
+			currentMenu.pressEnterToReturn();
+			this.runView();
 		} else {
-			currentMenu.displayItemNotFound();
+			currentMenu.displayOperationCancelled();
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
@@ -232,28 +258,64 @@ public class OrderController extends Controller {
 	
 	/* EDIT ORDER METHODS */
 	
-	public void editLineItemOfOrder() {
-		// TODO write code
+	public Order provideAnOrderToUpdate() {
+		Order orderToUpdate = new Order();
+		orderModel = new OrderDAOImpl(entityManager, Order.class);
+		
+		Long id = inputValidOrderId();
+		
+		orderToUpdate = orderModel.findById(Order.class, id);
+		if(orderToUpdate == null) {
+			System.out.println("No order was found with id " + id + ".");
+			System.out.println("Returning to the order menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
+		return orderToUpdate;
 	}
 	
-	public void addLineItemToOrder() {
-		// TODO write code
+	public void editLineItemOfOrder(Order orderToUpdate) {
+		currentMenu.displayOrderPropertiesHeader();
+		currentMenu.displayLongDivider();
+		currentMenu.displayOrderWithItemDetails(orderToUpdate);
+		
+		System.out.println("Select the row you want to update (e.g. 2): ");
+		int rowToUpdate = input.nextInt();
+		List<OrderLineItem> itemsInOrder = orderToUpdate.getItemsInOrder();
+		OrderLineItem lineItemToUpdate = itemsInOrder.get(rowToUpdate);
+		
+		
 	}
 	
-	public void removeLineItemFromOrder() {
-		// TODO write code
+	public void addLineItemToOrder(Order orderToUpdate) {
+		OrderLineItem orderLineToAdd = new OrderLineItem();
+		
+		orderToUpdate.getItemsInOrder().add(orderLineToAdd);
+		
+		orderModel.update(orderToUpdate);
 	}
 	
-	public void editShippingStatusOfOrder() {
-		//TODO write code
+	public void removeLineItemFromOrder(Order orderToUpdate) {
+		//TODO add code
+		orderModel.update(orderToUpdate);
 	}
 	
-	public void editCustomerOfOrder() {
-		//TODO write code
+	public void editShippingStatusOfOrder(Order orderToUpdate) {
+		orderToUpdate.setOrderId(inputValidOrderId());
+		orderToUpdate.setShipped(inputShippingStatus());
+		orderModel.update(orderToUpdate);
 	}
 	
-	public void editAddressOfOrder() {
-		//TODO write code
+	public void editCustomerOfOrder(Order orderToUpdate) {
+		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
+		
+		orderModel.update(orderToUpdate);
+	}
+	
+	public void editAddressOfOrder(Order orderToUpdate) {
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
+		
+		orderModel.update(orderToUpdate);	
 	}
 	
 	/* INPUT & HELPER METHODS */
@@ -265,10 +327,55 @@ public class OrderController extends Controller {
 		return lineItem;
 	}
 	
+	private List<OrderLineItem> inputLineItems() {
+		boolean userWantsToAddAnotherLineItem = true;
+		List<OrderLineItem> listOfLineItems = new ArrayList<OrderLineItem>();
+		
+		// Continue to add new items to the order unless the user stops the loop
+		do {
+			Product product = inputProductForLineItem();
+			int quantity = inputQuantityForLineItem();
+			OrderLineItem newLineItem = createLineItem(product, quantity);
+			listOfLineItems.add(newLineItem);
+			
+			// Checking with the user whether they want to add another item to this order
+			System.out.println("Would you like to add another item?");
+			userWantsToAddAnotherLineItem = currentMenu.asksUserYesOrNo();
+		} while(userWantsToAddAnotherLineItem);
+		
+		return listOfLineItems;
+	}
+	
+	public Product inputProductForLineItem() {
+		System.out.print("Please enter the id of this line item's product: ");
+		Long productId = input.nextLong();
+		Product product = productModel.findById(Product.class, productId);
+		return product;
+	}
+	
+	public int inputQuantityForLineItem() {
+		System.out.println("Please enter the amount of products for this line item: ");
+		int quantity = input.nextInt();
+		return quantity;
+	}
+	
 	public Customer inputCustomer() {
 		System.out.print("Please enter the id of the customer to associate with the current order:");
 		Long customerId = input.nextLong();
-		return customerModel.findCustomerById(customerId);
+		Customer customer = customerModel.findById(Customer.class, customerId);
+		if(customer == null) {
+			currentMenu.displayOperationFailed();
+			System.out.println("No customer was found with id " + customerId);
+			System.out.println("Would you like to try again or return to the order menu?");
+			boolean tryAddingACustomer = currentMenu.asksUserYesOrNo();
+			if(tryAddingACustomer) {
+				return inputCustomer();
+			} else {
+				currentMenu.pressEnterToReturn();
+				this.runView();
+			}
+		}
+		return customer;
 	}
 	
 	public boolean inputShippingStatus() {
@@ -278,8 +385,10 @@ public class OrderController extends Controller {
 	}
 	
 	public Address inputAddressOfCustomer(Customer customer) {
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
 		ArrayList<Address> knownCustomerAddresses = (ArrayList<Address>)addressModel.findAddressesByCustomer(customer);
-		currentMenu.displayAddressList();
+		// This is pretty dirty... shame on me
+		(new AddressView()).displayAllAddresses(knownCustomerAddresses);
 		System.out.println("Please select the row number (e.g. 1) of the address you want to link to this order shipment:");
 		int thisRow = input.nextInt();
 		return knownCustomerAddresses.get(thisRow);
@@ -294,13 +403,5 @@ public class OrderController extends Controller {
 		}
 		Long id = Long.valueOf(attemptAtId);
 		return id;
-	}
-	
-	public boolean idIsInDatabase(Long id) {
-		if(orderModel.isOrderStoredWithId(id)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

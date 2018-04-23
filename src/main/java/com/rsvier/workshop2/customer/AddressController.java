@@ -170,19 +170,9 @@ public class AddressController extends Controller {
 	}
 	
 	public void updateAddress() {
-		Address addressToUpdate = new Address();
-		addressModel = new AddressDAOImpl(entityManager, Address.class);
+		Address addressToUpdate = provideAnAddressToUpdate();
 		
-		Long id = inputValidAddressId();
-		
-		addressToUpdate = addressModel.findById(Address.class, id);
-		if(addressToUpdate == null) {
-			System.out.println("No address was found with id " + id + ".");
-			System.out.println("Returning to the address menu.");
-			currentMenu.pressEnterToReturn();
-			this.runView();
-		}
-		
+		// Show the address details to the user first so he/she understands best what to update
 		currentMenu.displayAddressDetailsHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayAddressDetails(addressToUpdate);
@@ -287,6 +277,22 @@ public class AddressController extends Controller {
 			currentMenu.pressEnterToReturn();
 			this.runView();
 		}
+	}
+	
+	public Address provideAnAddressToUpdate() {
+		Address addressToUpdate = new Address();
+		addressModel = new AddressDAOImpl(entityManager, Address.class);
+		
+		Long id = inputValidAddressId();
+		
+		addressToUpdate = addressModel.findById(Address.class, id);
+		if(addressToUpdate == null) {
+			System.out.println("No address was found with id " + id + ".");
+			System.out.println("Returning to the address menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} 
+		return addressToUpdate;
 	}
 	
 	public Customer inputCustomerForAddress() {

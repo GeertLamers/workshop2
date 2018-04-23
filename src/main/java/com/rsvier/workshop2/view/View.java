@@ -8,42 +8,10 @@ public abstract class View<K> { //parent version
 	protected boolean validUserChoice;
 	protected View userMenuChoice;
 	
-	public abstract void displayMessage(); //This runs when the menu is loaded. Welcome text etc.
+	public abstract void displayMessage(); // Displays a menu specific message
 	public abstract void displayMenu(); // Displays the relevant menu
-	public View() {} //add HashMap info here and load the possibleMenuOptions
-	public View getUserMenuChoice() {
-		return userMenuChoice;
-	}
 	
-	public String asksUserForUserChoice(ArrayList<String> listOfUsers) {
-		String userInput = "";
-		boolean validInput = false; // Don't allow the user to exit unless he enters something valid
-		outer:
-		while (!validInput) {
-			System.out.println(listOfUsers);
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Please select a user or enter 9 to return");
-			try{
-				userInput = br.readLine();
-				System.out.println(userInput);
-				if (userInput.equals("9")) {
-					validInput = true;
-					break;
-				}
-				for (String user : listOfUsers) {
-					if (user.equals(userInput)) {
-						validInput = true;
-						break outer;
-					}
-				}
-				System.out.println("You entered an invalid input");
-			}
-			catch(Exception inputIsNotValidError){
-					System.out.println("You entered an invalid input"); // This point should not be reachable
-			}
-		}
-		return userInput;
-	}	
+	public View() {} //add HashMap info here and load the possibleMenuOptions
 	
 	public boolean asksUserYesOrNo() {
 		String userInput = "";

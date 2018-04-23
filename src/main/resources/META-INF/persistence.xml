@@ -22,9 +22,14 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       <property name="jacvax.persistence.schema-generation.database.action" value="drop-and-create" />
       
       <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
-      <property name="hibernate.hikari.minimumIdle" value="5" />
+      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+      <property name="hibernate.hikari.minimumIdle" value="2" />
       <property name="hibernate.hikari.maximumPoolSize" value="10" />
       <property name="hibernate.hikari.idleTimeout" value="30000" />
+      <property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
+      <property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />
+      <property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
+      <property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
     </properties>
     
   </persistence-unit>

@@ -5,8 +5,7 @@ import com.rsvier.workshop2.controller.*;
 import com.rsvier.workshop2.useraccounts.*;
 
 public class LoginMenuView extends View {
-	
-	@Override		
+		
 	public void displayMessage() {
 		System.out.print("\nWelcome to the login screen. \n\n" +
 					     "Please enter your username and password to login. \n\n" +

@@ -17,13 +17,17 @@ public class Product {
 	private Long productId;
 	private String name;
 	private BigDecimal price;
+	
 	@Column(name = "stock_quantity")
 	private int stockQuantity;
+	
 	@Column(name = "produced_year")
 	private int producedYear;
 	private String country;
+	
 	@Column(name = "grape_variety")
 	private String grapeVariety;
+	
 	@Column(name = "alcohol_percentage")
 	private double alcoholPercentage;
 

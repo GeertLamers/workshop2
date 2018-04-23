@@ -1,7 +1,6 @@
 package com.rsvier.workshop2.order;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import com.rsvier.workshop2.view.View;
 
@@ -24,9 +23,9 @@ public class OrderView extends View {
 	
 	public void displayMenuOptions() {
 		System.out.print("1. View all orders \n" +
-						 "2. Find all orders of a customer \n" +
-						 "3. View pending orders only \n" +
-						 "4. View completed orders only \n" +
+						 "2. Find all orders of a customer (currently N/A) \n" +
+						 "3. View pending orders only (currently N/A) \n" +
+						 "4. View completed orders only (currently N/A) \n" +
 						 "5. Find a specific order \n" +
 						 "6. Add new order \n" +
 						 "7. Update order \n" +
@@ -37,7 +36,7 @@ public class OrderView extends View {
 	}
 	
 	public void displayOrderPropertiesHeader() {
-		System.out.printf("%-5d %-5d %-5d %-7d.2 %-7s \n",
+		System.out.printf("%-7s %-7s %-10s %-12s %-12s \n",
 						   "id",
 						   "customer id",
 						   "# items",
@@ -46,7 +45,7 @@ public class OrderView extends View {
 	}
 	
 	public void displayOrderProperties(Order order) {
-		System.out.printf("%-5d %-5d %-5d %-7d.2 %-7s \n",
+		System.out.printf("%-7d %-7d %-10d %-12d.2 %-12s \n",
 						   order.getOrderId(),
 						   order.getCustomerOfOrder().getCustomerId(),
 						   order.getOrderItemsTotal(),
@@ -54,7 +53,7 @@ public class OrderView extends View {
 						   order.isShipped());
 	}
 	
-	public void displayAllOrders(ArrayList<Order> allOrders) {
+	public void displayAllOrders(List<Order> allOrders) {
 		for (Order order : allOrders) {
 			displayOrderProperties(order);
 		}
@@ -72,18 +71,18 @@ public class OrderView extends View {
 	}
 	
 	public void displayOrderItemListHeader() {
-		System.out.printf("%-30s %-8s %-10s \n",
+		System.out.printf("%-30s %-12s %-12s \n",
 				   "product name",
 				   "quantity",
 				   "price per product");
 	}
 	
-	public void displayOrderItemListDetails(Set<OrderLineItem> listOfItems) {
-		for (OrderLineItem item : listOfItems) {
-			System.out.printf("%-30s %-8d %-10s \n",
+	public void displayOrderItemListDetails(List<OrderLineItem> arrayList) {
+		for (OrderLineItem item : arrayList) {
+			System.out.printf("%-30s %-12d %-12s \n",
 					   item.getProduct().getName(),
 					   item.getProductQuantity(),
-					   (item.getProduct().getPrice()).toString());
+					   (item.getProduct().getPrice()).toString()); // converts a BigDecimal into a String object
 		}
 	}
 	
@@ -96,18 +95,5 @@ public class OrderView extends View {
 						 "6. Associated shipping address \n" +
 						 "9. Return to the order menu \n" +
 						 "\n");
-	}
-	
-	public void displayAddressList() {
-		displayAddressPropertiesHeader();
-		displayAddressDetails();
-	}
-	
-	public void displayAddressPropertiesHeader() {
-		//TODO write code
-	}
-	
-	public void displayAddressDetails() {
-		//TODO write code
 	}
 }

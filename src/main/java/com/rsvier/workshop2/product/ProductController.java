@@ -149,19 +149,9 @@ public class ProductController extends Controller {
 	}
 	
 	public void updateProduct() {
-		Product productToUpdate = new Product();
-		productModel = new ProductDAOImpl(entityManager, Product.class);
-
-		Long id = inputValidProductId();
-
-		productToUpdate = productModel.findById(Product.class, id);
-		if(productToUpdate == null) {
-			System.out.println("No product was found with id " + id + ".");
-			System.out.println("Returning to the address menu.");
-			currentMenu.pressEnterToReturn();
-			this.runView();
-		}
+		Product productToUpdate = provideAProductToUpdate();
 		
+		// Show the product details to the user first so he/she understands best what to update
 		currentMenu.displayProductPropertiesHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayProductProperties(productToUpdate);
@@ -262,6 +252,22 @@ public class ProductController extends Controller {
 	}
 	
 	/* INPUT & HELPER METHODS */
+	
+	public Product provideAProductToUpdate() {
+		Product productToUpdate = new Product();
+		productModel = new ProductDAOImpl(entityManager, Product.class);
+
+		Long id = inputValidProductId();
+
+		productToUpdate = productModel.findById(Product.class, id);
+		if(productToUpdate == null) {
+			System.out.println("No product was found with id " + id + ".");
+			System.out.println("Returning to the product menu.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
+		return productToUpdate;
+	}
 	
 	public String inputName() {
 		System.out.print("Enter a name:");
