@@ -2,6 +2,8 @@ package com.rsvier.workshop2.utility;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,8 +12,11 @@ import java.io.Reader;
 
 import com.ibatis.common.jdbc.ScriptRunner;
 import com.rsvier.workshop2.controller.Controller;
+import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 import com.rsvier.workshop2.customer.CustomerDAOImpl;
+import com.rsvier.workshop2.customer.Address.AddressType;
+import com.rsvier.workshop2.customer.AddressDAOImpl;
 import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.Account.OwnerType;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
@@ -22,18 +27,44 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 	private Logger logger = Logger.getLogger(CustomerDAOImpl.class.getName());
 	private CustomerDAOImpl customerModel;
 	private AccountDAOImpl accountModel;
+	private AddressDAOImpl addressModel;
 
 	public boolean isDatabaseInitialized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	public boolean createMYSQLDatabase () {
+		 createOurAccount();
+		 createFillerAccounts();
+		 createAddresses();
+		 return true;
+	}
+	
+	public void createAddresses() {
+		// Create filler addresses and map them to our customers (run AFTER creating the customers!)
+		int testNumber = 10;
+		
+		List<Customer> customerList = customerModel.findAll(); // Load all customers
+		for (Customer customer : customerList) {
+			Address address = new Address();
+			address.setStreet("Teststreet " + testNumber);
+			address.setHouseNumber(testNumber);
+			address.setPostalCode("ABCD" + testNumber);
+			address.setCity("Amsterdam");
+			address.setAddressType(AddressType.DELIVERY);
+			address.setCustomerAtAddress(customer);
+			addressModel.create(address);
+			testNumber++;
+		}
+	}
+	
+	private void createOurAccount () {
 		// Our account
 		PasswordHasher passwordHasher = new PasswordHasher();
 		String bestPassword = "Hello";
 		String bestSalt = passwordHasher.generateSalt();
 		String bestEncryptedPassword = passwordHasher.makeSaltedPasswordHash(bestPassword, bestSalt);
-		
+
 		Customer bestCustomer = new Customer("Onne", "Geheim", "", "rsvier@rsvier.rsvier", "0123456789"/*, creationDate*/);
 		Account bestAccount = new Account("Onne", bestEncryptedPassword, bestSalt);
 		bestAccount.setOwnerType(OwnerType.ADMIN);
@@ -43,6 +74,11 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 		bestCustomer.setAccount(bestAccount);
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 		customerModel.create(bestCustomer);
+		
+	}
+	
+	private void createFillerAccounts() {
+		PasswordHasher passwordHasher = new PasswordHasher();
 		
 		// Filler accounts
 		String username = "A";
@@ -69,7 +105,6 @@ public class DatabaseBuilderDAOImpl extends Controller implements DatabaseBuilde
 			customerModel = new CustomerDAOImpl(entityManager, Customer.class);
 			customerModel.create(newCustomer);
 		}
-		return true;
 	}
 	
 	public boolean initializeMYSQLDatabase() { // old method
