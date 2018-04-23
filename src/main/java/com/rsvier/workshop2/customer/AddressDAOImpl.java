@@ -20,7 +20,7 @@ public class AddressDAOImpl extends GenericDAOImpl<Address> {
 	}
 	
 	public List<Address> findAddressesByCustomer(Customer customer) {
-		Query query = em.createQuery("FROM address WHERE customer = :customer");
+		Query query = em.createQuery("FROM Address a WHERE a.customer = :customer");
 		query.setParameter("customer", customer);
 		@SuppressWarnings("unchecked")
 		List<Address> addressesOfCustomer = query.getResultList();
