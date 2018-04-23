@@ -14,7 +14,7 @@ public class Address {
 
 	// Addresses can be either of the billing or delivery type
 	
-	enum AddressType {
+	public enum AddressType {
 		BILLING,
 		DELIVERY
 	}
