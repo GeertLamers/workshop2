@@ -79,13 +79,19 @@ public class CustomerController extends Controller {
 		Customer foundCustomer = new Customer();
 		Long findThisCustomer = inputValidCustomerId();
 		foundCustomer = customerModel.findById(Customer.class, Long.valueOf(findThisCustomer)); 
-		
-		currentMenu.displayCustomerDetailsHeader();
-		currentMenu.displayLongDivider();
-		currentMenu.displayCustomerDetails(foundCustomer);
-		
-		currentMenu.pressEnterToReturn();
-		this.runView();
+		if (foundCustomer == null) {
+			System.out.println("A customer could not be found with id: " + findThisCustomer);
+			System.out.println("Please try again with a different id.");
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		} else {
+			currentMenu.displayCustomerDetailsHeader();
+			currentMenu.displayLongDivider();
+			currentMenu.displayCustomerDetails(foundCustomer);
+			
+			currentMenu.pressEnterToReturn();
+			this.runView();
+		}
 	}
 	
 	public void addNewCustomer() {
