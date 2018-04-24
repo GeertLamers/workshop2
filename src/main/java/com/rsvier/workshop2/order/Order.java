@@ -3,6 +3,7 @@ package com.rsvier.workshop2.order;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +40,8 @@ public class Order {
     
 	@OneToMany(mappedBy = "parentOrder",
 			   fetch = FetchType.EAGER,
-			   cascade = CascadeType.ALL)
+			   cascade = CascadeType.ALL,
+			   orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Column(nullable = false)
 	private List<OrderLineItem> itemsInOrder;
@@ -91,7 +93,15 @@ public class Order {
 		return orderPriceTotal;
 	}
 
-	public void setOrderPriceTotal(BigDecimal orderPriceTotal) {
+	public void setOrderPriceTotal(List<OrderLineItem> lineItems) {
+		BigDecimal orderPriceTotal = BigDecimal.ZERO;
+		ListIterator<OrderLineItem> it = lineItems.listIterator();
+		while(it.hasNext()) {
+			OrderLineItem lineItem = it.next();
+			BigDecimal itemPrice = lineItem.getProduct().getPrice();
+			int itemQuantity = lineItem.getProductQuantity();
+			orderPriceTotal = orderPriceTotal.add(itemPrice.multiply(new BigDecimal(itemQuantity)));
+		}
 		this.orderPriceTotal = orderPriceTotal;
 	}
 
@@ -99,8 +109,15 @@ public class Order {
 		return orderItemsTotal;
 	}
 
-	public void setOrderItemsTotal(int orderItemsTotal) {
-		this.orderItemsTotal = orderItemsTotal;
+	public void setOrderItemsTotal(List<OrderLineItem> lineItems) {
+		ListIterator<OrderLineItem> it = lineItems.listIterator();
+		int totalOfLineItemQuantities = 0;
+		while(it.hasNext()) {
+			OrderLineItem lineItem = it.next();
+			int itemQuantity = lineItem.getProductQuantity();
+			totalOfLineItemQuantities += itemQuantity;
+		}
+		this.orderItemsTotal = totalOfLineItemQuantities;
 	}
 
 	public boolean isShipped() {
