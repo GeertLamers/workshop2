@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public class ProductDAOImpl extends GenericDAOImpl<Product> {
 	
-	protected ProductDAOImpl(EntityManager em, Class<Product> entityClass) {
+	public ProductDAOImpl(EntityManager em, Class<Product> entityClass) {
 		super(em, entityClass);
 	}
 	
