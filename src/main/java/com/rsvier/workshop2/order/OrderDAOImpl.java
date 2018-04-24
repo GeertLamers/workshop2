@@ -25,7 +25,7 @@ public class OrderDAOImpl extends GenericDAOImpl<Order> {
 	}
 
 	public List<Order> findAllOrdersOfCustomer(Customer customer) {
-		Query query = em.createQuery("FROM `order` o WHERE o.customer_id = :customerId");
+		Query query = em.createQuery("FROM Orders o WHERE o.customer.getCustomerId() = :customerId");
 		query.setParameter("customerId", customer.getCustomerId());
 		@SuppressWarnings("unchecked")
 		List<Order> ordersOfCustomer = query.getResultList();
@@ -33,14 +33,14 @@ public class OrderDAOImpl extends GenericDAOImpl<Order> {
 	}
 
 	public List<Order> findCompletedOrdersOnly() {
-		Query query = em.createQuery("FROM \"order\" o WHERE o.completed = 'true'");
+		Query query = em.createQuery("FROM Orders o WHERE o.completed = 'true'");
 		@SuppressWarnings("unchecked")
 		List<Order> ordersOfCustomer = query.getResultList();
 		return ordersOfCustomer;
 	}
 
 	public List<Order> findPendingOrdersOnly() {
-		Query query = em.createQuery("FROM \"order\" o WHERE o.completed = 'false'");
+		Query query = em.createQuery("FROM Orders o WHERE o.completed = 'false'");
 		@SuppressWarnings("unchecked")
 		List<Order> ordersOfCustomer = query.getResultList();
 		return ordersOfCustomer;
