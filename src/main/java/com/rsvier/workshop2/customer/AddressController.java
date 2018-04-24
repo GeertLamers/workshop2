@@ -105,7 +105,7 @@ public class AddressController extends Controller {
 	public void findAddressesByCustomerId() {
 		ArrayList<Address> listOfAddresses = new ArrayList<Address>();
 		addressModel = new AddressDAOImpl(entityManager, Address.class);
-		Customer customer = inputCustomerForAddress();
+		Customer customer = inputCustomer();
 		
 		listOfAddresses = (ArrayList<Address>) addressModel.findAddressesByCustomer(customer);
 		
@@ -131,7 +131,7 @@ public class AddressController extends Controller {
 		// that only exists in the customer controller. If that was not the case, the user is prompted to retrieve a customer
 		// from the database by its id. The goal is to ensure an address is always tied to a customer.
 		if(customerAtAddress == null) {
-			customerAtAddress = inputCustomerForAddress();
+			customerAtAddress = inputCustomer();
 		}
 		
 		addressToAdd.setCustomerAtAddress(customerAtAddress);
@@ -295,7 +295,7 @@ public class AddressController extends Controller {
 		return addressToUpdate;
 	}
 	
-	public Customer inputCustomerForAddress() {
+	public Customer inputCustomer() {
 		System.out.print("Please enter the id of the customer to associate with the current order:");
 		Long customerId = input.nextLong();
 		customerModel = new CustomerDAOImpl(entityManager, Customer.class);
@@ -306,7 +306,7 @@ public class AddressController extends Controller {
 			System.out.println("Would you like to try again or return to the order menu?");
 			boolean tryAddingACustomer = currentMenu.asksUserYesOrNo();
 			if(tryAddingACustomer) {
-				return inputCustomerForAddress();
+				return inputCustomer();
 			} else {
 				currentMenu.pressEnterToReturn();
 				this.runView();

@@ -62,6 +62,12 @@ public class AddressView extends View<AddressView> {
 		}
 	}
 	
+	public void displayAllAddressesWithHeader(ArrayList<Address> allAddresses) {
+		displayAddressDetailsHeader();
+		displayLongDivider();
+		displayAllAddresses(allAddresses);
+	}
+	
 	public void displayAddressUpdateMenu() {
 		System.out.print("\n What would you like to update? \n" +
 						 "\n" +
