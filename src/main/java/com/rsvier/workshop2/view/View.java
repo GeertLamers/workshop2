@@ -41,9 +41,14 @@ public abstract class View<K> { //parent version
 		String userInput = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			userInput = br.readLine();
-			userInput = userInput.trim();
-			if (userInput.equals("0")) {
+			userInput = br.readLine().trim();
+			try { // checks whether user really entered a number
+				Integer.parseInt(userInput);
+			} catch ( NumberFormatException ex){
+				System.out.println("That was not a number. Please try again!");
+				return askUserForMenuChoice();
+			}
+			if (userInput.equals(0)) {
 				System.out.println("You are about to exit the program. Are you certain?");
 				if (asksUserYesOrNo()) { // user entered yes
 					System.out.println("Program is closing..");
