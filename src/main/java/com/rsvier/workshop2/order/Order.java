@@ -24,7 +24,7 @@ import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 
 @Entity
-@Table (name = "\"order\"")
+@Table (name = "Orders")
 public class Order {
 	
 	@Id
