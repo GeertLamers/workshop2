@@ -1,6 +1,8 @@
 package com.rsvier.workshop2.order;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,6 +15,7 @@ import com.rsvier.workshop2.product.Product;
 public class OrderLineItem {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long orderLineId;
 	
 	@ManyToOne(optional = false)
@@ -32,14 +35,11 @@ public class OrderLineItem {
 	public OrderLineItem() {
 	}
 	
-	public OrderLineItem(Order order,
-						 Product product,
-						 int productQuantity) {
-		this.parentOrder = order;
+	public OrderLineItem(Product product, int quantity) {
 		this.product = product;
-		this.productQuantity = productQuantity;
+		this.productQuantity = quantity;
 	}
-	
+
 	public Long getOrderLineId() {
 		return orderLineId;
 	}
