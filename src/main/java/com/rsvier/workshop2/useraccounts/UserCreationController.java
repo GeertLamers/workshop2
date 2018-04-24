@@ -92,4 +92,40 @@ public class UserCreationController extends Controller {
 		customerModel.create(newCustomer);
 		currentMenu.displayCreateSuccess();
 	}
+
+	public void accountCreator() {
+		String username = "";
+		String password = "";
+		String salt = "";
+		@SuppressWarnings("unused")
+		Date creationDate = new Date();
+		ArrayList<String> necessaryCustomerInformation = new ArrayList<String>(); //temporary fix
+		necessaryCustomerInformation.add("username");
+		necessaryCustomerInformation.add("password");
+		for (String customerProperty : necessaryCustomerInformation) {
+			boolean validInput = false;
+			String userInput = "";
+			while (!validInput) {
+				userInput = ((UserCreationView) currentMenu).askUserForInput(customerProperty);
+				validInput = new Validator(userInput).validateUser(customerProperty);
+			}
+			switch (customerProperty) {
+			case "username":
+				username = userInput;
+				break;
+			case "password":
+				PasswordHasher passwordHasher = new PasswordHasher();
+				salt = passwordHasher.generateSalt();
+				password = passwordHasher.makeSaltedPasswordHash(userInput, salt);
+				break;
+			default:
+				System.out.println("Unidentified customer property. Please check your database. Program is closing..");
+				System.exit(0);
+			}
+		}
+		Account newAccount = new Account(username, password, salt);
+		accountModel = new AccountDAOImpl(entityManager, Account.class);
+		accountModel.create(newAccount);
+		currentMenu.displayCreateSuccess();
+	}
 }

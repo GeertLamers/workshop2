@@ -100,13 +100,15 @@ public class CustomerController extends Controller {
 	
  	public void addNewCustomer() {
  		// Creating a customer goes through the below controller and method
-		new UserCreationController(new UserCreationView()).jointAccountAndCustomerCreator();
+ 		System.out.println("Press \"Y\" to create both a customer and an account. Press \"N\" to just create an account.");
+ 		if (currentMenu.asksUserYesOrNo()) new UserCreationController(new UserCreationView()).jointAccountAndCustomerCreator();
+ 		new UserCreationController(new UserCreationView()).accountCreator();
  	}
 
 	public void updateCustomerPersonalia() {
 		Customer customerToUpdate = provideACustomerToUpdate();
 		
-		// Show the customer details to the user first so he/she understands best what to updat
+		// Show the customer details to the user first so he/she understands best what to update
 		currentMenu.displayCustomerDetailsHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayCustomerDetails(customerToUpdate);

@@ -24,7 +24,7 @@ public class CustomerView extends View<CustomerView> {
 	public void displayMenuOptions() {
 		System.out.print("1. View customer list \n" +
 						 "2. Find a customer \n" +
-						 "3. Add new customer \n" +
+						 "3. Add new customer and/or account \n" +
 						 "4. Update customer details \n" +
 						 "5. Update customer address(es) \n" +
 						 "6. Delete customer \n" +
