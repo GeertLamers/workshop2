@@ -16,43 +16,34 @@ public class Validator { // Validates possible user inputs.
 		this.userInput = userInput;
 	}
 	
-    public static boolean isAnInt(String userInput) {   
-        try {
-            Integer.parseInt(userInput);
-            return true;
-        }
-        catch (Exception ex) {
-        	System.out.println("Not a number.");
-            return false;
-        }
-    }
-    
+	public static boolean isAnInt(String userInput) {   
+		try {  
+			@SuppressWarnings("unused")
+			double d = Double.parseDouble(userInput);  
+		} catch(NumberFormatException e) {  
+			System.out.println("Not an integer number.");
+			return false;  
+		}  
+		return true;  
+	}
+
     public static boolean IsAPositiveInt(String userInput) {
-    	try {
-    		int id = Integer.parseInt(userInput);
-    		if (id >= 1) {
-    			return true;
-    		} else {
-    			System.out.println("You entered a 0 or lower.");
-    			return false;
-    		}
-    	} catch (Exception ex) {
-    		System.out.println("Not a number.");
-    		return false;
-    	}
+    	int value = -1;
+    	do {
+            try {
+                value = Integer.parseInt(userInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Not a positive number.");
+                return false;
+            }
+        } while (value < 1);
+    	return true;
     }
     
     public static boolean isAPositiveOrZeroInt(String userInput) {
-    	try {
-    		int id = Integer.parseInt(userInput);
-    		if(id >= 0) {
-    			return true;
-    		} else {
-    			System.out.println("You entered a number lower than 0.");
-    			return false;
-    		}
-    	} catch (Exception ex) {
-    		System.out.println("Not a number.");
+    	if(userInput.equals("0") || !userInput.startsWith("-"))  {
+    	    return true;
+    	} else {
     		return false;
     	}
     }
