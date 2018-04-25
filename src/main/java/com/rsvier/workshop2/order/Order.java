@@ -19,9 +19,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import com.rsvier.workshop2.customer.Address;
 import com.rsvier.workshop2.customer.Customer;
 
 @Entity
@@ -48,9 +46,6 @@ public class Order {
 	private BigDecimal orderPriceTotal;
 	private int orderItemsTotal;
 	private boolean shipped;
-	
-	@OneToOne(optional = false)
-	private Address shippedTo;
 	private boolean completed;
 	
 	// ======================================================== //
@@ -82,7 +77,12 @@ public class Order {
 	}
 	
 	public void setOrderItems(List<OrderLineItem> lineItems) {
-		this.itemsInOrder = lineItems;	
+		if(itemsInOrder == null) {
+			this.itemsInOrder = lineItems;	
+		} else {
+			this.itemsInOrder.retainAll(lineItems);
+			this.itemsInOrder.addAll(lineItems);
+		}
 	}	
 	
 	public List<OrderLineItem> getItemsInOrder() {
@@ -128,18 +128,10 @@ public class Order {
 		this.shipped = shipped;
 	}
 
-	public Address getShippedTo() {
-		return shippedTo;
+	public boolean isCompleted() {
+		return completed;
 	}
 
-	public void setShippedTo(Address shippedTo) {
-		this.shippedTo = shippedTo;
-	}
-	
-	public boolean isCompleted() {
-		return this.completed;
-	}
-	
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
@@ -148,7 +140,7 @@ public class Order {
 	public String toString() {
 		return "Order [orderId=" + orderId + ", customer=" + customer + ", itemsInOrder=" + itemsInOrder
 				+ ", orderPriceTotal=" + orderPriceTotal + ", orderItemsTotal=" + orderItemsTotal + ", shipped="
-				+ shipped + ", shippedTo=" + shippedTo + ", completed=" + completed + "]";
+				+ shipped + "]";
 	}
 
 	@Override
@@ -157,11 +149,10 @@ public class Order {
 		int result = 1;
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
 		result = prime * result + ((itemsInOrder == null) ? 0 : itemsInOrder.hashCode());
-		result = prime * result + ((shippedTo == null) ? 0 : shippedTo.hashCode());
 		return result;
 	}
 
-	/* Orders are the same when their contents and addressee are identical */
+	/* Orders are the same when their contents and customer are identical */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -180,11 +171,6 @@ public class Order {
 			if (other.itemsInOrder != null)
 				return false;
 		} else if (!itemsInOrder.equals(other.itemsInOrder))
-			return false;
-		if (shippedTo == null) {
-			if (other.shippedTo != null)
-				return false;
-		} else if (!shippedTo.equals(other.shippedTo))
 			return false;
 		return true;
 	}
