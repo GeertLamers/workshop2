@@ -138,7 +138,7 @@ public class OrderController extends Controller {
 		Long findThisOrder = inputValidOrderId();
 		Order foundOrder = orderModel.findById(Order.class, findThisOrder);
 		if (foundOrder == null) {
-			System.out.println("A order could not be found with id: " + foundOrder);
+			System.out.println("A order could not be found with id: " + findThisOrder);
 			System.out.println("Please try again with a different id.");
 		}  else {
 			currentMenu.displayOrderWithItemDetails(foundOrder);
@@ -166,13 +166,18 @@ public class OrderController extends Controller {
 			boolean isShipped = inputShippingStatus();
 			orderToAdd.setShipped(isShipped);
 
-			Address shippedToAddress = inputAddressOfCustomer(customer);
-			orderToAdd.setShippedTo(shippedToAddress);
-
-			List<OrderLineItem> lineItems = inputLineItems();
+			// Persisting the order first is required to obtain a generated id for the order
+			// It is then passed back with the newly generated id so that any orderLineItems
+			// added to the order can be persisted in the same operation via an update to the
+			// newly created order
+			orderToAdd = orderModel.create(orderToAdd);
+			
+			List<OrderLineItem> lineItems = inputLineItemsForOrder(orderToAdd);
 			orderToAdd.setOrderItems(lineItems);
-
-			orderModel.create(orderToAdd);
+			orderToAdd.setOrderItemsTotal(lineItems);
+			orderToAdd.setOrderPriceTotal(lineItems);
+			orderModel.update(orderToAdd);
+			
 			currentMenu.displayCreateSuccess();
 			
 			currentMenu.pressEnterToReturn();
@@ -207,9 +212,6 @@ public class OrderController extends Controller {
 						validChoice = true;
 						break;
 				case 5: editCustomerOfOrder(orderToUpdate);
-						validChoice = true;
-						break;
-				case 6: editShippingAddressOfOrder(orderToUpdate);
 						validChoice = true;
 						break;
 				case 9:	currentMenu.displayMenu();
@@ -280,31 +282,25 @@ public class OrderController extends Controller {
 	}
 	
 	public void addLineItemToOrder(Order orderToUpdate) {
-		OrderLineItem orderLineToAdd = new OrderLineItem();
-		orderLineToAdd.setParentOrder(orderToUpdate);
 		Product lineItemProduct = inputProductForLineItem();
 		int lineItemQuantity = inputQuantityForLineItem();
-		orderLineToAdd.setProduct(lineItemProduct);
-		orderLineToAdd.setProductQuantity(lineItemQuantity);
-		
+		OrderLineItem orderLineToAdd = new OrderLineItem(orderToUpdate, lineItemProduct, lineItemQuantity);
 		orderLineModel = new OrderLineItemDAOImpl(entityManager, OrderLineItem.class);
 		orderLineModel.update(orderLineToAdd);
 	}
 	
 	public void removeLineItemFromOrder(Order orderToUpdate) {
-		OrderLineItem orderLineToRemove = new OrderLineItem();
 		currentMenu.displayOrderPropertiesHeader();
 		currentMenu.displayLongDivider();
 		currentMenu.displayOrderWithItemDetails(orderToUpdate);
 		
 		System.out.println("Select the row you want to remove from the order (e.g. 2): ");
 		int rowToRemove = (input.nextInt()) - 1; // minusing the input by 1 since the items in an order are stored as an ArrayList which is zero indexed
-		orderLineToRemove = orderToUpdate.getItemsInOrder().get(rowToRemove);
+		OrderLineItem orderLineToRemove = orderToUpdate.getItemsInOrder().get(rowToRemove);
 		orderLineModel.delete(orderLineToRemove);
 	}
 	
 	public void editShippingStatusOfOrder(Order orderToUpdate) {
-		orderToUpdate.setOrderId(inputValidOrderId());
 		orderToUpdate.setShipped(inputShippingStatus());
 		orderModel.update(orderToUpdate);
 	}
@@ -315,15 +311,9 @@ public class OrderController extends Controller {
 		orderModel.update(orderToUpdate);
 	}
 	
-	public void editShippingAddressOfOrder(Order orderToUpdate) {
-		Address address = inputAddressOfCustomer(orderToUpdate.getCustomerOfOrder());
-		orderToUpdate.setShippedTo(address);
-		orderModel.update(orderToUpdate);	
-	}
-	
 	/* INPUT & HELPER METHODS */
 	
-	private List<OrderLineItem> inputLineItems() {
+	private List<OrderLineItem> inputLineItemsForOrder(Order order) {
 		boolean userWantsToAddAnotherLineItem = true;
 		List<OrderLineItem> listOfLineItems = new ArrayList<OrderLineItem>();
 		
@@ -331,7 +321,7 @@ public class OrderController extends Controller {
 		do {
 			Product product = inputProductForLineItem();
 			int quantity = inputQuantityForLineItem();
-			OrderLineItem newLineItem = new OrderLineItem(product, quantity);
+			OrderLineItem newLineItem = new OrderLineItem(order, product, quantity);
 			listOfLineItems.add(newLineItem);
 			
 			// Checking with the user whether they want to add another item to this order
@@ -342,7 +332,7 @@ public class OrderController extends Controller {
 	}
 	
 	public Product inputProductForLineItem() {
-		System.out.print("Please enter the id of this line item's product: ");
+		System.out.print("Please enter a product's id: ");
 		Long productId = input.nextLong();
 		productModel = new ProductDAOImpl(entityManager, Product.class);
 		Product product = productModel.findById(Product.class, productId);
@@ -355,9 +345,14 @@ public class OrderController extends Controller {
 	}
 	
 	public int inputQuantityForLineItem() {
-		System.out.println("Please enter the amount of products for this line item: ");
-		int quantity = input.nextInt();
-		return quantity;
+		System.out.println("Please enter the amount of products: ");
+		String quantityAsString = input.nextLine();
+		try {
+			return Integer.parseInt(quantityAsString);
+		} catch (NumberFormatException ex) {
+			System.out.println("You did not enter a number. Please try again.");
+			return inputQuantityForLineItem();
+		}
 	}
 	
 	public Customer inputCustomer() {

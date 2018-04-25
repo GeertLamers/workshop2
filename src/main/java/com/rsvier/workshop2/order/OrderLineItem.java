@@ -32,10 +32,12 @@ public class OrderLineItem {
 	
 	private int productQuantity;
 	
+	// public no-arg constructor is required by Hibernate but never used in the controller
 	public OrderLineItem() {
 	}
 	
-	public OrderLineItem(Product product, int quantity) {
+	public OrderLineItem(Order order, Product product, int quantity) {
+		this.parentOrder = order;
 		this.product = product;
 		this.productQuantity = quantity;
 	}
