@@ -110,7 +110,7 @@ public abstract class View<K> { //parent version
 	}
 	
 	public void displayDivider() { // Commonly used to segment information for the user
-		System.out.println("==================================================" + "\n");
+		System.out.println("========================================================" + "\n");
 	}
 	
 	public void displayLongDivider() { // Commonly used to segment information for the user

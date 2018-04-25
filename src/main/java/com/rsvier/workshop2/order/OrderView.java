@@ -13,7 +13,7 @@ public class OrderView extends View<OrderView> {
 	@Override
 	public void displayMenu() {
 		displayMenuHeader();
-		displayDivider();
+		displayLongDivider();
 		displayMenuOptions();
 	}
 	
@@ -36,7 +36,7 @@ public class OrderView extends View<OrderView> {
 	}
 	
 	public void displayOrderPropertiesHeader() {
-		System.out.printf("%-7s %-7s %-10s %-12s %-12s \n",
+		System.out.printf("%-7s %-15s %-10s %-12s %-12s \n",
 						   "id",
 						   "customer id",
 						   "# items",
@@ -45,12 +45,12 @@ public class OrderView extends View<OrderView> {
 	}
 	
 	public void displayOrderProperties(Order order) {
-		System.out.printf("%-7d %-7d %-10d %-12d.2 %-12s \n",
+		System.out.printf("%-7d %-15d %-10d %-12.2f %-12s \n",
 						   order.getOrderId(),
 						   order.getCustomerOfOrder().getCustomerId(),
 						   order.getOrderItemsTotal(),
 						   order.getOrderPriceTotal(),
-						   order.isShipped());
+						   order.isShipped() ? "shipped" : "held");
 	}
 	
 	public void displayAllOrders(List<Order> allOrders) {
@@ -62,16 +62,17 @@ public class OrderView extends View<OrderView> {
 	public void displayOrderWithItemDetails(Order order) {
 		// Displays the overview-details of the order
 		displayOrderPropertiesHeader();
-		displayDivider();
+		displayLongDivider();
 		displayOrderProperties(order);
 		// Displays what items the order contains
+		displayOrderItemDivider();
 		displayOrderItemListHeader();
-		displayDivider();
+		displayOrderItemDivider();
 		displayOrderItemListDetails(order.getItemsInOrder());
 	}
 	
 	public void displayOrderItemListHeader() {
-		System.out.printf("%-30s %-12s %-12s \n",
+		System.out.printf("   %-30s %-12s %-12s \n",
 				   "product name",
 				   "quantity",
 				   "price per product");
@@ -79,20 +80,25 @@ public class OrderView extends View<OrderView> {
 	
 	public void displayOrderItemListDetails(List<OrderLineItem> arrayList) {
 		for (OrderLineItem item : arrayList) {
-			System.out.printf("%-30s %-12d %-12s \n",
+			System.out.printf("   %-30s %-12d %-12s \n",
 					   item.getProduct().getName(),
 					   item.getProductQuantity(),
 					   (item.getProduct().getPrice()).toString()); // converts a BigDecimal into a String object
 		}
 	}
 	
+	public void displayOrderItemDivider() {
+		System.out.println("   ----------------------------------------------------------");
+	}
+	
 	public void displayOrderUpdateMenu() {
 		System.out.print("What would you like to update? \n" +
 						 "\n" +
 						 "1. Items in order \n" +
+						 "2. Add line item to order \n" +
+						 "3. Remove line item from order \n" +
 						 "4. Shipping status \n" +
 						 "5. Associated customer \n" +
-						 "6. Associated shipping address \n" +
 						 "9. Return to the order menu \n" +
 						 "\n");
 	}
