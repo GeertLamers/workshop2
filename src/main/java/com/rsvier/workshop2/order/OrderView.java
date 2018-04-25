@@ -88,7 +88,7 @@ public class OrderView extends View<OrderView> {
 	}
 	
 	public void displayOrderItemDivider() {
-		System.out.println("   ----------------------------------------------------------");
+		System.out.println("   --------------------------------------------------------------------");
 	}
 	
 	public void displayOrderUpdateMenu() {
