@@ -1,16 +1,22 @@
 package com.rsvier.workshop2.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
 import com.rsvier.workshop2.useraccounts.UserCreationController;
 import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.view.*;
 
+@Component("LoginController")
 public class LoginController extends Controller {
 	public Account account;
+
+	@Autowired
+	public LoginMenuView currentMenu;
 	
-	public LoginController (LoginMenuView theView) {
-		this.currentMenu = theView;
+	public LoginController () {
 	}
 	
 	public Account getAccount () {

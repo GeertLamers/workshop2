@@ -1,6 +1,9 @@
 package com.rsvier.workshop2.view;
 import java.io.*;
 
+import org.springframework.stereotype.Component;
+
+@Component("LoginMenuView")
 public class LoginMenuView extends View<LoginMenuView> {
 		
 	public void displayMessage() {

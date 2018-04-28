@@ -6,13 +6,14 @@ import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.view.*;
 
-public abstract class Controller { // parent
+public class Controller { // parent
 	protected View<?> currentMenu;
 	protected Controller nextController;
 	protected EntityManager entityManager = HibernateService.getEntityManager();
 	protected Account loggedInUser;
 	
-	public abstract void runView();
+	public void runView(){
+	}
 	public void setLoggedInUser (Account loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}

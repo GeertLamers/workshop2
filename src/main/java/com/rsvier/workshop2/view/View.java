@@ -2,14 +2,14 @@ package com.rsvier.workshop2.view;
 import java.io.*;
 import java.util.*;
 
-public abstract class View<K> { //parent version
+public class View<K> { //parent version
 	
 	protected int possibleUserChoice;
 	protected int menuChoice;
 	protected boolean validUserChoice;
 	
-	public abstract void displayMessage(); // Displays a menu specific message
-	public abstract void displayMenu(); // Displays the relevant menu
+	public void displayMessage(){} // Displays a menu specific message
+	public void displayMenu(){}; // Displays the relevant menu
 	
 	public boolean asksUserYesOrNo() {
 		String userInput = "";
