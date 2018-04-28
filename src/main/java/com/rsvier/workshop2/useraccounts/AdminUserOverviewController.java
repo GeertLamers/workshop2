@@ -19,9 +19,9 @@ public class AdminUserOverviewController extends Controller{
 
 	@Override
 	public void runView() {
-		currentMenu.displayMenu();
 		boolean validChoice = false;
 		while (!validChoice) {
+			currentMenu.displayMenu();
 			int userMenuChoice = Integer.parseInt(currentMenu.askUserForMenuChoice());
 			switch (userMenuChoice) {
 				case 1: showAllUsers();
@@ -38,7 +38,7 @@ public class AdminUserOverviewController extends Controller{
 						nextController = new AdminMainMenuController(new AdminMainMenuView());
 						break;
 				default: System.out.println("Not a valid option.");
-						break;
+						continue;
 				}
 		}
 	}
@@ -54,5 +54,6 @@ public class AdminUserOverviewController extends Controller{
 		ArrayList<Account> allUsers = (ArrayList<Account>) accountModel.findAll();
 		currentMenu.displayLongDivider();
 		currentMenu.printAllUsers(allUsers);
+		currentMenu.pressEnterToReturn();		
 	}
 }

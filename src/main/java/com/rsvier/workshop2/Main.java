@@ -20,18 +20,18 @@ public class Main {
 	@Autowired @Qualifier("LoginController")
 	Controller currentController;
 
-	@SuppressWarnings("resource")
 	public static void main (String args[])  {
-		Main main = new Main();
 		initializeDatabase();
+		Main main = new Main();
 		main.run();
 	}
 	
+	@SuppressWarnings("resource")
 	public void run() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Main.class, Controller.class, View.class);
 		currentController = context.getBean(LoginController.class);
 		currentController.runView(); // run next menu
-		Account loggedInUser = ((LoginController) currentController).getAccount();
+		Account loggedInUser = ((LoginController) currentController).getLoggedInUser();
 		
 		while(true) { //infinite loop until the user stops the program
 			currentController = currentController.getNextController(); // get next menu & model from the users choice

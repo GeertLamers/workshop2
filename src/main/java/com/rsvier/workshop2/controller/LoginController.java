@@ -1,6 +1,7 @@
 package com.rsvier.workshop2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.rsvier.workshop2.useraccounts.Account;
@@ -11,16 +12,11 @@ import com.rsvier.workshop2.view.*;
 
 @Component("LoginController")
 public class LoginController extends Controller {
-	public Account account;
 
-	@Autowired
+	@Autowired @Qualifier("LoginMenuView")
 	public LoginMenuView currentMenu;
-	
+
 	public LoginController () {
-	}
-	
-	public Account getAccount () {
-		return this.account;
 	}
 	
 	@Override
@@ -37,7 +33,7 @@ public class LoginController extends Controller {
 			username = userInput[0];
 			String password = userInput[1];
 			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) {
-				account = (new AccountDAOImpl(entityManager, Account.class).findByUsername(username));
+				loggedInUser = (new AccountDAOImpl(entityManager, Account.class).findByUsername(username));
 				break;
 			}
 			System.out.println("Incorrect username or password. Please try again or press 0 to exit.");

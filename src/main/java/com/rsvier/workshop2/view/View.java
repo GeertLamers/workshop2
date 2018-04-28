@@ -48,7 +48,7 @@ public class View<K> { //parent version
 				System.out.println("That was not a number. Please try again!");
 				return askUserForMenuChoice();
 			}
-			if (userInput.equals(0)) {
+			if (userInput.equals("0")) {
 				System.out.println("You are about to exit the program. Are you certain?");
 				if (asksUserYesOrNo()) { // user entered yes
 					System.out.println("Program is closing..");

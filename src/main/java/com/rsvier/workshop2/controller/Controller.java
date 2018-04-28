@@ -14,6 +14,11 @@ public class Controller { // parent
 	
 	public void runView(){
 	}
+	
+	public Account getLoggedInUser () {
+		return this.loggedInUser;
+	}
+	
 	public void setLoggedInUser (Account loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}
