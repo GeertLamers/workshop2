@@ -20,8 +20,20 @@ import com.rsvier.workshop2.view.*;
 public class AdminMainMenuController extends Controller {
 	
 	@Autowired @Qualifier("adminMainMenuView")
-	public AdminMainMenuView currentMenu;
-
+	private AdminMainMenuView currentMenu;
+	
+	@Autowired @Qualifier("customerController")
+	private CustomerController customerController;
+	
+	@Autowired @Qualifier("adminUserOverviewController")
+	private AdminUserOverviewController adminUserOverviewController;
+	
+	@Autowired @Qualifier("productController")
+	private ProductController productController;
+	
+	@Autowired @Qualifier("orderController")
+	private OrderController orderController;
+	
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
@@ -31,19 +43,19 @@ public class AdminMainMenuController extends Controller {
 			// If input was 0 the View.askUserForInput method handles elegant program exit
 			switch (userMenuChoice) {
 				// User chose to manage accounts
-				case 1: nextController = new AdminUserOverviewController();
+				case 1: nextController = adminUserOverviewController;
 						validChoice = true;
 						break;
 				// User chose to manage customers
-				case 2: nextController = new CustomerController();
+				case 2: nextController = customerController;
 						validChoice = true;
 						break;
 				// User chose to manage products
-				case 3: nextController = new ProductController() ;
+				case 3: nextController = productController;
 						validChoice = true;
 						break;
 				// User chose to manage orders
-				case 4: nextController = new OrderController();
+				case 4: nextController = orderController;
 						validChoice = true;
 						break;
 				default: System.out.println("Not a valid option.");

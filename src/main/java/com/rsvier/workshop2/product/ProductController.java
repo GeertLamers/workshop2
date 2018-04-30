@@ -23,6 +23,10 @@ public class ProductController extends Controller {
 	
 	@Autowired @Qualifier("productView")
 	private ProductView currentMenu;
+	
+	@Autowired @Qualifier("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;	
+	
 	private ProductDAOImpl productModel;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
@@ -51,7 +55,7 @@ public class ProductController extends Controller {
 						break;
 				case 9: // Returns to main menu
 						validChoice = true;
-						nextController = new AdminMainMenuController();
+						nextController = adminMainMenuController;
 						break;
 				default: System.out.println("Not a valid option.");
 						break;

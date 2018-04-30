@@ -29,6 +29,13 @@ public class OrderController extends Controller {
 	
 	@Autowired @Qualifier("orderView")
 	private OrderView currentMenu;
+	
+	@Autowired @Qualifier("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;	
+	
+	@Autowired @Qualifier("userMainMenuController")
+	private UserMainMenuController userMainMenuController;	
+	
 	private OrderDAOImpl orderModel;
 	private OrderLineItemDAOImpl orderLineModel;
 	private CustomerDAOImpl customerModel;
@@ -71,9 +78,9 @@ public class OrderController extends Controller {
 				case 9: // Returns to main menu
 						validChoice = true;
 						if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
-							nextController = new AdminMainMenuController();
+							nextController = adminMainMenuController;
 						} else {
-							nextController = new UserMainMenuController(new UserMainMenuView());
+							nextController = userMainMenuController;
 						}
 						break;
 				default: System.out.println("Not a valid option.");

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
+import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.LoginController;
 import com.rsvier.workshop2.customer.Customer;
@@ -21,6 +22,10 @@ public class UserCreationController extends Controller {
 
 	@Autowired @Qualifier("userCreationView")
 	private UserCreationView currentMenu;
+	
+	@Autowired @Qualifier("loginController")
+	private LoginController loginController;	
+	
 	private CustomerDAOImpl customerModel;
 	private AccountDAOImpl accountModel;
 

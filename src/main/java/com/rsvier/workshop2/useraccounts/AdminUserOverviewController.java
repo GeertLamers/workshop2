@@ -20,6 +20,10 @@ public class AdminUserOverviewController extends Controller{
 	
 	@Autowired @Qualifier("adminUserOverview")
 	private AdminUserOverview currentMenu;
+	
+	@Autowired @Qualifier("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;
+	
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private AccountDAOImpl accountModel;
 
@@ -41,7 +45,7 @@ public class AdminUserOverviewController extends Controller{
 						break;
 				case 9: // Returns to main menu
 						validChoice = true;
-						nextController = new AdminMainMenuController();
+						nextController = adminMainMenuController;
 						break;
 				default: System.out.println("Not a valid option.");
 						continue;

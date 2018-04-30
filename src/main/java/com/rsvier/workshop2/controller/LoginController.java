@@ -24,6 +24,9 @@ public class LoginController extends Controller {
 	@Autowired @Qualifier ("userMainMenuController")
 	private UserMainMenuController userMainMenuController;
 	
+	@Autowired @Qualifier ("userCreationController")
+	private UserCreationController userCreationController;
+	
 	@Override
 	public void runView() {
 		String username;
@@ -31,7 +34,7 @@ public class LoginController extends Controller {
 		while (true) {
 			String[] userInput = ((LoginMenuView) currentMenu).asksUserForLogin();
 			if (userInput.length == 0) { //empty array only occurs when user enters a 1
-				nextController = new UserCreationController();
+				nextController = userCreationController;
 				return;
 			}
 			nextController = adminMainMenuController;
@@ -42,7 +45,6 @@ public class LoginController extends Controller {
 				break;
 			}
 			System.out.println("Incorrect username or password. Please try again or press 0 to exit.");
-
 		}
 	}
 }

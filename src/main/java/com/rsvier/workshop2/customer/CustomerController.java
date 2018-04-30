@@ -27,6 +27,20 @@ public class CustomerController extends Controller {
 	
 	@Autowired @Qualifier("customerView")
 	private CustomerView currentMenu;
+	
+	@Autowired @Qualifier("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;	
+	
+	@Autowired @Qualifier("userMainMenuController")
+	private UserMainMenuController userMainMenuController;
+	
+	@Autowired @Qualifier("userCreationController")
+	private UserCreationController userCreationController;
+	
+	@Autowired @Qualifier("addressController")
+	private AddressController addressController;
+	
+	
 	private CustomerDAOImpl customerModel;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
@@ -60,9 +74,9 @@ public class CustomerController extends Controller {
 						break;
 				case 9: // Returns to main menu
 						if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
-							nextController = new AdminMainMenuController();
+							nextController = adminMainMenuController;
 						} else {
-							nextController = new UserMainMenuController(new UserMainMenuView());
+							nextController = userMainMenuController;
 						}
 						validChoice = true;
 						break;
@@ -105,8 +119,8 @@ public class CustomerController extends Controller {
  	public void addNewCustomer() {
  		// Creating a customer goes through the below controller and method
  		System.out.println("Press \"Y\" to create both a customer and an account. Press \"N\" to just create an account.");
- 		if (currentMenu.asksUserYesOrNo()) new UserCreationController().jointAccountAndCustomerCreator();
- 		new UserCreationController().accountCreator();
+ 		if (currentMenu.asksUserYesOrNo()) userCreationController.jointAccountAndCustomerCreator();
+ 		userCreationController.accountCreator();
  	}
 
 	public void updateCustomerPersonalia() {
@@ -145,7 +159,7 @@ public class CustomerController extends Controller {
 	public void updateCustomerAddresses() {
 		System.out.println("Are you certain you wish to switch to the address menu?");
 		if(currentMenu.asksUserYesOrNo()) { // user wants to switch
-			nextController = new AddressController();
+			nextController = addressController;
 		} else {
 			currentMenu.pressEnterToReturn();
 			this.runView();

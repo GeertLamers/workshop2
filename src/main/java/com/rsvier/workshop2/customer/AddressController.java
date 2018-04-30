@@ -26,6 +26,13 @@ public class AddressController extends Controller {
 	
 	@Autowired @Qualifier("addressView")
 	private AddressView currentMenu;
+	
+	@Autowired @Qualifier("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;
+	
+	@Autowired @Qualifier("userMainMenuController")
+	private UserMainMenuController userMainMenuController;
+	
 	private AddressDAOImpl addressModel;
 	// See the addNewAddress() method for clarity on why the customer is initialized as null
 	private Customer customerAtAddress = null;
@@ -64,9 +71,9 @@ public class AddressController extends Controller {
 				case 9: // Returns to main menu
 					validChoice = true;
 					if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
-						nextController = new AdminMainMenuController();
+						nextController = adminMainMenuController;
 					} else {
-						nextController = new UserMainMenuController(new UserMainMenuView());
+						nextController = userMainMenuController;
 					}
 					break;
 				default: System.out.println("Not a valid choice.");
