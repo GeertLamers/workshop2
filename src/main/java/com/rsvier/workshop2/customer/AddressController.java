@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
@@ -15,8 +20,11 @@ import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
+@Component
+@ComponentScan
 public class AddressController extends Controller {
 	
+	@Autowired @Qualifier("addressView")
 	private AddressView currentMenu;
 	private AddressDAOImpl addressModel;
 	// See the addNewAddress() method for clarity on why the customer is initialized as null
@@ -25,17 +33,6 @@ public class AddressController extends Controller {
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
 	
-	public AddressController(AddressView theView) {
-		this.currentMenu = theView;
-	}
-	
-	// Special constructor that is called only when a new customer is created by the user from the customer controller
-	// That newly created customer is then passed here to ensure a link between address and customer always exists
-	public AddressController(AddressView theView, Customer newCustomer) {
-		this.currentMenu = theView;
-		this.customerAtAddress = newCustomer;
-	}
-
 	@Override
 	public void runView() {
 		currentMenu.displayMenu();
@@ -67,7 +64,7 @@ public class AddressController extends Controller {
 				case 9: // Returns to main menu
 					validChoice = true;
 					if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
-						nextController = new AdminMainMenuController(new AdminMainMenuView());
+						nextController = new AdminMainMenuController();
 					} else {
 						nextController = new UserMainMenuController(new UserMainMenuView());
 					}
@@ -272,7 +269,7 @@ public class AddressController extends Controller {
 		System.out.println("Are you certain you wish to go to the customer menu?");
 		boolean leaveMenu = currentMenu.asksUserYesOrNo();
 		if(leaveMenu) { // user answered yes
-			nextController = new CustomerController(new CustomerView());
+			nextController = new CustomerController();
 		} else {
 			currentMenu.pressEnterToReturn();
 			this.runView();

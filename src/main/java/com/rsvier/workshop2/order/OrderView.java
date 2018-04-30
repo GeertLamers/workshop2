@@ -2,8 +2,11 @@ package com.rsvier.workshop2.order;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.view.View;
 
+@Component
 public class OrderView extends View<OrderView> {
 	
 	@Override

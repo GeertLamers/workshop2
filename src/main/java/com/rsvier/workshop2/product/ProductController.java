@@ -6,22 +6,26 @@ import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
+@Component
+@ComponentScan
 public class ProductController extends Controller {
 	
+	@Autowired @Qualifier("productView")
 	private ProductView currentMenu;
 	private ProductDAOImpl productModel;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
-	
-	public ProductController(ProductView theView) {
-		this.currentMenu = theView;
-	}
 
 	@Override
 	public void runView() {
@@ -47,7 +51,7 @@ public class ProductController extends Controller {
 						break;
 				case 9: // Returns to main menu
 						validChoice = true;
-						nextController = new AdminMainMenuController(new AdminMainMenuView());
+						nextController = new AdminMainMenuController();
 						break;
 				default: System.out.println("Not a valid option.");
 						break;

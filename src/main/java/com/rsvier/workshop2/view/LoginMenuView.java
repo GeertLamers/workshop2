@@ -3,7 +3,7 @@ import java.io.*;
 
 import org.springframework.stereotype.Component;
 
-@Component("LoginMenuView")
+@Component
 public class LoginMenuView extends View<LoginMenuView> {
 		
 	public void displayMessage() {

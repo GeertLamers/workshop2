@@ -3,19 +3,25 @@ package com.rsvier.workshop2.useraccounts;
 import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.view.*;
 
+@Component
+@ComponentScan
 public class AdminUserOverviewController extends Controller{
+	
+	@Autowired @Qualifier("adminUserOverview")
 	private AdminUserOverview currentMenu;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private AccountDAOImpl accountModel;
-	
-	public AdminUserOverviewController (AdminUserOverview theView) {
-		this.currentMenu = theView;
-	}
 
 	@Override
 	public void runView() {
@@ -35,7 +41,7 @@ public class AdminUserOverviewController extends Controller{
 						break;
 				case 9: // Returns to main menu
 						validChoice = true;
-						nextController = new AdminMainMenuController(new AdminMainMenuView());
+						nextController = new AdminMainMenuController();
 						break;
 				default: System.out.println("Not a valid option.");
 						continue;

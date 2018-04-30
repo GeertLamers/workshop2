@@ -1,7 +1,10 @@
 package com.rsvier.workshop2.useraccounts;
 
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.view.View;
 
+@Component
 public class UserMainMenuView extends View<UserMainMenuView> {
 
 	@Override

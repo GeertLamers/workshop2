@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.view.View;
 
+@Component
 public class UserCreationView extends View<UserCreationView> {
 	
 	@Override

@@ -1,5 +1,8 @@
 package com.rsvier.workshop2.view;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AdminMainMenuView extends View<AdminMainMenuView> {
 
 	@Override

@@ -3,6 +3,11 @@ package com.rsvier.workshop2.useraccounts;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.LoginController;
 import com.rsvier.workshop2.customer.Customer;
@@ -10,14 +15,14 @@ import com.rsvier.workshop2.customer.CustomerDAOImpl;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.LoginMenuView;
 
+@Component
+@ComponentScan
 public class UserCreationController extends Controller {
 
+	@Autowired @Qualifier("userCreationView")
+	private UserCreationView currentMenu;
 	private CustomerDAOImpl customerModel;
 	private AccountDAOImpl accountModel;
-
-	public UserCreationController (UserCreationView theView) {
-		this.currentMenu = theView;
-	}
 
 	@Override
 	public void runView() {

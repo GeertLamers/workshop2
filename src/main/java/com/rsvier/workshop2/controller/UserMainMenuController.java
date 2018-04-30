@@ -1,5 +1,7 @@
 package com.rsvier.workshop2.controller;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import com.rsvier.workshop2.customer.CustomerController;
 import com.rsvier.workshop2.customer.CustomerView;
@@ -10,6 +12,8 @@ import com.rsvier.workshop2.product.ProductView;
 import com.rsvier.workshop2.useraccounts.UserMainMenuView;
 import com.rsvier.workshop2.view.*;
 
+@Component
+@ComponentScan
 public class UserMainMenuController extends Controller {
 	
 	public UserMainMenuController(View<UserMainMenuView> currentMenu) {
@@ -25,15 +29,15 @@ public class UserMainMenuController extends Controller {
 			// If input was 0 the View.askUserForInput method handles elegant program exit
 			switch(userMenuChoice) {
 				// User chose to manage customers
-				case 1: nextController = new CustomerController(new CustomerView());
+				case 1: nextController = new CustomerController();
 						validChoice = true;
 						break;
 				// User chose to manage products
-				case 2: nextController = new ProductController(new ProductView()) ;
+				case 2: nextController = new ProductController() ;
 						validChoice = true;
 						break;
 				// User chose to manage orders
-				case 3: nextController = new OrderController(new OrderView());
+				case 3: nextController = new OrderController();
 						validChoice = true;
 						break;
 				default: System.out.println("Not a valid option.");

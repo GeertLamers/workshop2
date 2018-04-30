@@ -2,6 +2,7 @@ package com.rsvier.workshop2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.rsvier.workshop2.useraccounts.Account;
@@ -10,14 +11,12 @@ import com.rsvier.workshop2.useraccounts.UserCreationController;
 import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.view.*;
 
-@Component("LoginController")
+@Component
+@ComponentScan
 public class LoginController extends Controller {
 
-	@Autowired @Qualifier("LoginMenuView")
+	@Autowired @Qualifier("loginMenuView")
 	public LoginMenuView currentMenu;
-
-	public LoginController () {
-	}
 	
 	@Override
 	public void runView() {
@@ -26,10 +25,10 @@ public class LoginController extends Controller {
 		while (true) {
 			String[] userInput = ((LoginMenuView) currentMenu).asksUserForLogin();
 			if (userInput.length == 0) { //empty array only occurs when user enters a 1
-				nextController = new UserCreationController(new UserCreationView());
+				nextController = new UserCreationController();
 				return;
 			}
-			nextController = new AdminMainMenuController(new AdminMainMenuView());
+			nextController = new AdminMainMenuController();
 			username = userInput[0];
 			String password = userInput[1];
 			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) {

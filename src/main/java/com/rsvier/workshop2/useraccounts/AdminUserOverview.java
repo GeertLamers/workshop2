@@ -1,8 +1,12 @@
 package com.rsvier.workshop2.useraccounts;
 
 import java.util.ArrayList;
+
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.view.View;
 
+@Component
 public class AdminUserOverview extends View<AdminUserOverview> {
 	
 	@Override

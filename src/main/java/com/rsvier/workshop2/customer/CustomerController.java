@@ -5,6 +5,11 @@ import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.rsvier.workshop2.controller.AdminMainMenuController;
 import com.rsvier.workshop2.controller.Controller;
 import com.rsvier.workshop2.controller.UserMainMenuController;
@@ -16,18 +21,17 @@ import com.rsvier.workshop2.utility.HibernateService;
 import com.rsvier.workshop2.utility.Validator;
 import com.rsvier.workshop2.view.AdminMainMenuView;
 
+@Component
+@ComponentScan
 public class CustomerController extends Controller {
 	
+	@Autowired @Qualifier("customerView")
 	private CustomerView currentMenu;
 	private CustomerDAOImpl customerModel;
 	private EntityManager entityManager = HibernateService.getEntityManager();
 	private Scanner input = new Scanner(System.in);
 	@SuppressWarnings("unused") // validator is used in various data field input methods
 	private Validator validator; 
-	
-	public CustomerController(CustomerView theView) {
-		this.currentMenu = theView;
-	}
 	
 	@Override
 	public void runView() {
@@ -56,7 +60,7 @@ public class CustomerController extends Controller {
 						break;
 				case 9: // Returns to main menu
 						if (loggedInUser.getOwnerType() == OwnerType.ADMIN) {
-							nextController = new AdminMainMenuController(new AdminMainMenuView());
+							nextController = new AdminMainMenuController();
 						} else {
 							nextController = new UserMainMenuController(new UserMainMenuView());
 						}
@@ -101,8 +105,8 @@ public class CustomerController extends Controller {
  	public void addNewCustomer() {
  		// Creating a customer goes through the below controller and method
  		System.out.println("Press \"Y\" to create both a customer and an account. Press \"N\" to just create an account.");
- 		if (currentMenu.asksUserYesOrNo()) new UserCreationController(new UserCreationView()).jointAccountAndCustomerCreator();
- 		new UserCreationController(new UserCreationView()).accountCreator();
+ 		if (currentMenu.asksUserYesOrNo()) new UserCreationController().jointAccountAndCustomerCreator();
+ 		new UserCreationController().accountCreator();
  	}
 
 	public void updateCustomerPersonalia() {
@@ -141,7 +145,7 @@ public class CustomerController extends Controller {
 	public void updateCustomerAddresses() {
 		System.out.println("Are you certain you wish to switch to the address menu?");
 		if(currentMenu.asksUserYesOrNo()) { // user wants to switch
-			nextController = new AddressController(new AddressView());
+			nextController = new AddressController();
 		} else {
 			currentMenu.pressEnterToReturn();
 			this.runView();

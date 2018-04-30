@@ -17,7 +17,7 @@ import com.rsvier.workshop2.view.*;
 @ComponentScan
 @Configuration
 public class Main {
-	@Autowired @Qualifier("LoginController")
+	@Autowired @Qualifier("loginController")
 	Controller currentController;
 
 	public static void main (String args[])  {
@@ -27,7 +27,7 @@ public class Main {
 	}
 	
 	@SuppressWarnings("resource")
-	public void run() {
+	private void run() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Main.class, Controller.class, View.class);
 		currentController = context.getBean(LoginController.class);
 		currentController.runView(); // run next menu
