@@ -16,7 +16,13 @@ import com.rsvier.workshop2.view.*;
 public class LoginController extends Controller {
 
 	@Autowired @Qualifier("loginMenuView")
-	public LoginMenuView currentMenu;
+	private LoginMenuView currentMenu;
+	
+	@Autowired @Qualifier ("adminMainMenuController")
+	private AdminMainMenuController adminMainMenuController;
+	
+	@Autowired @Qualifier ("userMainMenuController")
+	private UserMainMenuController userMainMenuController;
 	
 	@Override
 	public void runView() {
@@ -28,7 +34,7 @@ public class LoginController extends Controller {
 				nextController = new UserCreationController();
 				return;
 			}
-			nextController = new AdminMainMenuController();
+			nextController = adminMainMenuController;
 			username = userInput[0];
 			String password = userInput[1];
 			if (new AccountDAOImpl(entityManager, Account.class).login(username, password)) {
