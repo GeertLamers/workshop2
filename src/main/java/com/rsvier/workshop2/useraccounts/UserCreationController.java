@@ -32,7 +32,7 @@ public class UserCreationController extends Controller {
 	@Override
 	public void runView() {
 		currentMenu.displayMessage();
-		nextController = new LoginController();
+		nextController = loginController;
 		jointAccountAndCustomerCreator();
 	}
 
