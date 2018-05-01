@@ -1,30 +1,28 @@
 package com.rsvier.workshop2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.rsvier.workshop2.useraccounts.Account;
 import com.rsvier.workshop2.useraccounts.AccountDAOImpl;
 import com.rsvier.workshop2.useraccounts.UserCreationController;
-import com.rsvier.workshop2.useraccounts.UserCreationView;
 import com.rsvier.workshop2.view.*;
 
 @Component
 @ComponentScan
 public class LoginController extends Controller {
 
-	@Autowired @Qualifier("loginMenuView")
+	@Autowired
 	private LoginMenuView currentMenu;
-	
-	@Autowired @Qualifier ("adminMainMenuController")
+	@Autowired
 	private AdminMainMenuController adminMainMenuController;
 	
-	@Autowired @Qualifier ("userMainMenuController")
-	private UserMainMenuController userMainMenuController;
+	// User login functionality currently unused
+	// @Autowired
+	// private UserMainMenuController userMainMenuController;
 	
-	@Autowired @Qualifier ("userCreationController")
+	@Autowired
 	private UserCreationController userCreationController;
 	
 	@Override
@@ -32,7 +30,7 @@ public class LoginController extends Controller {
 		String username;
 		currentMenu.displayMessage();
 		while (true) {
-			String[] userInput = ((LoginMenuView) currentMenu).asksUserForLogin();
+			String[] userInput = currentMenu.asksUserForLogin();
 			if (userInput.length == 0) { //empty array only occurs when user enters a 1
 				nextController = userCreationController;
 				return;

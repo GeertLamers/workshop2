@@ -1,17 +1,12 @@
 package com.rsvier.workshop2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.rsvier.workshop2.customer.CustomerController;
-import com.rsvier.workshop2.customer.CustomerView;
 import com.rsvier.workshop2.order.OrderController;
-import com.rsvier.workshop2.order.OrderView;
 import com.rsvier.workshop2.product.ProductController;
-import com.rsvier.workshop2.product.ProductView;
-import com.rsvier.workshop2.useraccounts.AdminUserOverview;
 import com.rsvier.workshop2.useraccounts.AdminUserOverviewController;
 import com.rsvier.workshop2.view.*;
 
@@ -19,19 +14,15 @@ import com.rsvier.workshop2.view.*;
 @ComponentScan
 public class AdminMainMenuController extends Controller {
 	
-	@Autowired @Qualifier("adminMainMenuView")
+	@Autowired
 	private AdminMainMenuView currentMenu;
-	
-	@Autowired @Qualifier("customerController")
+	@Autowired
 	private CustomerController customerController;
-	
-	@Autowired @Qualifier("adminUserOverviewController")
+	@Autowired
 	private AdminUserOverviewController adminUserOverviewController;
-	
-	@Autowired @Qualifier("productController")
+	@Autowired
 	private ProductController productController;
-	
-	@Autowired @Qualifier("orderController")
+	@Autowired
 	private OrderController orderController;
 	
 	@Override
